@@ -128,4 +128,17 @@ class StateController extends Controller
             return back()->with('error', 'No results Found');
         }
     }
+
+    public function toggleStatus(Request $request)
+    {
+        $user = State::find($request->StateID); // Get the user by ID
+        if ($user) {
+            $user->Status = $request->Status; // Toggle status
+            $user->save(); // Save the updated status
+
+            return response()->json(['success' => true, 'status' => $user->status]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'User not found']);
+    }
 }

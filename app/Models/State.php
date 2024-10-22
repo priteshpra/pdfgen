@@ -19,6 +19,7 @@ class State extends Authenticatable
      * @var array
      */
     public $table = "states";
+    protected $primaryKey = 'StateID';
     protected $fillable = [
         'State',
         'CountryID'

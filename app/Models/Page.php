@@ -19,6 +19,7 @@ class Page extends Authenticatable
      * @var array
      */
     public $table = "pagemaster";
+    protected $primaryKey = 'PageID';
     protected $fillable = [
         'PageName'
     ];

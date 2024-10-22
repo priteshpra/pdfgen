@@ -3,6 +3,15 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PDFController;
+use App\Http\Controllers\Admin\BussinessCategoryController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\CasController;
+use App\Http\Controllers\Admin\StateController;
+use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\CmsController;
+use App\Http\Controllers\Admin\PageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,6 +54,16 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::get('/generate-pdf', [App\Http\Controllers\Admin\PDFController::class, 'generatePDF']);
     Route::get('/upload-images', [PDFController::class, 'showUploadForm']);
     Route::post('/upload-images', [PDFController::class, 'handleImageUpload']);
+    Route::post('/toggle-status', [BussinessCategoryController::class, 'toggleStatus'])->name('toggle.status');
+    Route::post('/cas-toggle-status', [CasController::class, 'toggleStatus'])->name('castoggle.status');
+    Route::post('/client-toggle-status', [ClientController::class, 'toggleStatus'])->name('clienttoggle.status');
+    Route::post('/user-toggle-status', [UserController::class, 'toggleStatus'])->name('usertoggle.status');
+    Route::post('/state-toggle-status', [StateController::class, 'toggleStatus'])->name('statetoggle.status');
+    Route::post('/country-toggle-status', [CountryController::class, 'toggleStatus'])->name('countrytoggle.status');
+    Route::post('/city-toggle-status', [CityController::class, 'toggleStatus'])->name('citytoggle.status');
+    Route::post('/cms-toggle-status', [CmsController::class, 'toggleStatus'])->name('cmstoggle.status');
+    Route::post('/page-toggle-status', [PageController::class, 'toggleStatus'])->name('pagetoggle.status');
+
 
     // Route::post('/search', 'CityController');
 });

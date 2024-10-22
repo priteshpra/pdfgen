@@ -112,4 +112,17 @@ class CountryController extends Controller
         $user->delete();
         return redirect()->back()->with(['status-success' => "Country Deleted"]);
     }
+
+    public function toggleStatus(Request $request)
+    {
+        $user = Country::find($request->CountryID); // Get the user by ID
+        if ($user) {
+            $user->Status = $request->Status; // Toggle status
+            $user->save(); // Save the updated status
+
+            return response()->json(['success' => true, 'status' => $user->status]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'User not found']);
+    }
 }

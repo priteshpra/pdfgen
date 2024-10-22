@@ -19,6 +19,7 @@ class Cms extends Authenticatable
      * @var array
      */
     public $table = "cms";
+    protected $primaryKey = 'CMSID';
     protected $fillable = [
         'Content',
         'PageID'

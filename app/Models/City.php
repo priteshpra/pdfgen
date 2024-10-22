@@ -19,6 +19,7 @@ class City extends Authenticatable
      * @var array
      */
     public $table = "cities";
+    protected $primaryKey = 'CityID';
     protected $fillable = [
         'City',
         'CountryID',

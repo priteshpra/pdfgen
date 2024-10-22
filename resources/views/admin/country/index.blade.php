@@ -14,7 +14,9 @@
                     <div class="pull-right">
                         @can('country_create')
                         <!-- <a href="{{ route('admin.country.create') }}" class="waves-effect waves-circle btn btn-circle btn-success btn-lg mb-5">Add New Country</a> -->
-                        <a href="{{ route('admin.country.create') }}" class="waves-effect waves-circle btn btn-circle btn-success btn-lg mb-5"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                        <a href="{{ route('admin.country.create') }}"
+                            class="waves-effect waves-circle btn btn-circle btn-success btn-lg mb-5"><i
+                                class="fa fa-plus" aria-hidden="true"></i></a>
                         @endcan
                     </div>
                 </div>
@@ -26,7 +28,8 @@
                             <div class="box-body">
                                 <div class="table-responsive">
 
-                                    <table id="example" class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                    <table id="example"
+                                        class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                         <thead class="bg-primary">
                                             <tr class="">
                                                 <th class="text-center">ID</th>
@@ -44,7 +47,12 @@
                                                 <td>{{$user->Country}}</td>
                                                 <td>
                                                     <div class="col-xl-2 col-6 text-center align-self-center mb-20">
-                                                        <button type="button" class="btn btn-sm btn-toggle btn-success {{($user->Status == 1) ? 'active' : ''}}" data-bs-toggle="button" aria-pressed="true" autocomplete="off">
+                                                        <button
+                                                            onclick="toggleStatus({{$user->CountryID}},{{ ($user->Status == 1) ? '0' : '1' }})"
+                                                            type="button"
+                                                            class="btn btn-sm btn-toggle btn-success {{($user->Status == 1) ? 'active' : ''}}"
+                                                            data-bs-toggle="button" aria-pressed="true"
+                                                            autocomplete="off">
                                                             <div class="handle"></div>
                                                         </button>
                                                     </div>
@@ -54,20 +62,25 @@
                                                     <a href="{{ route('admin.country.show', $user->CountryID) }}" class="btn btn-sm btn-success">Show</a>
                                                     @endcan -->
                                                     @can('user_edit')
-                                                    <a href="{{ route('admin.country.edit', $user->CountryID) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                    <a href="{{ route('admin.country.edit', $user->CountryID) }}"
+                                                        class="btn btn-sm btn-warning">Edit</a>
                                                     @endcan
                                                     @can('user_delete')
-                                                    <form action="{{ route('admin.country.destroy', $user->CountryID) }}" class="d-inline-block" method="post">
+                                                    <form
+                                                        action="{{ route('admin.country.destroy', $user->CountryID) }}"
+                                                        class="d-inline-block" method="post">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger">Delete</button>
+                                                        <button type="submit" onclick="return confirm('Are you sure?')"
+                                                            class="btn btn-sm btn-danger">Delete</button>
                                                     </form>
                                                     @endcan
                                                 </td>
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="100%" class="text-center text-muted py-3">No Country Found</td>
+                                                <td colspan="100%" class="text-center text-muted py-3">No Country Found
+                                                </td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -87,4 +100,23 @@
     @section('scripts')
     <script src="{{ asset('admin_assets/assets/vendor_components/datatable/datatables.min.js') }}"></script>
     <script src="{{ asset('admin_assets/js_new/pages/data-table.js') }}"></script>
+    <script>
+        function toggleStatus(ID,  status) {
+                $.ajax({
+                    url: "{{ route('admin.countrytoggle.status') }}", // URL to your route
+                    type: "POST",
+                    data: {
+                        CountryID: ID, // Pass the user ID
+                        Status: status, // Pass the user ID
+                        _token: '{{ csrf_token() }}' // CSRF token for Laravel
+                    },
+                    success: function(response) {
+
+                    },
+                    error: function(xhr) {
+                        alert("An error occurred: " + xhr.status + " " + xhr.statusText);
+                    }
+                });
+            }
+    </script>
     @endsection

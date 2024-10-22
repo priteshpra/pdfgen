@@ -19,6 +19,7 @@ class BussinessCategory extends Authenticatable
      * @var array
      */
     public $table = "businesscategory";
+    protected $primaryKey = 'BusinessCategoryID';
     protected $fillable = [
         'CategoryName',
         'MetaTitle',

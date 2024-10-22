@@ -19,6 +19,7 @@ class Country extends Authenticatable
      * @var array
      */
     public $table = "countries";
+    protected $primaryKey = 'CountryID';
     protected $fillable = [
         'Country'
     ];
