@@ -1,5 +1,5 @@
 ## Laravel Roles Permissions Manager
-<h5>Laravel Version : 8</h5>
+<h5>Laravel Version : 9</h5>
 <hr />
 <h4>Previews</h4>
 
@@ -46,10 +46,10 @@ We are not responsible for any functionality or bugs in Monsteradmin & Others pa
 
 ## Credit
 
-<p><b>Author : </b> Amit Kumar Biswas</p>
+<p><b>Author : </b> Pritesh</p>
 <p><b>Template From : </b> <a href="#">#</a> </p> 
 <p><b>Template Link : </b> <a href="#templates/monsteradmin/">#templates/monsteradmin/</a></p>
-<p><b>Development : </b> Amit Kumar Biswas</p>
+<p><b>Development : </b> Pritesh</p>
 <br><br>
 Thanks For Downloading
 
