@@ -1,0 +1,699 @@
+{
+	"info": {
+		"_postman_id": "a103f7a8-7347-4afd-baab-4af9f5f7ca6d",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33470357",
+		"_collection_link": "https://ssu-team.postman.co/workspace/SSU-team-Workspace~f9f8acfb-3e5f-498f-9435-377bafdadc06/collection/33470357-a103f7a8-7347-4afd-baab-4af9f5f7ca6d?action=share&source=collection_link&creator=33470357"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "device_token",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "device_type",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{LOCAL}}login",
+					"host": [
+						"{{LOCAL}}login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clients List",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}getClients",
+					"host": [
+						"{{URL}}getClients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Employee List",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}getEmployee",
+					"host": [
+						"{{URL}}getEmployee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CAS List",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}getCas",
+					"host": [
+						"{{URL}}getCas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Employee Detail By ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "employee_id",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}getEmployeeDetails",
+					"host": [
+						"{{URL}}getEmployeeDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CAS Details By ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "cas_id",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}getCASDetails",
+					"host": [
+						"{{URL}}getCASDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client Details By ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "client_id",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}getClientDetails",
+					"host": [
+						"{{URL}}getClientDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Client",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fname",
+							"value": "Yash",
+							"type": "text"
+						},
+						{
+							"key": "lname",
+							"value": "Agrawal",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "yash@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "firm_name",
+							"value": "Yash Store",
+							"type": "text"
+						},
+						{
+							"key": "mobile_no",
+							"value": "8545785652",
+							"type": "text"
+						},
+						{
+							"key": "PAN",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "GST",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "15 Karan Society",
+							"type": "text"
+						},
+						{
+							"key": "countryID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "cityID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "stateID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "pincode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "aadharNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "firm_type",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}addClient",
+					"host": [
+						"{{URL}}addClient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Employee",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fname",
+							"value": "Yash",
+							"type": "text"
+						},
+						{
+							"key": "lname",
+							"value": "Agrawal",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "yash@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "mobile_no",
+							"value": "8545785652",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "15 Karan Society",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}addEmployee",
+					"host": [
+						"{{URL}}addEmployee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add CAS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fname",
+							"value": "Yash",
+							"type": "text"
+						},
+						{
+							"key": "lname",
+							"value": "Agrawal",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "yash@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "firm_name",
+							"value": "Yash Store",
+							"type": "text"
+						},
+						{
+							"key": "mobile_no",
+							"value": "8545785652",
+							"type": "text"
+						},
+						{
+							"key": "PAN",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "GST",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "15 Karan Society",
+							"type": "text"
+						},
+						{
+							"key": "countryID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "cityID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "stateID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "pincode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "aadharNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "firm_type",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}addCas",
+					"host": [
+						"{{URL}}addCas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}deleteAccount",
+					"host": [
+						"{{URL}}deleteAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "old_password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "current_password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "confirm_password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "user_id",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}changePassword",
+					"host": [
+						"{{URL}}changePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "profile update for Client / CAS / Employee",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fname",
+							"value": "Yash",
+							"type": "text"
+						},
+						{
+							"key": "lname",
+							"value": "Agrawal",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "yash@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "firm_name",
+							"value": "Yash Store",
+							"type": "text"
+						},
+						{
+							"key": "mobile_no",
+							"value": "8545785652",
+							"type": "text"
+						},
+						{
+							"key": "PAN",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "GST",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "15 Karan Society",
+							"type": "text"
+						},
+						{
+							"key": "pincode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "aadharNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "user_type",
+							"value": "4",
+							"description": "2 Employee,3 clients,4 cas",
+							"type": "text"
+						},
+						{
+							"key": "user_id",
+							"value": "7",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}profile/update",
+					"host": [
+						"{{URL}}profile"
+					],
+					"path": [
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Dashboard Data",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "241",
+							"type": "text"
+						},
+						{
+							"key": "user_type",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}getDashboardData",
+					"host": [
+						"{{URL}}getDashboardData"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
