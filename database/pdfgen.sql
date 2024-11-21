@@ -90,7 +90,7 @@ END$$
 
 CREATE DEFINER=`` PROCEDURE `UpdateCAS` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
-    SET 
+    SET
         first_name = p_first_name,
         last_name = p_last_name,
         email = p_email,
@@ -102,7 +102,7 @@ END$$
 
 CREATE DEFINER=`` PROCEDURE `UpdateCategory` (IN `p_category_id` INT, IN `p_category_name` VARCHAR(100), IN `p_title_name` VARCHAR(100), IN `p_keyword_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
     UPDATE businesscategory
-    SET 
+    SET
         CategoryName = p_category_name,
         MetaTitle = p_title_name,
         MetaKeywords = p_keyword_name,
@@ -112,7 +112,7 @@ END$$
 
 CREATE DEFINER=`` PROCEDURE `UpdateCity` (IN `p_state_id` INT, IN `p_city_name` VARCHAR(100), IN `p_country_code` VARCHAR(10), IN `p_state_code` VARCHAR(10))   BEGIN
     UPDATE cities
-    SET 
+    SET
         City = p_city_name,
         CountryID = p_country_code,
         StateID = p_state_code
@@ -121,7 +121,7 @@ END$$
 
 CREATE DEFINER=`` PROCEDURE `UpdateClient` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
-    SET 
+    SET
         first_name = p_first_name,
         last_name = p_last_name,
         email = p_email,
@@ -133,7 +133,7 @@ END$$
 
 CREATE DEFINER=`` PROCEDURE `UpdateCMS` (IN `p_cms_id` INT, IN `p_page` VARCHAR(255), IN `p_content` TEXT)   BEGIN
     UPDATE cms
-    SET 
+    SET
         PageID = p_page,
         Content = p_content
     WHERE CMSID = p_cms_id;
@@ -141,7 +141,7 @@ END$$
 
 CREATE DEFINER=`` PROCEDURE `UpdateEmployee` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
-    SET 
+    SET
         first_name = p_first_name,
         last_name = p_last_name,
         email = p_email,
@@ -153,7 +153,7 @@ END$$
 
 CREATE DEFINER=`` PROCEDURE `UpdateState` (IN `p_state_id` INT, IN `p_state_name` VARCHAR(100), IN `p_country_code` VARCHAR(10))   BEGIN
     UPDATE states
-    SET 
+    SET
         StateName = p_state_name,
         CountryID = p_country_code
     WHERE StateID = p_state_id;
@@ -1698,6 +1698,22 @@ INSERT INTO `users` (`id`, `name`, `lname`, `firm_name`, `mobile_no`, `address`,
 -- Indexes for dumped tables
 --
 
+CREATE TABLE `user_devices` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `device_token` varchar(255) NOT NULL,
+  `login_token` varchar(255) DEFAULT NULL,
+  `device_type` enum('Android','IOS') NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+INSERT INTO `user_devices` (`id`, `user_id`, `device_token`, `login_token`, `device_type`, `status`, `created_at`, `updated_at`) VALUES
+(2, 139, 'fBCgEo-9ReiikRRG-ba--N:APA91bFZfnyb6udgJ8xswncB-qd8AyMXbhhCdp4UmnCrOPPIbN3jRtmGOKjO5Xavn5GH3qpMOgQtNQz4DG9j5ZLb_-IE8v-nndvHTsFTrF_YAxRpIGtWkGfiZ2jDgUuEuytxMRUQFqH-', '214|zRYMhwfBNqe8kxJWBU2ug4OikyIELRy7K4vUURC6d852f892216|SL77pkKQwvJiqg8KuyJodnkBFKYowDeTGLNoIHut374c18d8', 'Android', 1, '2024-08-14 11:14:40', NULL);
+
+
 --
 -- Indexes for table `businesscategory`
 --
@@ -1789,6 +1805,23 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- Indexes for table `user_devices`
+--
+ALTER TABLE `user_devices`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `user_devices`
+--
+ALTER TABLE `user_devices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
 
 --
 -- AUTO_INCREMENT for table `businesscategory`
