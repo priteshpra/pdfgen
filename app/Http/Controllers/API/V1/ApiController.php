@@ -380,6 +380,15 @@ class ApiController extends Controller
     public function addClient(Request $request)
     {
         $user = new User();
+
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
@@ -401,7 +410,10 @@ class ApiController extends Controller
 
         // Check if the validation fails
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
         }
 
         // add user details
@@ -432,6 +444,16 @@ class ApiController extends Controller
     public function addEmployee(Request $request)
     {
         $user = new User();
+
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
@@ -444,7 +466,10 @@ class ApiController extends Controller
 
         // Check if the validation fails
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
         }
 
         // add user details
@@ -468,6 +493,15 @@ class ApiController extends Controller
     public function addCas(Request $request)
     {
         $user = new User();
+
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
@@ -489,7 +523,10 @@ class ApiController extends Controller
 
         // Check if the validation fails
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
         }
 
         // add user details
@@ -573,7 +610,7 @@ class ApiController extends Controller
      public function changePassword(Request $request)
     {
         // Validate the request
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'old_password' => 'required',
             'current_password' => 'required|min:8',
             'confirm_password' => 'required|same:current_password', // Match current_password
