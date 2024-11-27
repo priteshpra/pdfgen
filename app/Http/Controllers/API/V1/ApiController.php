@@ -388,7 +388,6 @@ class ApiController extends Controller
         if ($userData['status'] == false) {
             return $checkToken->getContent();
         }
-
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
@@ -503,7 +502,6 @@ class ApiController extends Controller
         if ($userData['status'] == false) {
             return $checkToken->getContent();
         }
-
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
