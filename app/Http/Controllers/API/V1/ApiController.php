@@ -15,22 +15,20 @@ use App\Services\FcmNotificationService;
 use Google\Client as GoogleClient;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\CouponsExport;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Role;
+use App\Models\State;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Password;
+use PDF;
 
 class ApiController extends Controller
 {
     public $per_page_show;
     public $base_url;
     public $profile_path;
-    public $banner_path;
-    public $event_path;
-    public $receipt_path;
-    public $event_video_path;
-    public $bill_path;
-    public $graphic_path;
-    public $winner_path;
     public $doc_path;
-    public $prize_path;
     protected $curlApiService;
     protected $fcmNotificationService;
     public function __construct(CurlApiService $curlApiService, FcmNotificationService $fcmNotificationService)
@@ -68,16 +66,18 @@ class ApiController extends Controller
         DB::enableQueryLog();
 
         $chkUser = User::where('email', $email)->where('Status', 1)->first();
-        $token = $chkUser->createToken('authToken')->plainTextToken;
-        // Check if the password matches
-        if (!Hash::check($password, $chkUser->password)) {
-            $result['status'] = false;
-            $result['message'] = "Invalid email or password";
-            $result['data'] = (object) [];
-            return response()->json($result, 200);
+        if ($chkUser) {
+            // Check if the password matches
+            if (!Hash::check($password, $chkUser->password)) {
+                $result['status'] = false;
+                $result['message'] = "Invalid email or password";
+                $result['data'] = (object) [];
+                return response()->json($result, 200);
+            }
         }
 
         if ($chkUser) {
+            $token = $chkUser->createToken('authToken')->plainTextToken;
             $result['status'] = false;
             $result['message'] = "Login Succssfully!";
             $result['data'] = (object) [];
@@ -102,7 +102,7 @@ class ApiController extends Controller
                 'avatar' => ($chkUser->avatar) ? $base_url . $this->profile_path . $chkUser->avatar : '',
                 'token' => $token,
             ];
-
+            $chkUser->token = $token;
             // add token devices login
             $arr = [
                 'status' => 1,
@@ -113,8 +113,7 @@ class ApiController extends Controller
             ];
             DB::table('user_devices')->insertGetId($arr);
 
-            return response()->json(['status' => true, 'message' => 'Login successful.', 'data' => $user]);
-
+            return response()->json(['status' => true, 'message' => 'Login successful.', 'data' => $chkUser]);
         } else {
             $result['status'] = false;
             $result['message'] = "Invalid email or password";
@@ -135,7 +134,7 @@ class ApiController extends Controller
         $user = User::where('id', $request->user_id)->where('status', '1')->first();
 
         $userDevice = UserDevices::where('user_id', $request->user_id)->where('login_token', $token)->where('status', '1')->first();
-        if($userDevice) {
+        if ($userDevice) {
             $userDevice->device_token = '';
             $userDevice->status = '0';
             $userDevice->updated_at = date("Y-m-d H:i:s");
@@ -170,7 +169,7 @@ class ApiController extends Controller
         if ($userData['status'] == false) {
             return $checkToken->getContent();
         }
-        $client = User::select(DB::raw("IFNULL(CONCAT('" . $base_url . "','" . $this->profile_path . "', avatar),'') AS avatarImage"), '*')->where('Status', 1)->where('user_type', '3')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+        $client = User::select('*')->where('Status', 1)->where('user_type', '3')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
         $pagination = [
             'total' => $client->total(),
@@ -203,7 +202,7 @@ class ApiController extends Controller
         if ($userData['status'] == false) {
             return $checkToken->getContent();
         }
-        $cas = User::select(DB::raw("IFNULL(CONCAT('" . $base_url . "','" . $this->profile_path . "', avatar),'') AS avatarImage"), '*')->where('Status', 1)->where('user_type', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+        $cas = User::select('*')->where('Status', 1)->where('user_type', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
         $pagination = [
             'total' => $cas->total(),
@@ -236,7 +235,7 @@ class ApiController extends Controller
         if ($userData['status'] == false) {
             return $checkToken->getContent();
         }
-        $employee = User::select(DB::raw("IFNULL(CONCAT('" . $base_url . "','" . $this->profile_path . "', avatar),'') AS avatarImage"), '*')->where('Status', 1)->where('user_type', '2')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+        $employee = User::select('*')->where('Status', 1)->where('user_type', '2')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
         $pagination = [
             'total' => $employee->total(),
@@ -380,6 +379,16 @@ class ApiController extends Controller
     public function addClient(Request $request)
     {
         $user = new User();
+
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
@@ -391,7 +400,7 @@ class ApiController extends Controller
             'countryID' => 'required',
             'stateID' => 'required',
             'cityID' => 'required',
-            'pinCode' => 'required',
+            'pincode' => 'required',
             'aadharNumber' => 'required',
             'GST' => 'required',
             'PAN' => 'required',
@@ -401,7 +410,10 @@ class ApiController extends Controller
 
         // Check if the validation fails
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
         }
 
         // add user details
@@ -414,12 +426,13 @@ class ApiController extends Controller
         $user->CountryID = $request->input('countryID');
         $user->StateID = $request->input('stateID');
         $user->CityID = $request->input('cityID');
-        $user->pincode = $request->input('pinCode');
+        $user->pincode = $request->input('pincode');
         $user->PAN = $request->input('PAN');
         $user->GST = $request->input('GST');
         $user->firm_type = $request->input('firm_type');
         $user->password = Hash::make($request->input('password'));
         $user->user_type = '3';
+        $user->role_id = $request->input('role_id');
         $user->save();
 
         // Return a response
@@ -432,6 +445,16 @@ class ApiController extends Controller
     public function addEmployee(Request $request)
     {
         $user = new User();
+
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
@@ -444,7 +467,10 @@ class ApiController extends Controller
 
         // Check if the validation fails
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
         }
 
         // add user details
@@ -468,6 +494,16 @@ class ApiController extends Controller
     public function addCas(Request $request)
     {
         $user = new User();
+
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'fname' => 'required|string|max:255',
@@ -479,7 +515,7 @@ class ApiController extends Controller
             'countryID' => 'required',
             'stateID' => 'required',
             'cityID' => 'required',
-            'pinCode' => 'required',
+            'pincode' => 'required',
             'aadharNumber' => 'required',
             'GST' => 'required',
             'PAN' => 'required',
@@ -489,7 +525,10 @@ class ApiController extends Controller
 
         // Check if the validation fails
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
         }
 
         // add user details
@@ -502,12 +541,13 @@ class ApiController extends Controller
         $user->CountryID = $request->input('countryID');
         $user->StateID = $request->input('stateID');
         $user->CityID = $request->input('cityID');
-        $user->pincode = $request->input('pinCode');
+        $user->pincode = $request->input('pincode');
         $user->PAN = $request->input('PAN');
         $user->GST = $request->input('GST');
         $user->firm_type = $request->input('firm_type');
         $user->password = Hash::make($request->input('password'));
         $user->user_type = '3';
+        $user->role_id = $request->input('role_id');
         $user->save();
 
         // Return a response
@@ -563,17 +603,25 @@ class ApiController extends Controller
             ->join("users", "user_devices.user_id", "=", "users.id")
             ->where("users.id", "=", $request->account_id)
             ->where("user_devices.user_id", "=", $request->account_id)
-            ->update(["user_devices.status" => '0',"users.Status" => '0', "user_devices.updated_at" => date("Y-m-d H:i:s"), "users.updated_at" => date("Y-m-d H:i:s"), 'user_devices.device_token' => '']);
+            ->update(["user_devices.status" => '0', "users.Status" => '0', "user_devices.updated_at" => date("Y-m-d H:i:s"), "users.updated_at" => date("Y-m-d H:i:s"), 'user_devices.device_token' => '']);
 
         // Return a response
         return response()->json(['status' => true, 'message' => 'Account deleted successfully', 'data' => []], 200);
-
     }
 
-     public function changePassword(Request $request)
+    public function changePassword(Request $request)
     {
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+
         // Validate the request
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'old_password' => 'required',
             'current_password' => 'required|min:8',
             'confirm_password' => 'required|same:current_password', // Match current_password
@@ -607,48 +655,48 @@ class ApiController extends Controller
     /**
      * Report Download.
      */
-    public function reportCouponDownload(Request $request)
-    {
-        $user_id = $request->user_id;
-        $event_id = $request->event_id;
-        $token = $request->header('token');
-        $page_number = $request->page;
-        $base_url = $this->base_url;
-        $checkToken = $this->tokenVerify($token);
-        // Decode the JSON response
-        $userData = json_decode($checkToken->getContent(), true);
-        if ($userData['status'] == false) {
-            return $checkToken->getContent();
-        }
+    // public function reportCouponDownload(Request $request)
+    // {
+    //     $user_id = $request->user_id;
+    //     $event_id = $request->event_id;
+    //     $token = $request->header('token');
+    //     $page_number = $request->page;
+    //     $base_url = $this->base_url;
+    //     $checkToken = $this->tokenVerify($token);
+    //     // Decode the JSON response
+    //     $userData = json_decode($checkToken->getContent(), true);
+    //     if ($userData['status'] == false) {
+    //         return $checkToken->getContent();
+    //     }
 
-        // Define validation rules
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
-            'event_id' => 'required',
-        ]);
+    //     // Define validation rules
+    //     $validator = Validator::make($request->all(), [
+    //         'user_id' => 'required',
+    //         'event_id' => 'required',
+    //     ]);
 
-        // Check if the validation fails
-        if ($validator->fails()) {
-            $result['status'] = false;
-            $result['message'] = $validator->errors()->first();
-            $result['data'] = (object) [];
-            return response()->json($result, 200);
-        }
+    //     // Check if the validation fails
+    //     if ($validator->fails()) {
+    //         $result['status'] = false;
+    //         $result['message'] = $validator->errors()->first();
+    //         $result['data'] = (object) [];
+    //         return response()->json($result, 200);
+    //     }
 
-        $fileName = 'customer_coupons_'.time().'.xlsx';
-        $export = new CouponsExport($user_id, $event_id);
+    //     $fileName = 'customer_coupons_' . time() . '.xlsx';
+    //     $export = new CouponsExport($user_id, $event_id);
 
-        // Use Storage to store the file temporarily
-        Excel::store($export, $fileName, 'public');  // Store in the 'public' disk
+    //     // Use Storage to store the file temporarily
+    //     Excel::store($export, $fileName, 'public');  // Store in the 'public' disk
 
-        // Generate the download link for the stored file
-        $fileUrl = $base_url.Storage::url($fileName);  // Get the URL for the stored file
+    //     // Generate the download link for the stored file
+    //     $fileUrl = $base_url . Storage::url($fileName);  // Get the URL for the stored file
 
 
-        // return Excel::download(new CouponsExport($user_id, $event_id), $fileName);
+    //     // return Excel::download(new CouponsExport($user_id, $event_id), $fileName);
 
-        return response()->json(['status' => true, 'message' => 'Report Download Successfully', 'data' => $fileUrl], 200);
-    }
+    //     return response()->json(['status' => true, 'message' => 'Report Download Successfully', 'data' => $fileUrl], 200);
+    // }
 
 
     public function tokenVerify($token)
@@ -670,7 +718,8 @@ class ApiController extends Controller
         }
     }
 
-    public function sendNotification(Request $request) {
+    public function sendNotification(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'fcmtoken' => 'required',
             'user_id' => 'required',
@@ -679,10 +728,10 @@ class ApiController extends Controller
             'message' => 'required',
         ]);
         $body = $request;
-         $newData  = json_encode(array());
-        $body = array('user_id' => $request->user_id,'sender_id' => $request->user_id, 'receiver_id' => $request->receiver_id,'title' => $request->title ,'message' => $request->message, 'data' => $newData, 'content_available' => true);
-       $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
-       $notifData = json_decode($sendNotification->getContent(), true);
+        $newData  = json_encode(array());
+        $body = array('user_id' => $request->user_id, 'sender_id' => $request->user_id, 'receiver_id' => $request->receiver_id, 'title' => $request->title, 'message' => $request->message, 'data' => $newData, 'content_available' => true);
+        $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
+        $notifData = json_decode($sendNotification->getContent(), true);
 
         if (isset($notifData['status']) && $notifData['status'] == true) {
             return $sendNotification->getContent();
@@ -691,4 +740,235 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * get Roles list data.
+     */
+    public function getRoles(Request $request)
+    {
+        $user_id = $request->user_id;
+        $page_number = $request->page;
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+        $roles = Role::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+
+        $pagination = [
+            'total' => $roles->total(),
+            'count' => $roles->count(),
+            'per_page' => $roles->perPage(),
+            'current_page' => $roles->currentPage(),
+            'total_pages' => $roles->lastPage(),
+        ];
+
+        $dataCAS = [
+            'pagination' => $pagination,
+            'data' => $roles,
+        ];
+
+        return response()->json(['status' => true, 'message' => 'Get Roles list successfully', 'data' => $dataCAS], 200);
+    }
+
+    /**
+     * get Citys list data.
+     */
+    public function getCity(Request $request)
+    {
+        $user_id = $request->user_id;
+        $page_number = $request->page;
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+        $roles = City::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+
+        $pagination = [
+            'total' => $roles->total(),
+            'count' => $roles->count(),
+            'per_page' => $roles->perPage(),
+            'current_page' => $roles->currentPage(),
+            'total_pages' => $roles->lastPage(),
+        ];
+
+        $dataCAS = [
+            'pagination' => $pagination,
+            'data' => $roles,
+        ];
+
+        return response()->json(['status' => true, 'message' => 'Get Clity list successfully', 'data' => $dataCAS], 200);
+    }
+
+    /**
+     * get Citys list data.
+     */
+    public function getCountry(Request $request)
+    {
+        $user_id = $request->user_id;
+        $page_number = $request->page;
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+        $roles = Country::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+
+        $pagination = [
+            'total' => $roles->total(),
+            'count' => $roles->count(),
+            'per_page' => $roles->perPage(),
+            'current_page' => $roles->currentPage(),
+            'total_pages' => $roles->lastPage(),
+        ];
+
+        $dataCAS = [
+            'pagination' => $pagination,
+            'data' => $roles,
+        ];
+
+        return response()->json(['status' => true, 'message' => 'Get Country list successfully', 'data' => $dataCAS], 200);
+    }
+
+    /**
+     * get Stats list data.
+     */
+    public function getState(Request $request)
+    {
+        $user_id = $request->user_id;
+        $page_number = $request->page;
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+        $roles = State::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+
+        $pagination = [
+            'total' => $roles->total(),
+            'count' => $roles->count(),
+            'per_page' => $roles->perPage(),
+            'current_page' => $roles->currentPage(),
+            'total_pages' => $roles->lastPage(),
+        ];
+
+        $dataCAS = [
+            'pagination' => $pagination,
+            'data' => $roles,
+        ];
+
+        return response()->json(['status' => true, 'message' => 'Get State list successfully', 'data' => $dataCAS], 200);
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
+        }
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('status', __($status))
+            : back()->withErrors(['email' => __($status)]);
+    }
+
+    public function showResetForm(Request $request, $token)
+    {
+        return view('auth.reset-password', ['token' => $token, 'email' => $request->email]);
+    }
+
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => bcrypt($password),
+                ])->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('login')->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
+    }
+
+    public function documentUpload(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'images' => 'required|array',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
+            'user_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
+        }
+
+        $user_id = $request->user_id;
+        $page_number = $request->page;
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        $checkToken = $this->tokenVerify($token);
+        // Decode the JSON response
+        $userData = json_decode($checkToken->getContent(), true);
+        if ($userData['status'] == false) {
+            return $checkToken->getContent();
+        }
+
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('images', 'public');
+                $imagePaths[] = $path;
+            }
+        }
+
+        // Generate PDF
+        $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
+        // dd($pdf);
+        // Download the PDF
+        // return $pdf->download('images.pdf');
+
+        $pdfPath = 'pdfs/images.pdf';
+        Storage::disk('public')->put($pdfPath, $pdf->output());
+
+        // Provide download link
+        $downloadUrl = asset("storage/{$pdfPath}");
+
+        $dataCAS = [
+            'download_link' => $downloadUrl,
+        ];
+        return response()->json(['status' => true, 'message' => 'PDF created successfully', 'data' => $dataCAS], 200);
+    }
 }

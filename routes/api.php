@@ -25,6 +25,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('v1/login', [ApiController::class, 'login']);
 Route::post('v1/getClients', [ApiController::class, 'getClients']);
 Route::post('v1/getCas', [ApiController::class, 'getCas']);
+Route::post('v1/getRoles', [ApiController::class, 'getRoles']);
+Route::post('v1/getCity', [ApiController::class, 'getCity']);
+Route::post('v1/getCountry', [ApiController::class, 'getCountry']);
+Route::post('v1/getRoles', [ApiController::class, 'getRoles']);
 Route::post('v1/getEmployee', [ApiController::class, 'getEmployee']);
 
 Route::post('v1/getDashboardData', [ApiController::class, 'getDashboardData']);
@@ -39,6 +43,7 @@ Route::post('v1/changePassword', [ApiController::class, 'changePassword']);
 Route::post('v1/downlodDocumentList', [ApiController::class, 'downlodDocumentList']);
 Route::post('v1/sendNotification', [ApiController::class, 'sendNotification']);
 Route::post('v1/reportCouponDownload', [ApiController::class, 'reportCouponDownload']);
+Route::post('v1/documentUpload', [ApiController::class, 'documentUpload']);
 
 
 //profiles
@@ -48,3 +53,9 @@ Route::post('v1/profile/getProfile', [ProfileController::class, 'getProfileDetai
 
 
 Route::post('/v1/logout', [ApiController::class, 'logout']);
+
+
+Route::post('v1/forgot-password', [ApiController::class, 'sendResetLinkEmail']);
+
+Route::get('v1/reset-password/{token}', [ApiController::class, 'showResetForm'])->name('password.reset');
+Route::post('v1/reset-password', [ApiController::class, 'reset'])->name('password.update');

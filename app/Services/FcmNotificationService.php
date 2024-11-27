@@ -1,23 +1,21 @@
 <?php
 
 namespace App\Services;
+
 use Google\Client as GoogleClient;
 use Illuminate\Support\Facades\Storage;
 use App\Models\UserDevices;
 
 class FcmNotificationService
 {
-    public function __construct()
-    {
-       
-    }
+    public function __construct() {}
 
     public function sendFcmNotification($body)
     {
-        if(is_array($body['receiver_id'])) {
-            $user = UserDevices::whereIn('user_id',$body['receiver_id'])->where('status','1')->get();
+        if (is_array($body['receiver_id'])) {
+            $user = UserDevices::whereIn('user_id', $body['receiver_id'])->where('status', '1')->get();
         } else {
-            $user = UserDevices::where('user_id',$body['receiver_id'])->where('status','1')->get();
+            $user = UserDevices::where('user_id', $body['receiver_id'])->where('status', '1')->get();
         }
         // dd($user);
         $fcm = [];
@@ -37,7 +35,7 @@ class FcmNotificationService
         $projectId = config('services.fcm.project_id'); # INSERT COPIED PROJECT ID
 
         $credentialsFilePath = Storage::path('json/google-services.json');
-       
+
         $client = new GoogleClient();
         $client->setAuthConfig($credentialsFilePath);
         $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
@@ -59,7 +57,7 @@ class FcmNotificationService
                     'notification' => [
                         'title' => $title,
                         'body'  => $description,
-                       
+
                     ],
                     "data" => $newArrData,
                     'apns' => [
@@ -92,12 +90,12 @@ class FcmNotificationService
             curl_close($ch);
 
             if ($err) {
-                 response()->json([
+                response()->json([
                     'status' => false,
                     'message' => 'Curl Error: ' . $err
                 ], 500);
             } else {
-                 response()->json([
+                response()->json([
                     'status' => true,
                     'message' => 'Notification has been sent',
                     'response' => json_decode($response, true)
@@ -108,10 +106,10 @@ class FcmNotificationService
 
     public function sendFcmAdminNotification($body)
     {
-        if(is_array($body['receiver_id'])) {
-            $user = UserDevices::whereIn('user_id',$body['receiver_id'])->where('status','1')->where('device_token','!=','')->get();
+        if (is_array($body['receiver_id'])) {
+            $user = UserDevices::whereIn('user_id', $body['receiver_id'])->where('status', '1')->where('device_token', '!=', '')->get();
         } else {
-            $user = UserDevices::where('user_id',$body['receiver_id'])->where('status','1')->where('device_token','!=','')->get();
+            $user = UserDevices::where('user_id', $body['receiver_id'])->where('status', '1')->where('device_token', '!=', '')->get();
         }
         // dd($user);
         $fcm = [];
@@ -131,7 +129,7 @@ class FcmNotificationService
         $projectId = config('services.fcm.project_id'); # INSERT COPIED PROJECT ID
 
         $credentialsFilePath = Storage::path('json/google-services.json');
-       
+
         $client = new GoogleClient();
         $client->setAuthConfig($credentialsFilePath);
         $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
@@ -153,7 +151,7 @@ class FcmNotificationService
                     'notification' => [
                         'title' => $title,
                         'body'  => $description,
-                       
+
                     ],
                     "data" => $newArrData,
                     'apns' => [
