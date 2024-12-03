@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2024 at 05:02 PM
+-- Generation Time: Dec 03, 2024 at 07:00 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -777,6 +777,28 @@ CREATE TABLE `company` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `configuration_table`
+--
+
+CREATE TABLE `configuration_table` (
+  `ID` int(11) NOT NULL,
+  `IosAppVersion` varchar(100) NOT NULL,
+  `AndroidAppVersion` varchar(100) NOT NULL,
+  `Status` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `configuration_table`
+--
+
+INSERT INTO `configuration_table` (`ID`, `IosAppVersion`, `AndroidAppVersion`, `Status`, `created_at`, `updated_at`) VALUES
+(1, '1.0', '1.0', 1, '2024-12-03 17:32:09', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `countries`
 --
 
@@ -1332,29 +1354,6 @@ INSERT INTO `role_permissions` (`role_id`, `permission_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `scanneddocuments`
---
-
-CREATE TABLE `scanneddocuments` (
-  `ScanneddocumentsID` int(11) NOT NULL,
-  `Title` varchar(200) NOT NULL,
-  `BatchNo` varchar(200) NOT NULL,
-  `CompanyID` int(11) NOT NULL,
-  `UserID` int(11) NOT NULL,
-  `PageCount` varchar(3) DEFAULT NULL,
-  `Remarks` varchar(1000) DEFAULT NULL,
-  `DocumentURL` varchar(250) DEFAULT NULL,
-  `DocumentStatus` enum('Yes','No') NOT NULL DEFAULT 'No',
-  `CreatedBy` int(11) NOT NULL,
-  `CreatedDate` datetime NOT NULL DEFAULT current_timestamp(),
-  `ModifiedBy` int(11) DEFAULT NULL,
-  `ModifiedDate` datetime DEFAULT NULL,
-  `Status` int(11) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `scanned_documents`
 --
 
@@ -1368,7 +1367,7 @@ CREATE TABLE `scanned_documents` (
   `Remarks` varchar(1000) DEFAULT NULL,
   `DocumentURL` varchar(250) DEFAULT NULL,
   `DocumentStatus` enum('Yes','No') NOT NULL DEFAULT 'No',
-  `CreatedBy` int(11) NOT NULL,
+  `CreatedBy` int(11) DEFAULT 1,
   `CreatedDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifiedBy` int(11) DEFAULT NULL,
   `ModifiedDate` datetime DEFAULT NULL,
@@ -1376,6 +1375,14 @@ CREATE TABLE `scanned_documents` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `scanned_documents`
+--
+
+INSERT INTO `scanned_documents` (`ScanneddocumentID`, `Title`, `BatchNo`, `CompanyID`, `UserID`, `PageCount`, `Remarks`, `DocumentURL`, `DocumentStatus`, `CreatedBy`, `CreatedDate`, `ModifiedBy`, `ModifiedDate`, `Status`, `created_at`, `updated_at`) VALUES
+(1, '2', '1000', 1, 1, NULL, NULL, 'http://localhost/pdfgen/public/storage/pdfs/2/images_2024-12-03-05-53-15.pdf', 'No', 1, '2024-12-03 23:23:15', NULL, NULL, 1, '2024-12-03 12:23:15', '2024-12-03 12:23:15'),
+(2, '2', '1000', 1, 1, NULL, NULL, 'http://localhost/pdfgen/public/storage/pdfs/2/images_2024-12-03-05-53-53.pdf', 'No', 1, '2024-12-03 23:23:53', NULL, NULL, 1, '2024-12-03 12:23:53', '2024-12-03 12:23:53');
 
 -- --------------------------------------------------------
 
@@ -2161,6 +2168,12 @@ ALTER TABLE `company`
   ADD PRIMARY KEY (`CompanyID`);
 
 --
+-- Indexes for table `configuration_table`
+--
+ALTER TABLE `configuration_table`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `countries`
 --
 ALTER TABLE `countries`
@@ -2210,12 +2223,6 @@ ALTER TABLE `roles`
 ALTER TABLE `role_permissions`
   ADD KEY `role_permissions_role_id_foreign` (`role_id`),
   ADD KEY `role_permissions_permission_id_foreign` (`permission_id`);
-
---
--- Indexes for table `scanneddocuments`
---
-ALTER TABLE `scanneddocuments`
-  ADD PRIMARY KEY (`ScanneddocumentsID`);
 
 --
 -- Indexes for table `scanned_documents`
@@ -2272,6 +2279,12 @@ ALTER TABLE `company`
   MODIFY `CompanyID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `configuration_table`
+--
+ALTER TABLE `configuration_table`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
@@ -2308,16 +2321,10 @@ ALTER TABLE `roles`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `scanneddocuments`
---
-ALTER TABLE `scanneddocuments`
-  MODIFY `ScanneddocumentsID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `scanned_documents`
 --
 ALTER TABLE `scanned_documents`
-  MODIFY `ScanneddocumentID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ScanneddocumentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `states`

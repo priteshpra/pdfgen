@@ -26,31 +26,6 @@ class Scandocument extends Authenticatable
         'CompanyID',
         'UserID',
         'PageCount',
-        'Remarks',
         'DocumentURL',
     ];
-
-    public function country()
-    {
-        return $this->belongsTo(Country::class);
-    }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-
-    static function boot()
-    {
-        parent::boot();
-
-        static::created(function (Model $model) {
-            if ($model->role_id == "") {
-                $model->update([
-                    'role_id' => Role::where('title', 'user')->first()->id,
-                ]);
-            }
-        });
-    }
 }

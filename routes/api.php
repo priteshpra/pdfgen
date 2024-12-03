@@ -26,19 +26,28 @@ Route::post('v1/login', [ApiController::class, 'login']);
 Route::get('v1/getClients', [ApiController::class, 'getClients']);
 Route::get('v1/getCas', [ApiController::class, 'getCas']);
 Route::get('v1/getRoles', [ApiController::class, 'getRoles']);
-Route::get('v1/getCity', [ApiController::class, 'getCity']);
-Route::get('v1/getCountry', [ApiController::class, 'getCountry']);
-Route::get('v1/getState', [ApiController::class, 'getState']);
+
 Route::get('v1/getEmployee', [ApiController::class, 'getEmployee']);
+Route::get('v1/getBusinessCategory', [ApiController::class, 'getBusinessCategory']);
 Route::get('v1/getPageList', [ApiController::class, 'getPageList']);
 Route::get('v1/getDocumentList', [ApiController::class, 'getDocumentList']);
-Route::get('v1/getPageContentById', [ApiController::class, 'getPageContentById']);
+
 
 Route::get('v1/getDashboardData', [ApiController::class, 'getDashboardData']);
 
 Route::post('v1/getEmployeeDetails', [ApiController::class, 'getEmployeeDetails']);
-Route::post('v1/getCASDetails', [ApiController::class, 'getCASDetails']);
-Route::post('v1/getClientDetails', [ApiController::class, 'getClientDetails']);
+Route::get('v1/getCASDetails', [ApiController::class, 'getCASDetails']);
+Route::get('v1/getClientDetails', [ApiController::class, 'getClientDetails']);
+Route::get('v1/getPageContentById', [ApiController::class, 'getPageContentById']);
+
+// below api remove token wise
+Route::get('v1/getCity', [ApiController::class, 'getCity']);
+Route::get('v1/getCountry', [ApiController::class, 'getCountry']);
+Route::get('v1/getState', [ApiController::class, 'getState']);
+
+// below update version API
+Route::get('v1/getAppversion', [ApiController::class, 'getAppversion']);
+
 Route::post('v1/addClient', [ApiController::class, 'addClient']);
 Route::post('v1/addEmployee', [ApiController::class, 'addEmployee']);
 Route::post('v1/addCas', [ApiController::class, 'addCas']);

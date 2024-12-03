@@ -15,8 +15,10 @@ use App\Services\FcmNotificationService;
 use Google\Client as GoogleClient;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\CouponsExport;
+use App\Models\BussinessCategory;
 use App\Models\City;
 use App\Models\Cms;
+use App\Models\Configuration;
 use App\Models\Country;
 use App\Models\Page;
 use App\Models\Role;
@@ -86,27 +88,27 @@ class ApiController extends Controller
                 $result['status'] = false;
                 $result['message'] = "Login Succssfully!";
                 $result['data'] = (object) [];
-                $user = [
-                    'id' => (string) $chkUser->id,
-                    'user_id' => (string) $chkUser->id,
-                    'user_type' => (string) $chkUser->user_type,
-                    'name' => (string) $chkUser->name,
-                    'lname' => (string) $chkUser->lname,
-                    'storename' => (string) $chkUser->storename,
-                    'email' => (string) $chkUser->email,
-                    'date_of_birth' => (string) $chkUser->date_of_birth,
-                    'phone_number' => (string) $chkUser->phone_number,
-                    'otp' => (string) $otp,
-                    'PAN' => (string) $chkUser->PAN,
-                    'GST' => (string) $chkUser->GST,
-                    'flatNo' => (string) $chkUser->flatNo,
-                    'pincode' => (string) $chkUser->pincode,
-                    'area' => (string) $chkUser->area,
-                    'city' => (string) $chkUser->city,
-                    'state' => (string) $chkUser->state,
-                    'avatar' => ($chkUser->avatar) ? $base_url . $this->profile_path . $chkUser->avatar : '',
-                    'token' => $token,
-                ];
+                // $user = [
+                //     'id' => (string) $chkUser->id,
+                //     'user_id' => (string) $chkUser->id,
+                //     'user_type' => (string) $chkUser->user_type,
+                //     'name' => (string) $chkUser->name,
+                //     'lname' => (string) $chkUser->lname,
+                //     'storename' => (string) $chkUser->storename,
+                //     'email' => (string) $chkUser->email,
+                //     'date_of_birth' => (string) $chkUser->date_of_birth,
+                //     'phone_number' => (string) $chkUser->phone_number,
+                //     'otp' => (string) $otp,
+                //     'PAN' => (string) $chkUser->PAN,
+                //     'GST' => (string) $chkUser->GST,
+                //     'flatNo' => (string) $chkUser->flatNo,
+                //     'pincode' => (string) $chkUser->pincode,
+                //     'area' => (string) $chkUser->area,
+                //     'city' => (string) $chkUser->city,
+                //     'state' => (string) $chkUser->state,
+                //     'avatar' => ($chkUser->avatar) ? $base_url . $this->profile_path . $chkUser->avatar : '',
+                //     'token' => $token,
+                // ];
                 $chkUser->token = $token;
                 // add token devices login
                 $arr = [
@@ -436,6 +438,7 @@ class ApiController extends Controller
                 'GST' => 'required',
                 'PAN' => 'required',
                 'firm_type' => 'required',
+                'user_type' => 'required',
                 'password' => 'required|string|max:100',
             ]);
 
@@ -497,7 +500,9 @@ class ApiController extends Controller
                 'email' => 'required|email',
                 'mobile_no' => 'required|min:10|digits:10',
                 'address' => 'required',
-                'role' => 'required',
+                // 'role' => 'required',
+                'user_type' => 'required',
+                'password' => 'required|string|max:100',
             ]);
 
             // Check if the validation fails
@@ -515,7 +520,7 @@ class ApiController extends Controller
             $user->mobile_no = $request->input('mobile_no');
             $user->address = $request->input('address');
             $user->role_id = $request->input('role');
-            $user->password = Hash::make('123456');
+            $user->password = Hash::make($request->input('password'));
             $user->user_type = '2';
             $user->save();
 
@@ -558,6 +563,7 @@ class ApiController extends Controller
                 'GST' => 'required',
                 'PAN' => 'required',
                 'firm_type' => 'required',
+                'user_type' => 'required',
                 'password' => 'required|string|max:100',
             ]);
 
@@ -1021,12 +1027,23 @@ class ApiController extends Controller
             // dd($pdf);
             // Download the PDF
             // return $pdf->download('images.pdf');
-
-            $pdfPath = 'pdfs/' . $user_id . '/images_' . date('Y-m-d_h:i:s') . '.pdf';
+            $directory = 'public/pdfs/' . $user_id;
+            if (!Storage::exists($directory)) {
+                Storage::makeDirectory($directory);
+            }
+            $pdfPath = 'pdfs/' . $user_id . '/images_' . date('Y-m-d-h-i-s') . '.pdf';
             Storage::disk('public')->put($pdfPath, $pdf->output());
 
             // Provide download link
             $downloadUrl = asset("storage/{$pdfPath}");
+
+            $documents = new Scandocument();
+            $documents->Title = 'Document';
+            $documents->BatchNo = rand(1000, 1000);
+            $documents->CompanyID = 1;
+            $documents->UserID = 1;
+            $documents->DocumentURL = $downloadUrl;
+            $documents->save();
 
             $dataCAS = [
                 'download_link' => $downloadUrl,
@@ -1077,7 +1094,7 @@ class ApiController extends Controller
     }
 
     /**
-     * get Roles list data.
+     * get documents list data.
      */
     public function getDocumentList(Request $request)
     {
@@ -1108,6 +1125,59 @@ class ApiController extends Controller
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Document list successfully', 'data' => $dataCAS], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+        }
+    }
+
+    /**
+     * get getAppversion list data.
+     */
+    public function getAppversion(Request $request)
+    {
+        $user_id = $request->user_id;
+        $page_number = $request->page;
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        try {
+            $roles = Configuration::select('*')->where('Status', 1)->get();
+            $dataCAS = [
+                'data' => $roles,
+            ];
+
+            return response()->json(['status' => true, 'message' => 'Get Configuration Data successfully', 'data' => $dataCAS], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+        }
+    }
+
+    /**
+     * get Business Category list data.
+     */
+    public function getBusinessCategory(Request $request)
+    {
+        $user_id = $request->user_id;
+        $page_number = $request->page;
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        try {
+
+            $employee = BussinessCategory::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+
+            $pagination = [
+                'total' => $employee->total(),
+                'count' => $employee->count(),
+                'per_page' => $employee->perPage(),
+                'current_page' => $employee->currentPage(),
+                'total_pages' => $employee->lastPage(),
+            ];
+
+            $dataEmployee = [
+                'pagination' => $pagination,
+                'data' => $employee,
+            ];
+
+            return response()->json(['status' => true, 'message' => 'Get Bussiness category list successfully', 'data' => $dataEmployee], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
         }
