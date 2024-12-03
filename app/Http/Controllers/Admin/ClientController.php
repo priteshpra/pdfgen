@@ -28,7 +28,8 @@ class ClientController extends Controller
     {
         abort_if(Gate::denies('client_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $users = User::with('role')->where('user_type', '3')->paginate(25)->appends($request->query());
+        // $users = User::with('role')->where('user_type', '3')->paginate(25)->appends($request->query());
+        $users = User::with('role')->where('user_type', '3')->get();
         $country = Country::all();
         $city = City::all();
         $state = State::all();
@@ -132,9 +133,9 @@ class ClientController extends Controller
             $user->Status = $request->Status; // Toggle status
             $user->save(); // Save the updated status
 
-            return response()->json(['success' => true, 'status' => $user->status]);
+            return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
         }
 
-        return response()->json(['success' => false, 'message' => 'User not found']);
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
     }
 }

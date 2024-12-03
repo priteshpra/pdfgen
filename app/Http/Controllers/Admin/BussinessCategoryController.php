@@ -25,7 +25,8 @@ class BussinessCategoryController extends Controller
     {
         abort_if(Gate::denies('bussiness_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $users = BussinessCategory::with('role')->paginate(25)->appends($request->query());
+        // $users = BussinessCategory::with('role')->paginate(25)->appends($request->query());
+        $users = BussinessCategory::with('role')->get();
         // dd($users);
         return view('admin.bussiness.index', compact('users'));
     }
@@ -120,9 +121,9 @@ class BussinessCategoryController extends Controller
             $user->Status = $request->Status; // Toggle status
             $user->save(); // Save the updated status
 
-            return response()->json(['success' => true, 'status' => $user->status]);
+            return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
         }
 
-        return response()->json(['success' => false, 'message' => 'User not found']);
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
     }
 }

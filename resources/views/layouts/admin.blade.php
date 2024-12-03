@@ -28,15 +28,20 @@
         <div id="loader"></div>
         <header class="main-header">
             <div class="d-flex align-items-center logo-box justify-content-start">
-                <a href="#" class="waves-effect waves-light nav-link d-none d-md-inline-block mx-10 push-btn bg-transparent" data-toggle="push-menu" role="button">
-                    <span class="icon-Align-left"><span class="path1"></span><span class="path2"></span><span class="path3"></span></span>
+                <a href="#"
+                    class="waves-effect waves-light nav-link d-none d-md-inline-block mx-10 push-btn bg-transparent"
+                    data-toggle="push-menu" role="button">
+                    <span class="icon-Align-left"><span class="path1"></span><span class="path2"></span><span
+                            class="path3"></span></span>
                 </a>
                 <!-- Logo -->
                 <a href="{{URL('/admin')}}" class="logo">
                     <!-- logo-->
                     <div class="logo-lg">
-                        <span class="light-logo"><img src="{{ asset('admin_assets/images_new/logo-dark-text.png') }}" alt="logo"></span>
-                        <span class="dark-logo"><img src="{{ asset('admin_assets/images_new/logo-light-text.png') }}" alt="logo"></span>
+                        <span class="light-logo"><img src="{{ asset('admin_assets/images_new/logo-dark-text.png') }}"
+                                alt="logo"></span>
+                        <span class="dark-logo"><img src="{{ asset('admin_assets/images_new/logo-light-text.png') }}"
+                                alt="logo"></span>
                     </div>
                 </a>
             </div>
@@ -72,7 +77,8 @@
                 <div class="navbar-custom-menu r-side">
                     <ul class="nav navbar-nav">
                         <li class="btn-group nav-item d-lg-inline-flex d-none">
-                            <a href="#" data-provide="fullscreen" class="waves-effect waves-light nav-link full-screen" title="Full Screen">
+                            <a href="#" data-provide="fullscreen" class="waves-effect waves-light nav-link full-screen"
+                                title="Full Screen">
                                 <i class="icon-Expand-arrows"><span class="path1"></span><span class="path2"></span></i>
                             </a>
                         </li>
@@ -81,10 +87,12 @@
                                 <div class="search-bx mx-5">
                                     <form>
                                         <div class="input-group">
-                                            <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+                                            <input type="search" class="form-control" placeholder="Search"
+                                                aria-label="Search" aria-describedby="button-addon2">
                                             <div class="input-group-append">
 
-                                                <button class="btn" type="submit" id="button-addon3"><i class="ti-search"></i></button>
+                                                <button class="btn" type="submit" id="button-addon3"><i
+                                                        class="ti-search"></i></button>
 
                                             </div>
 
@@ -140,7 +148,7 @@
 
                                 <li>
 
-                                 
+
                         <ul class="menu sm-scrol">
 
                             <li>
@@ -233,7 +241,8 @@
 
                         <li class="dropdown user user-menu">
 
-                            <a href="#" class="waves-effect waves-light dropdown-toggle" data-bs-toggle="dropdown" title="User">
+                            <a href="#" class="waves-effect waves-light dropdown-toggle" data-bs-toggle="dropdown"
+                                title="User">
 
                                 <i class="icon-User"><span class="path1"></span><span class="path2"></span></i>
 
@@ -243,15 +252,20 @@
 
                                 <li class="user-body">
 
-                                    <a class="dropdown-item" href="#"><i class="ti-user text-muted me-2"></i> {{ Auth()->user()->name }}</a>
+                                    <a class="dropdown-item" href="#"><i class="ti-user text-muted me-2"></i> {{
+                                        Auth()->user()->name }}</a>
                                     @can('roles_access')
-                                    <a class="dropdown-item" href="{{ route('admin.roles.index') }}"><i class="ti-wallet text-muted me-2"></i> Roles</a>
+                                    <a class="dropdown-item" href="{{ route('admin.roles.index') }}"><i
+                                            class="ti-wallet text-muted me-2"></i> Roles</a>
                                     @endcan
-                                    <a class="dropdown-item" href="#"><i class="ti-settings text-muted me-2"></i> Settings</a>
+                                    <a class="dropdown-item" href="#"><i class="ti-settings text-muted me-2"></i>
+                                        Settings</a>
 
                                     <div class="dropdown-divider"></div>
 
-                                    <a class="dropdown-item" href="javascript:void(0)" onclick="$('#logout-form').submit();"><i class="ti-lock text-muted me-2"></i> Logout</a>
+                                    <a class="dropdown-item" href="javascript:void(0)"
+                                        onclick="$('#logout-form').submit();"><i class="ti-lock text-muted me-2"></i>
+                                        Logout</a>
 
                                 </li>
                             </ul>
@@ -282,35 +296,8 @@
             <!-- Content Wrapper. Contains page content -->
         </aside>
         <div class="content-wrapper">
-
             <div class="container-full">
-
-                @if(Session::has('status-success'))
-                <div class="alert alert-success">
-                    {{Session::get('status-success')}}
-                </div>
-                @endif
-
-                @if(Session::has('status-info'))
-                <div class="alert alert-info">
-                    {{Session::get('status-info')}}
-                </div>
-                @endif
-
-                @if(Session::has('status-warning'))
-                <div class="alert alert-warning">
-                    {{Session::get('status-warning')}}
-                </div>
-                @endif
-
-                @if(Session::has('status-danger'))
-                <div class="alert alert-danger">
-                    {{Session::get('status-danger')}}
-                </div>
-                @endif
-
                 @yield('content')
-
                 <form action="{{ route('logout') }}" method="POST" id="logout-form">
                     @csrf
                 </form>
@@ -329,13 +316,17 @@
 
 
 
-            <div class="rpanel-title"><span class="pull-right btn btn-circle btn-danger"><i class="ion ion-close text-white" data-toggle="control-sidebar"></i></span> </div> <!-- Create the tabs -->
+            <div class="rpanel-title"><span class="pull-right btn btn-circle btn-danger"><i
+                        class="ion ion-close text-white" data-toggle="control-sidebar"></i></span> </div>
+            <!-- Create the tabs -->
 
             <ul class="nav nav-tabs control-sidebar-tabs">
 
-                <li class="nav-item"><a href="#control-sidebar-home-tab" data-bs-toggle="tab" class="active"><i class="mdi mdi-message-text"></i></a></li>
+                <li class="nav-item"><a href="#control-sidebar-home-tab" data-bs-toggle="tab" class="active"><i
+                            class="mdi mdi-message-text"></i></a></li>
 
-                <li class="nav-item"><a href="#control-sidebar-settings-tab" data-bs-toggle="tab"><i class="mdi mdi-playlist-check"></i></a></li>
+                <li class="nav-item"><a href="#control-sidebar-settings-tab" data-bs-toggle="tab"><i
+                            class="mdi mdi-playlist-check"></i></a></li>
 
             </ul>
 
@@ -880,6 +871,11 @@
 
 
     @yield('scripts')
+    <script>
+        setTimeout(function () {
+            $('#alert-container').fadeOut();
+        }, 4500);
+    </script>
 
 </body>
 

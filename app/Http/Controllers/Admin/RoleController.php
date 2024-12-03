@@ -22,7 +22,7 @@ class RoleController extends Controller
     {
         abort_if(Gate::denies('roles_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $roles = Role::with('permissions')->paginate(25)->appends($request->query());;
+        $roles = Role::with('permissions')->paginate(25)->appends($request->query());
 
         return view('admin.roles.index', compact('roles'));
     }

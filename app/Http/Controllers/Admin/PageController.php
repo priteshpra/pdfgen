@@ -26,7 +26,8 @@ class PageController extends Controller
     {
         abort_if(Gate::denies('page_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $users = Page::paginate(25)->appends($request->query());
+        // $users = Page::paginate(25)->appends($request->query());
+        $users = Page::all();
         // dd($users);
         return view('admin.page.index', compact('users'));
     }
@@ -121,9 +122,9 @@ class PageController extends Controller
             $user->Status = $request->Status; // Toggle status
             $user->save(); // Save the updated status
 
-            return response()->json(['success' => true, 'status' => $user->status]);
+            return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
         }
 
-        return response()->json(['success' => false, 'message' => 'User not found']);
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
     }
 }

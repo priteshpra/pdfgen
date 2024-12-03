@@ -25,7 +25,8 @@ class UserController extends Controller
     {
         abort_if(Gate::denies('users_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $users = User::with('role')->where('user_type', '2')->paginate(25)->appends($request->query());
+        // $users = User::with('role')->where('user_type', '2')->paginate(25)->appends($request->query());
+        $users = User::with('role')->where('user_type', '2')->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -118,9 +119,9 @@ class UserController extends Controller
             $user->Status = $request->Status; // Toggle status
             $user->save(); // Save the updated status
 
-            return response()->json(['success' => true, 'status' => $user->status]);
+            return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
         }
 
-        return response()->json(['success' => false, 'message' => 'User not found']);
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
     }
 }

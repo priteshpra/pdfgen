@@ -30,7 +30,8 @@ class CasController extends Controller
         $country = Country::all();
         $city = City::all();
         $state = State::all();
-        $users = User::where('user_type', '4')->paginate(25)->appends($request->query());
+        // $users = User::where('user_type', '4')->paginate(25)->appends($request->query());
+        $users = User::where('user_type', '4')->get();
         return view('admin.cas.index', compact('users'));
     }
 
@@ -130,9 +131,9 @@ class CasController extends Controller
             $user->Status = $request->Status; // Toggle status
             $user->save(); // Save the updated status
 
-            return response()->json(['success' => true, 'status' => $user->status]);
+            return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
         }
 
-        return response()->json(['success' => false, 'message' => 'User not found']);
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
     }
 }

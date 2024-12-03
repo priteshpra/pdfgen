@@ -27,7 +27,8 @@ class StateController extends Controller
     {
         abort_if(Gate::denies('state_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $users = State::with('role')->paginate(25)->appends($request->query());
+        // $users = State::with('role')->paginate(25)->appends($request->query());
+        $users = State::with('role')->get();
         return view('admin.state.index', compact('users'));
     }
 
@@ -136,9 +137,9 @@ class StateController extends Controller
             $user->Status = $request->Status; // Toggle status
             $user->save(); // Save the updated status
 
-            return response()->json(['success' => true, 'status' => $user->status]);
+            return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
         }
 
-        return response()->json(['success' => false, 'message' => 'User not found']);
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
     }
 }
