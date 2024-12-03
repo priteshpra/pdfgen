@@ -23,15 +23,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('v1/login', [ApiController::class, 'login']);
-Route::post('v1/getClients', [ApiController::class, 'getClients']);
-Route::post('v1/getCas', [ApiController::class, 'getCas']);
-Route::post('v1/getRoles', [ApiController::class, 'getRoles']);
-Route::post('v1/getCity', [ApiController::class, 'getCity']);
-Route::post('v1/getCountry', [ApiController::class, 'getCountry']);
-Route::post('v1/getRoles', [ApiController::class, 'getRoles']);
-Route::post('v1/getEmployee', [ApiController::class, 'getEmployee']);
+Route::get('v1/getClients', [ApiController::class, 'getClients']);
+Route::get('v1/getCas', [ApiController::class, 'getCas']);
+Route::get('v1/getRoles', [ApiController::class, 'getRoles']);
+Route::get('v1/getCity', [ApiController::class, 'getCity']);
+Route::get('v1/getCountry', [ApiController::class, 'getCountry']);
+Route::get('v1/getState', [ApiController::class, 'getState']);
+Route::get('v1/getEmployee', [ApiController::class, 'getEmployee']);
+Route::get('v1/getPageList', [ApiController::class, 'getPageList']);
+Route::get('v1/getDocumentList', [ApiController::class, 'getDocumentList']);
+Route::get('v1/getPageContentById', [ApiController::class, 'getPageContentById']);
 
-Route::post('v1/getDashboardData', [ApiController::class, 'getDashboardData']);
+Route::get('v1/getDashboardData', [ApiController::class, 'getDashboardData']);
+
 Route::post('v1/getEmployeeDetails', [ApiController::class, 'getEmployeeDetails']);
 Route::post('v1/getCASDetails', [ApiController::class, 'getCASDetails']);
 Route::post('v1/getClientDetails', [ApiController::class, 'getClientDetails']);

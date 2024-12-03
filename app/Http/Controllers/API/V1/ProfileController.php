@@ -35,7 +35,7 @@ class ProfileController extends Controller
         }
         $base_url =  $this->base_url;
         $token = $request->header('token');
-         $user = DB::table('user_devices')
+        $user = DB::table('user_devices')
             ->where('user_devices.login_token', '=', $token)
             ->where('user_devices.status', '=', 1)
             ->count();
@@ -50,8 +50,8 @@ class ProfileController extends Controller
         $user = User::where('id', $user_id)->first();
 
         $userData = [
-            'id'=>(string)$user->id,
-            'user_id'=> (string)$user->id,
+            'id' => (string)$user->id,
+            'user_id' => (string)$user->id,
             'user_type' => (string)$user->user_type,
             'name' => (string)$user->name,
             'lname' => (string)$user->lname,
@@ -67,12 +67,12 @@ class ProfileController extends Controller
             'area' => (string)$user->area,
             'city' => (string)$user->city,
             'state' => (string)$user->state,
-            'avatar' => ($user->avatar) ? $base_url.$this->profile_path.$user->avatar : '',
+            'avatar' => ($user->avatar) ? $base_url . $this->profile_path . $user->avatar : '',
             'is_first_time' => $user->is_first_time,
             'token' => $token
         ];
 
-        return response()->json(['status' => true,'message' => 'Get Profile details successfully', 'data' => $userData], 200);
+        return response()->json(['status' => true, 'message' => 'Get Profile details successfully', 'data' => $userData], 200);
     }
 
 
@@ -96,46 +96,38 @@ class ProfileController extends Controller
         // Get the currently authenticated user
         $user = User::where('id', $user_id)->first();
         // Define validation rules
-        if($request->user_type == 4) {
+        if ($request->user_type == 4) {
             $validator = Validator::make($request->all(), [
-                'fname' => 'required|string|max:255',
-                'lname' => 'required|string|max:255',
-                'firm_name' => 'required|string|max:255',
-                'email' => 'required|email',
-                'mobile_no' => 'required|min:10|digits:10',
-                'address' => 'required',
+                'fname' => 'string|max:255',
+                'lname' => 'string|max:255',
+                'firm_name' => 'string|max:255',
+                'email' => 'email',
+                'mobile_no' => 'min:10|digits:10',
+                'address' => '',
                 'pinCode' => '',
                 'aadharNumber' => '',
                 'GST' => '',
                 'PAN' => '',
-                'firm_type' => 'required'
             ]);
-        } else if($request->user_type == 3) {
+        } else if ($request->user_type == 3) {
             $validator = Validator::make($request->all(), [
-                'fname' => 'required|string|max:255',
-                'lname' => 'required|string|max:255',
-                'firm_name' => 'required|string|max:255',
-                'email' => 'required|email',
-                'mobile_no' => 'required|min:10|digits:10',
-                'address' => 'required',
+                'fname' => 'string|max:255',
+                'lname' => 'string|max:255',
+                'firm_name' => 'string|max:255',
+                'email' => 'email',
+                'mobile_no' => 'min:10|digits:10',
+                'address' => '',
                 'pinCode' => '',
                 'aadharNumber' => '',
                 'GST' => '',
                 'PAN' => '',
-                'firm_type' => 'required'
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'fname' => 'required|string|max:255',
-                'email' => 'required|email',
-                'lname' => 'required|string',
-                'mobile' => 'required|string',
-                // 'flatNo' => 'required|string',
-                // 'area' => 'required|string',
-                // 'city' => 'required|string',
-                // 'state' => 'required|string',
-                // 'pincode' => 'required|string',
-                // 'user_type' => 'required'
+                'fname' => 'string|max:255',
+                'email' => 'email',
+                'lname' => 'string',
+                'mobile' => 'string'
             ]);
         }
 
@@ -149,46 +141,22 @@ class ProfileController extends Controller
 
         // Update user details
         $user->name = $request->input('fname');
-        $user->email = $request->input('email');
         $user->lname = $request->input('lname');
-        $user->storename = $request->input('storename');
+        $user->firm_name = $request->input('firm_name');
+        $user->email = $request->input('email');
         $user->PAN = $request->input('PAN');
         $user->GST = $request->input('GST');
-        $user->flatNo = $request->input('flatNo');
-        $user->pincode = $request->input('pincode');
-        $user->password = Hash::make('123456');
-        $user->area = $request->input('area');
-        $user->city = $request->input('city');
-        $user->state = $request->input('state');
+        $user->pincode = $request->input('pinCode');
+        $user->mobile_no = $request->input('mobile_no');
+        if ($request->input('aadharNumber')) {
+            $user->aadhar = $request->input('aadharNumber');
+        }
         $user->save();
 
         $users = User::where('id', $user_id)->first();
 
-        $userData = [
-            'id'=>(string)$users->id,
-            'user_id'=> (string)$users->id,
-            'user_type' => (string)$users->user_type,
-            'name' => (string)$users->name,
-            'lname' => (string)$users->lname,
-            'storename' => (string)$users->storename,
-            'email' => (string)$users->email,
-            'date_of_birth' => (string)$users->date_of_birth,
-            'phone_number' => (string)$users->phone_number,
-            'otp' => (string)$users->otp,
-            'PAN' => (string)$users->PAN,
-            'GST' => (string)$users->GST,
-            'flatNo' => (string)$users->flatNo,
-            'pincode' => (string)$users->pincode,
-            'area' => (string)$users->area,
-            'city' => (string)$users->city,
-            'state' => (string)$users->state,
-            'avatar' =>  ($users->avatar) ? $base_url.$this->profile_path.$users->avatar : '',
-            'is_first_time' => $users->is_first_time,
-            'token' => $token
-        ];
-
         // Return a response
-        return response()->json(['status' => true,'message' => 'Profile updated successfully', 'data' => $userData], 200);
+        return response()->json(['status' => true, 'message' => 'Profile updated successfully', 'data' => $users], 200);
     }
 
     public function uploadProfileImage(Request $request)
@@ -233,10 +201,10 @@ class ProfileController extends Controller
 
             $users->avatar = $profileImage;
             $users->save();
-            $arr = array('image' => $base_url.'/'.$destinationPath.$profileImage);
-            return response()->json(['status' => true,'message' => 'Image uploaded successfully', 'data' => $arr], 200);
+            $arr = array('image' => $base_url . '/' . $destinationPath . $profileImage);
+            return response()->json(['status' => true, 'message' => 'Image uploaded successfully', 'data' => $arr], 200);
         }
 
-        return response()->json(['status' => true,'message' => 'Image upload failed'], 500);
+        return response()->json(['status' => true, 'message' => 'Image upload failed'], 500);
     }
 }
