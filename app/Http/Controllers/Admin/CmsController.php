@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CmaRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateCMSRequest;
 use App\Models\Role;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -34,7 +34,7 @@ class CmsController extends Controller
             $pages[$value['PageID']][] = $value;
         }
         // $users = Cms::with('role')->paginate(25)->appends($request->query());
-        $users = Cms::with('role')->paginate(25)->get();
+        $users = Cms::with('role')->get();
         return view('admin.cms.index', compact('users', 'pages'));
     }
 
@@ -62,7 +62,7 @@ class CmsController extends Controller
     public function store(CmaRequest $request)
     {
         Cms::create($request->validated());
-        return redirect()->route('admin.cms.index')->with(['status-success' => "New State Created"]);
+        return redirect()->route('admin.cms.index')->with(['status-success' => "New CMS Created"]);
     }
 
 
@@ -104,10 +104,10 @@ class CmsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, Cms $user)
+    public function update(UpdateCMSRequest $request, Cms $cms)
     {
-        $user->update(array_filter($request->validated()));
-        return redirect()->route('admin.cms.index')->with(['status-success' => "State Updated"]);
+        $cms->update(array_filter($request->validated()));
+        return redirect()->route('admin.cms.index')->with(['status-success' => "CMS Updated"]);
     }
 
 
@@ -117,12 +117,12 @@ class CmsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cms $user)
+    public function destroy(Cms $cms)
     {
         abort_if(Gate::denies('cms_delete'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $user->delete();
-        return redirect()->back()->with(['status-success' => "State Deleted"]);
+        $cms->delete();
+        return redirect()->back()->with(['status-success' => "CMS Deleted"]);
     }
 
     public function search(Request $request)

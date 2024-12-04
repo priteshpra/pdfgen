@@ -71,7 +71,7 @@
                                                 <td>{{$user->PageName}}</td>
                                                 <td>
                                                     <div class="col-xl-2 col-6 text-center align-self-center mb-20">
-                                                        <button id="toggleChang"
+                                                        <button id="toggleChang_{{$user->PageID}}"
                                                             onclick="toggleStatus({{$user->PageID}},{{ ($user->Status == 1) ? '0' : '1' }})"
                                                             type="button"
                                                             class="btn btn-sm btn-toggle toggleChang {{($user->Status == 1) ? 'btn-success active' : 'btn-error'}}"
@@ -125,14 +125,14 @@
             if(status == 1) {
                 statuss = 0;
                 console.log('off');
-                $('.toggleChang').addClass('btn-success');
-                $('.toggleChang').removeClass('btn-error');
+                $('#toggleChang_'_ID).addClass('btn-success');
+                $('#toggleChang_'_ID).removeClass('btn-error');
             } else {
                 statuss = 1;
-                $('.toggleChang').removeClass('btn-success');
-                 $('.toggleChang').addClass('btn-error');
+                $('#toggleChang_'_ID).removeClass('btn-success');
+                 $('#toggleChang_'_ID).addClass('btn-error');
             }
-            $(".toggleChang"). attr("onclick","toggleStatus("+ID+", "+statuss+")");
+            $("#toggleChang_"_ID). attr("onclick","toggleStatus("+ID+", "+statuss+")");
 
             $('#loader').show();
             $('#loader').css('opacity',1);

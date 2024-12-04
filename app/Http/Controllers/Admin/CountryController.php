@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\CountryRequest;
+use App\Http\Requests\UpdateCountryRequest;
 use App\Models\Role;
 use App\Models\Country;
 use Illuminate\Http\Request;
@@ -50,7 +50,7 @@ class CountryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserRequest $request)
+    public function store(CountryRequest $request)
     {
         Country::create($request->validated());
         return redirect()->route('admin.country.index')->with(['status-success' => "New Country Created"]);
@@ -93,9 +93,9 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, Country $user)
+    public function update(UpdateCountryRequest $request, Country $country)
     {
-        $user->update(array_filter($request->validated()));
+        $country->update(array_filter($request->validated()));
         return redirect()->route('admin.country.index')->with(['status-success' => "Country Updated"]);
     }
 
@@ -106,11 +106,11 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $user)
+    public function destroy(Country $country)
     {
         abort_if(Gate::denies('country_delete'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $user->delete();
+        $country->delete();
         return redirect()->back()->with(['status-success' => "Country Deleted"]);
     }
 

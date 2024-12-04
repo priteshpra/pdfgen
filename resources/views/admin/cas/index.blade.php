@@ -57,7 +57,7 @@
                                         <thead class="bg-primary">
                                             <tr class="">
                                                 <th>CA Name</th>
-                                                <th>Firm Name</th>
+                                                {{-- <th>Firm Name</th> --}}
                                                 <th>Email</th>
                                                 <th>MobileNo</th>
                                                 <th>Email</th>
@@ -75,7 +75,7 @@
                                         @forelse ($users as $user)
                                         <tr>
                                             <td>{{$user->name}} {{$user->lname}}</td>
-                                            <td>{{$user->firm_name}}</td>
+                                            {{-- <td>{{$user->firm_name}}</td> --}}
                                             <td>{{$user->email}}</td>
                                             <td>{{$user->mobile_no}}</td>
                                             <td>{{$user->email}}</td>
@@ -86,7 +86,7 @@
                                             <td>{{$user->firm_type}}</td>
                                             <td>
                                                 <div class="col-xl-2 col-6 text-center align-self-center mb-20">
-                                                    <button id="toggleChang"
+                                                    <button id="toggleChang_{{$user->id}}"
                                                         onclick="toggleStatus({{$user->id}},{{ ($user->Status == 1) ? '0' : '1' }})"
                                                         type="button"
                                                         class="btn btn-sm btn-toggle toggleChang {{($user->Status == 1) ? 'btn-success active' : 'btn-error'}}"
@@ -136,14 +136,14 @@
             if(status == 1) {
                 statuss = 0;
                 console.log('off');
-                $('.toggleChang').addClass('btn-success');
-                $('.toggleChang').removeClass('btn-error');
+                $('#toggleChang_'+ID).addClass('btn-success');
+                $('#toggleChang_'+ID).removeClass('btn-error');
             } else {
                 statuss = 1;
-                $('.toggleChang').removeClass('btn-success');
-                 $('.toggleChang').addClass('btn-error');
+                $('#toggleChang_'+ID).removeClass('btn-success');
+                 $('#toggleChang_'+ID).addClass('btn-error');
             }
-            $(".toggleChang"). attr("onclick","toggleStatus("+ID+", "+statuss+")");
+            $("#toggleChang_"+ID). attr("onclick","toggleStatus("+ID+", "+statuss+")");
 
             $('#loader').show();
             $('#loader').css('opacity',1);

@@ -61,7 +61,7 @@ class ClientController extends Controller
     {
         // dd($request);
         User::create($request->validated());
-        return redirect()->route('admin.client.index')->with(['status-success' => "New User Created"]);
+        return redirect()->route('admin.client.index')->with(['status-success' => "New Client Created"]);
     }
 
 
@@ -105,10 +105,11 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateClientRequest $request, User $user)
+    public function update(UpdateClientRequest $request, $id)
     {
+        $user = User::find($id);
         $user->update(array_filter($request->validated()));
-        return redirect()->route('admin.client.index')->with(['status-success' => "User Updated"]);
+        return redirect()->route('admin.client.index')->with(['status-success' => "Client Updated"]);
     }
 
 

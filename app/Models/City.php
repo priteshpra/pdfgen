@@ -35,18 +35,4 @@ class City extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
-
-
-    static function boot()
-    {
-        parent::boot();
-
-        static::created(function (Model $model) {
-            if ($model->role_id == "") {
-                $model->update([
-                    'role_id' => Role::where('title', 'user')->first()->id,
-                ]);
-            }
-        });
-    }
 }

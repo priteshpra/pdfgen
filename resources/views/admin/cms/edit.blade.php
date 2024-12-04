@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="card">
-    <div class="card-header">{{ __('Edit State') }}</div>
+    <div class="card-header">{{ __('Edit CMS') }}</div>
 
     <div class="card-body">
         <form method="POST" action="{{ route('admin.cms.update', $user->CMSID) }}">
@@ -11,14 +11,17 @@
             @method('PUT')
             <div class="row">
                 <div class="col-md-6">
-                    <label for="PageID" class="required col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
+                    <label for="PageID" class="required col-md-4 col-form-label text-md-right">{{ __('Page Name')
+                        }}</label>
 
                     <div class="form-group">
-                        <select id="PageID" type="text" class="form-control @error('PageID') is-invalid @enderror" name="PageID" required autocomplete="PageID" autofocus>
+                        <select id="PageID" type="text" class="form-control @error('PageID') is-invalid @enderror"
+                            name="PageID" required autocomplete="PageID" autofocus>
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($page as $id => $role)
-                            <option value="{{$role->PageID}}" {{ ($role->PageID == $user->PageID ) ? 'selected' : '' }}>{{$role->PageName}}</option>
+                            <option value="{{$role->PageID}}" {{ ($role->PageID == $user->PageID ) ? 'selected' : ''
+                                }}>{{$role->PageName}}</option>
                             @endforeach
                         </select>
 
@@ -31,10 +34,12 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="State" class="required col-md-4 col-form-label text-md-right">{{ __('Content') }}</label>
+                    <label for="State" class="required col-md-4 col-form-label text-md-right">{{ __('Content')
+                        }}</label>
 
                     <div class="form-group">
-                        <input id="Content" type="text" class="form-control @error('Content') is-invalid @enderror" name="Content" value="{{ old('Content', $user->Content) }}" required autocomplete="Content">
+                        <input id="Content" type="text" class="form-control @error('Content') is-invalid @enderror"
+                            name="Content" value="{{ old('Content', $user->Content) }}" required autocomplete="Content">
 
                         @error('Content')
                         <span class="invalid-feedback" role="alert">

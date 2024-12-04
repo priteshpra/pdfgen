@@ -83,11 +83,12 @@ class CityController extends Controller
     {
         $user = City::where(['CityID' => $id])->first();
         $country = Country::all();
+        $state = State::all();
         // dd($user);
         abort_if(Gate::denies('city_edit'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         $roles = Role::pluck('title', 'id');
-        return view('admin.city.edit', compact('user', 'roles', 'country'));
+        return view('admin.city.edit', compact('user', 'state', 'roles', 'country'));
     }
 
 
@@ -98,9 +99,9 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCityRequest $request, City $user)
+    public function update(UpdateCityRequest $request, City $city)
     {
-        $user->update(array_filter($request->validated()));
+        $city->update(array_filter($request->validated()));
         return redirect()->route('admin.city.index')->with(['status-success' => "City Updated"]);
     }
 
@@ -111,11 +112,11 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $user)
+    public function destroy(City $city)
     {
         abort_if(Gate::denies('city_delete'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $user->delete();
+        $city->delete();
         return redirect()->back()->with(['status-success' => "City Deleted"]);
     }
 

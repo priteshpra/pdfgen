@@ -6,18 +6,21 @@
     <div class="card-header">{{ __('Add New User') }}</div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.users.store') }}">
+        <form method="POST" action="{{ route('admin.state.store') }}">
             @csrf
             <div class="row">
                 <div class="col-md-6">
-                    <label for="CountryID" class="required col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
+                    <label for="CountryID" class="required col-md-4 col-form-label text-md-right">{{ __('Country')
+                        }}</label>
 
                     <div class="form-group">
-                        <select id="CountryID" type="text" class="form-control @error('CountryID') is-invalid @enderror" name="CountryID" required autocomplete="CountryID" autofocus>
+                        <select id="CountryID" type="text" class="form-control @error('CountryID') is-invalid @enderror"
+                            name="CountryID" required autocomplete="CountryID" autofocus>
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($country as $id => $role)
-                            <option value="{{$role->CountryID}}" {{ (old('CountryID', '') == $id ) ? 'selected' : '' }}>{{$role->Country}}</option>
+                            <option value="{{$role->CountryID}}" {{ (old('CountryID', '' )==$id ) ? 'selected' : '' }}>
+                                {{$role->Country}}</option>
                             @endforeach
                         </select>
 
@@ -33,7 +36,8 @@
                     <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('State') }}</label>
 
                     <div class="form-group">
-                        <input id="State" type="text" class="form-control @error('State') is-invalid @enderror" name="State" value="{{ old('State') }}" required autocomplete="State">
+                        <input id="State" type="text" class="form-control @error('State') is-invalid @enderror"
+                            name="State" value="{{ old('State') }}" required autocomplete="State">
 
                         @error('State')
                         <span class="invalid-feedback" role="alert">

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\StoreClientRequest;
-use App\Http\Requests\UpdateClientRequest;
+use App\Http\Requests\StoreCAsRequest;
+use App\Http\Requests\UpdateCAsRequest;
 use App\Models\Role;
-use App\Models\User;
+use App\Models\CAs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Response;
@@ -31,7 +31,7 @@ class CasController extends Controller
         $city = City::all();
         $state = State::all();
         // $users = User::where('user_type', '4')->paginate(25)->appends($request->query());
-        $users = User::where('user_type', '4')->get();
+        $users = CAs::where('user_type', '4')->get();
         return view('admin.cas.index', compact('users'));
     }
 
@@ -56,10 +56,11 @@ class CasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreClientRequest $request)
+    public function store(StoreCAsRequest $request)
     {
+        // dd($request);
         User::create($request->validated());
-        return redirect()->route('admin.cas.index')->with(['status-success' => "New User Created"]);
+        return redirect()->route('admin.cas.index')->with(['status-success' => "New CAS Created"]);
     }
 
 
@@ -69,7 +70,7 @@ class CasController extends Controller
      * @param  \App\Models\User  $permission
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(CAs $user)
     {
         abort_if(Gate::denies('cas_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $country = Country::all();
@@ -84,10 +85,10 @@ class CasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user, $id = null)
+    public function edit(CAs $user, $id = null)
     {
         abort_if(Gate::denies('cas_edit'), Response::HTTP_FORBIDDEN, 'Forbidden');
-        $user = User::find($id);
+        $user = CAs::find($id);
         $country = Country::all();
         $city = City::all();
         $state = State::all();
@@ -103,10 +104,11 @@ class CasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateClientRequest $request, User $user)
+    public function update(UpdateCAsRequest $request, $id)
     {
-        $user->update(array_filter($request->validated()));
-        return redirect()->route('admin.cas.index')->with(['status-success' => "User Updated"]);
+        $cas = CAs::find($id);
+        $updated = $cas->update(array_filter($request->validated()));
+        return redirect()->route('admin.cas.index')->with(['status-success' => "CAS Updated"]);
     }
 
 
@@ -116,7 +118,7 @@ class CasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(CAs $user)
     {
         abort_if(Gate::denies('cas_delete'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
@@ -126,7 +128,7 @@ class CasController extends Controller
 
     public function toggleStatus(Request $request)
     {
-        $user = User::find($request->id); // Get the user by ID
+        $user = CAs::find($request->id); // Get the user by ID
         if ($user) {
             $user->Status = $request->Status; // Toggle status
             $user->save(); // Save the updated status

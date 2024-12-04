@@ -31,11 +31,11 @@ class UpdateClientRequest extends FormRequest
                 'required',
                 'email',
                 'max:200',
-                Rule::unique('users')->ignore($this->user),
+                // Rule::unique('users')->ignore($this->user),
             ],
-            'password' => 'nullable|min:6|max:20',
+            // 'password' => 'nullable|min:6|max:20',
             'role_id' => 'required|exists:roles,id',
-            'lname' => 'required|string|min:2|max:200',
+            // 'lname' => 'required|string|min:2|max:200',
             'mobile_no' => 'required|regex:/^[0-9]{10}$/',
             'address' => 'required',
             'CountryID' => 'required',
@@ -46,6 +46,7 @@ class UpdateClientRequest extends FormRequest
             'gst' => 'required',
             'pan' => 'required',
             'firm_type' => 'required',
+            'firm_name' => 'required',
         ];
     }
 }

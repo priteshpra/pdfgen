@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\PageRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdatePageRequest;
 use App\Models\Role;
 use App\Models\Country;
 use Illuminate\Http\Request;
@@ -54,7 +54,7 @@ class PageController extends Controller
     public function store(PageRequest $request)
     {
         Page::create($request->validated());
-        return redirect()->route('admin.page.index')->with(['status-success' => "New Country Created"]);
+        return redirect()->route('admin.page.index')->with(['status-success' => "New Page Created"]);
     }
 
 
@@ -94,10 +94,10 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, Page $user)
+    public function update(UpdatePageRequest $request, Page $page)
     {
-        $user->update(array_filter($request->validated()));
-        return redirect()->route('admin.page.index')->with(['status-success' => "Country Updated"]);
+        $page->update(array_filter($request->validated()));
+        return redirect()->route('admin.page.index')->with(['status-success' => "Page Updated"]);
     }
 
 
@@ -107,11 +107,11 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Page $user)
+    public function destroy(Page $page)
     {
         abort_if(Gate::denies('page_delete'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $user->delete();
+        $page->delete();
         return redirect()->back()->with(['status-success' => "Country Deleted"]);
     }
 

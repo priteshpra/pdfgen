@@ -11,10 +11,12 @@
             @method('PUT')
 
             <div class="form-group row">
-                <label for="PageName" class="required col-md-4 col-form-label text-md-right">{{ __('PageName') }}</label>
+                <label for="PageName" class="required col-md-4 col-form-label text-md-right">{{ __('PageName')
+                    }}</label>
 
                 <div class="col-md-6">
-                    <input id="PageName" type="text" class="form-control @error('PageName') is-invalid @enderror" PageName="PageName" value="{{ old('PageName', $user->PageName) }}" required autocomplete="PageName">
+                    <input id="PageName" type="text" class="form-control @error('PageName') is-invalid @enderror"
+                        name="PageName" value="{{ old('PageName', $user->PageName) }}" required autocomplete="PageName">
 
                     @error('PageName')
                     <span class="invalid-feedback" role="alert">

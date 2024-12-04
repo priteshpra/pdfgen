@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
 
-class UpdateCityRequest extends FormRequest
+class UpdateCMSRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +15,7 @@ class UpdateCityRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows('city_edit');
+        return Gate::allows('page_edit');
     }
 
     /**
@@ -26,9 +26,8 @@ class UpdateCityRequest extends FormRequest
     public function rules()
     {
         return [
-            'CountryID' => 'required',
-            'StateID' => 'required',
-            'City' => 'required',
+            'PageID' => 'required',
+            'Content' => 'required',
         ];
     }
 }

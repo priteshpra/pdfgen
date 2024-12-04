@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
 
-class StoreClientRequest extends FormRequest
+class UpdateCAsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +15,7 @@ class StoreClientRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows('user_create');
+        return Gate::allows('user_edit');
     }
 
     /**
@@ -26,7 +27,16 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:2|max:200',
-            'firm_name' => 'required',
+            'lname' => 'required|string|min:2|max:200',
+            'email' => [
+                'required',
+                'email',
+                'max:200',
+                // Rule::unique('users')->ignore($this->user),
+            ],
+            // 'password' => 'nullable|min:6|max:20',
+            'role_id' => 'required|exists:roles,id',
+            'mobile_no' => 'required|regex:/^[0-9]{10}$/',
             'address' => 'required',
             'CountryID' => 'required',
             'StateID' => 'required',
@@ -36,11 +46,6 @@ class StoreClientRequest extends FormRequest
             'gst' => 'required',
             'pan' => 'required',
             'firm_type' => 'required',
-            'mobile_no' => 'required|regex:/^[0-9]{10}$/',
-            'email' => 'required|email|max:200|unique:users',
-            'password' => 'required|confirmed|min:6|max:20',
-            'role_id' => 'required|exists:roles,id',
-            'user_type' => 'required',
         ];
     }
 }

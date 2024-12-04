@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StateRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateStateRequest;
 use App\Models\Role;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -96,9 +96,9 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, State $user)
+    public function update(UpdateStateRequest $request, State $state)
     {
-        $user->update(array_filter($request->validated()));
+        $state->update(array_filter($request->validated()));
         return redirect()->route('admin.state.index')->with(['status-success' => "State Updated"]);
     }
 
@@ -109,11 +109,11 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(State $user)
+    public function destroy(State $state)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $user->delete();
+        $state->delete();
         return redirect()->back()->with(['status-success' => "State Deleted"]);
     }
 

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class CAs extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
@@ -19,24 +19,25 @@ class User extends Authenticatable
      *
      * @var array
      */
+    public $table = "users";
+    protected $primaryKey = 'id';
     protected $fillable = [
         'name',
-        'email',
-        'address',
         'lname',
-        'mobile_no',
-        'password',
+        'email',
         'role_id',
+        'mobile_no',
+        'address',
+        'password',
         'CountryID',
-        'CityID',
         'StateID',
-        'pan',
+        'CityID',
+        'pincode',
         'aadhar',
         'gst',
-        'pincode',
+        'pan',
         'firm_type',
         'user_type',
-        'firm_name',
     ];
 
     /**
