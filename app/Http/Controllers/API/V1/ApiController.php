@@ -20,6 +20,7 @@ use App\Models\City;
 use App\Models\Cms;
 use App\Models\Configuration;
 use App\Models\Country;
+use App\Models\OtherDocument;
 use App\Models\Page;
 use App\Models\Role;
 use App\Models\Scandocument;
@@ -427,7 +428,7 @@ class ApiController extends Controller
                 'fname' => 'required|string|max:255',
                 'lname' => 'required|string|max:255',
                 'firm_name' => 'required|string|max:255',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:users,email|max:255',
                 'mobile_no' => 'required|min:10|digits:10',
                 'address' => 'required',
                 'countryID' => 'required',
@@ -497,7 +498,7 @@ class ApiController extends Controller
             $validator = Validator::make($request->all(), [
                 'fname' => 'required|string|max:255',
                 'lname' => 'required|string|max:255',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:users,email|max:255',
                 'mobile_no' => 'required|min:10|digits:10',
                 'address' => 'required',
                 // 'role' => 'required',
@@ -552,7 +553,7 @@ class ApiController extends Controller
                 'fname' => 'required|string|max:255',
                 'lname' => 'required|string|max:255',
                 'firm_name' => 'required|string|max:255',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:users,email|max:255',
                 'mobile_no' => 'required|min:10|digits:10',
                 'address' => 'required',
                 'countryID' => 'required',
@@ -609,8 +610,8 @@ class ApiController extends Controller
         $base_url = $this->base_url;
         $loginType = $request->user_type;
         $token = $request->header('token');
-        $user_id = $request->header('user_id');
-        $user_type = $request->header('user_type');
+        $user_id = $request->user_id;
+        $user_type = $request->user_type;
         try {
             $checkToken = $this->tokenVerify($token);
             // Decode the JSON response
@@ -619,7 +620,11 @@ class ApiController extends Controller
                 return $checkToken->getContent();
             }
 
-            return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => '0']], 200);
+            $totalImageCount = Scandocument::where('Status', 1)
+                ->where('UserID', $user_id)
+                ->sum('ImageCount');
+
+            return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => $totalImageCount]], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
         }
@@ -1016,6 +1021,7 @@ class ApiController extends Controller
 
             $imagePaths = [];
             if ($request->hasFile('images')) {
+                $imageCount = count($request->file('images'));
                 foreach ($request->file('images') as $image) {
                     $path = $image->store('images', 'public');
                     $imagePaths[] = $path;
@@ -1040,8 +1046,9 @@ class ApiController extends Controller
             $documents = new Scandocument();
             $documents->Title = 'Document';
             $documents->BatchNo = rand(1000, 1000);
-            $documents->CompanyID = 1;
-            $documents->UserID = 1;
+            $documents->CompanyID = $user_id;
+            $documents->UserID = $user_id;
+            $documents->ImageCount = $imageCount;
             $documents->DocumentURL = $downloadUrl;
             $documents->save();
 
@@ -1178,6 +1185,121 @@ class ApiController extends Controller
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Bussiness category list successfully', 'data' => $dataEmployee], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+        }
+    }
+
+    public function otherDocumentUpload(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'images' => 'required|array',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
+            'user_id' => 'required',
+            'title' => '',
+            'company_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
+        }
+        try {
+            $user_id = $request->user_id;
+            $CompanyID = $request->company_id;
+            $Title = $request->title;
+            $Remarks = $request->remarks;
+
+            $token = $request->header('token');
+            $base_url = $this->base_url;
+            $checkToken = $this->tokenVerify($token);
+            // Decode the JSON response
+            $userData = json_decode($checkToken->getContent(), true);
+            if ($userData['status'] == false) {
+                return $checkToken->getContent();
+            }
+
+            $imagePaths = [];
+            if ($request->hasFile('images')) {
+                $imageCount = count($request->file('images'));
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('images', 'public');
+                    $imagePaths[] = $path;
+                }
+            }
+
+            // Generate PDF
+            $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
+            // dd($pdf);
+            // Download the PDF
+            // return $pdf->download('images.pdf');
+            $directory = 'public/pdfs/' . $user_id;
+            if (!Storage::exists($directory)) {
+                Storage::makeDirectory($directory);
+            }
+            $pdfPath = 'pdfs/' . $user_id . '/images_' . date('Y-m-d-h-i-s') . '.pdf';
+            Storage::disk('public')->put($pdfPath, $pdf->output());
+
+            // Provide download link
+            $downloadUrl = asset("storage/{$pdfPath}");
+
+            $documents = new OtherDocument();
+            $documents->Title = $Title;
+            $documents->CompanyID = $CompanyID;
+            $documents->UserID = $user_id;
+            $documents->ImageCount = $imageCount;
+            $documents->Remarks = $Remarks;
+            $documents->DocumentURL = $downloadUrl;
+            $documents->save();
+
+            $dataCAS = [
+                'download_link' => $downloadUrl,
+            ];
+            return response()->json(['status' => true, 'message' => 'PDF created successfully', 'data' => $dataCAS], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+        }
+    }
+
+    /**
+     * get other Document list data.
+     */
+    public function getOtherDocument(Request $request)
+    {
+        $user_id = $request->user_id;
+        $page_number = $request->page;
+        $token = $request->header('token');
+        $base_url = $this->base_url;
+        try {
+
+            $employee = OtherDocument::select([
+                'OtherdocumentsID',
+                'Title',
+                'CompanyID',
+                'UserID',
+                'Remarks',
+                'DocumentURL',
+                'DocumentStatus',
+                DB::raw("(SELECT SUM(ImageCount) FROM otherdocuments WHERE Status = 1 AND UserID = $user_id) as totalImageCount")
+            ])->where('Status', 1)->where('UserID', $user_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+
+            $pagination = [
+                'total' => $employee->total(),
+                'count' => $employee->count(),
+                'per_page' => $employee->perPage(),
+                'current_page' => $employee->currentPage(),
+                'total_pages' => $employee->lastPage(),
+            ];
+
+
+            $dataEmployee = [
+                'pagination' => $pagination,
+                'data' => $employee,
+            ];
+
+            return response()->json(['status' => true, 'message' => 'Get Other document list successfully', 'data' => $dataEmployee], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
         }

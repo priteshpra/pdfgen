@@ -44,6 +44,7 @@ Route::get('v1/getPageContentById', [ApiController::class, 'getPageContentById']
 Route::get('v1/getCity', [ApiController::class, 'getCity']);
 Route::get('v1/getCountry', [ApiController::class, 'getCountry']);
 Route::get('v1/getState', [ApiController::class, 'getState']);
+Route::get('v1/getOtherDocument', [ApiController::class, 'getOtherDocument']);
 
 // below update version API
 Route::get('v1/getAppversion', [ApiController::class, 'getAppversion']);
@@ -57,6 +58,7 @@ Route::post('v1/downlodDocumentList', [ApiController::class, 'downlodDocumentLis
 Route::post('v1/sendNotification', [ApiController::class, 'sendNotification']);
 Route::post('v1/reportCouponDownload', [ApiController::class, 'reportCouponDownload']);
 Route::post('v1/documentUpload', [ApiController::class, 'documentUpload']);
+Route::post('v1/otherDocumentUpload', [ApiController::class, 'otherDocumentUpload']);
 
 
 //profiles
