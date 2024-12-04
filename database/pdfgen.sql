@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2024 at 07:00 PM
+-- Generation Time: Dec 04, 2024 at 06:51 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -1103,6 +1103,38 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `otherdocuments`
+--
+
+CREATE TABLE `otherdocuments` (
+  `OtherdocumentsID` int(11) NOT NULL,
+  `Title` varchar(200) DEFAULT NULL,
+  `CompanyID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL,
+  `PageCount` varchar(3) DEFAULT NULL,
+  `Remarks` varchar(1000) DEFAULT NULL,
+  `DocumentURL` varchar(250) DEFAULT NULL,
+  `DocumentStatus` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `CreatedBy` int(11) NOT NULL DEFAULT 1,
+  `CreatedDate` datetime NOT NULL DEFAULT current_timestamp(),
+  `ModifiedBy` int(11) DEFAULT NULL,
+  `ModifiedDate` datetime DEFAULT NULL,
+  `Status` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `ImageCount` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `otherdocuments`
+--
+
+INSERT INTO `otherdocuments` (`OtherdocumentsID`, `Title`, `CompanyID`, `UserID`, `PageCount`, `Remarks`, `DocumentURL`, `DocumentStatus`, `CreatedBy`, `CreatedDate`, `ModifiedBy`, `ModifiedDate`, `Status`, `created_at`, `updated_at`, `ImageCount`) VALUES
+(1, 'Sample Scan', 1, 1, NULL, NULL, 'http://localhost/pdfgen/public/storage/pdfs/1/images_2024-12-04-05-13-46.pdf', 'No', 1, '2024-12-04 22:43:46', NULL, NULL, 1, '2024-12-04 11:43:46', '2024-12-04 11:43:46', 2);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pagemaster`
 --
 
@@ -1361,6 +1393,7 @@ CREATE TABLE `scanned_documents` (
   `ScanneddocumentID` int(11) NOT NULL,
   `Title` varchar(200) NOT NULL,
   `BatchNo` varchar(200) NOT NULL,
+  `ImageCount` int(11) DEFAULT 0,
   `CompanyID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
   `PageCount` varchar(3) DEFAULT NULL,
@@ -1380,9 +1413,10 @@ CREATE TABLE `scanned_documents` (
 -- Dumping data for table `scanned_documents`
 --
 
-INSERT INTO `scanned_documents` (`ScanneddocumentID`, `Title`, `BatchNo`, `CompanyID`, `UserID`, `PageCount`, `Remarks`, `DocumentURL`, `DocumentStatus`, `CreatedBy`, `CreatedDate`, `ModifiedBy`, `ModifiedDate`, `Status`, `created_at`, `updated_at`) VALUES
-(1, '2', '1000', 1, 1, NULL, NULL, 'http://localhost/pdfgen/public/storage/pdfs/2/images_2024-12-03-05-53-15.pdf', 'No', 1, '2024-12-03 23:23:15', NULL, NULL, 1, '2024-12-03 12:23:15', '2024-12-03 12:23:15'),
-(2, '2', '1000', 1, 1, NULL, NULL, 'http://localhost/pdfgen/public/storage/pdfs/2/images_2024-12-03-05-53-53.pdf', 'No', 1, '2024-12-03 23:23:53', NULL, NULL, 1, '2024-12-03 12:23:53', '2024-12-03 12:23:53');
+INSERT INTO `scanned_documents` (`ScanneddocumentID`, `Title`, `BatchNo`, `ImageCount`, `CompanyID`, `UserID`, `PageCount`, `Remarks`, `DocumentURL`, `DocumentStatus`, `CreatedBy`, `CreatedDate`, `ModifiedBy`, `ModifiedDate`, `Status`, `created_at`, `updated_at`) VALUES
+(1, '2', '1000', 3, 1, 1, NULL, NULL, 'http://localhost/pdfgen/public/storage/pdfs/2/images_2024-12-03-05-53-15.pdf', 'No', 1, '2024-12-03 23:23:15', NULL, NULL, 1, '2024-12-03 12:23:15', '2024-12-03 12:23:15'),
+(2, '2', '1000', 2, 1, 1, NULL, NULL, 'http://localhost/pdfgen/public/storage/pdfs/2/images_2024-12-03-05-53-53.pdf', 'No', 1, '2024-12-03 23:23:53', NULL, NULL, 1, '2024-12-03 12:23:53', '2024-12-03 12:23:53'),
+(3, 'Document', '1000', 2, 2, 2, NULL, NULL, 'http://localhost/pdfgen/public/storage/pdfs/2/images_2024-12-04-04-51-21.pdf', 'No', 1, '2024-12-04 22:21:23', NULL, NULL, 1, '2024-12-04 11:21:23', '2024-12-04 11:21:23');
 
 -- --------------------------------------------------------
 
@@ -2186,6 +2220,12 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `otherdocuments`
+--
+ALTER TABLE `otherdocuments`
+  ADD PRIMARY KEY (`OtherdocumentsID`);
+
+--
 -- Indexes for table `pagemaster`
 --
 ALTER TABLE `pagemaster`
@@ -2297,6 +2337,12 @@ ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `otherdocuments`
+--
+ALTER TABLE `otherdocuments`
+  MODIFY `OtherdocumentsID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `pagemaster`
 --
 ALTER TABLE `pagemaster`
@@ -2324,7 +2370,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `scanned_documents`
 --
 ALTER TABLE `scanned_documents`
-  MODIFY `ScanneddocumentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ScanneddocumentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `states`
@@ -2365,10 +2411,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-ALTER TABLE `countries` ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `ModifiedDate`, ADD `updated_at` TIMESTAMP NULL DEFAULT NULL AFTER `created_at`;
-
-ALTER TABLE `states` ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `ModifiedDate`, ADD `updated_at` TIMESTAMP NULL DEFAULT NULL AFTER `created_at`;
-
-ALTER TABLE `cities` ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `ModifiedDate`, ADD `updated_at` TIMESTAMP NULL DEFAULT NULL AFTER `created_at`;
