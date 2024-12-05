@@ -41,6 +41,7 @@ class StoreCAsRequest extends FormRequest
             'email' => 'required|email|max:200|unique:users',
             'password' => 'required|confirmed|min:6|max:20',
             'role_id' => 'required|exists:roles,id',
+            'firm_name' => 'required',
         ];
     }
 }

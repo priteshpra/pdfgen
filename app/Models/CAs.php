@@ -38,6 +38,7 @@ class CAs extends Authenticatable
         'pan',
         'firm_type',
         'user_type',
+        'firm_name',
     ];
 
     /**

@@ -26,7 +26,7 @@ class UserController extends Controller
         abort_if(Gate::denies('users_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         // $users = User::with('role')->where('user_type', '2')->paginate(25)->appends($request->query());
-        $users = User::with('role')->where('user_type', '2')->get();
+        $users = User::with('role')->where('user_type', '2')->orderBy('id', 'desc')->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -64,6 +64,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        dd('page working');
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         return view('admin.users.show', compact('user'));

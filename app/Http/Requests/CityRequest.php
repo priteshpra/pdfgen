@@ -25,7 +25,6 @@ class CityRequest extends FormRequest
     public function rules()
     {
         return [
-            'CountryID' => 'required',
             'StateID' => 'required',
             'City' => 'required',
         ];

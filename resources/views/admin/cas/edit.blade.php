@@ -11,26 +11,22 @@
             @method('PUT')
             <div class="row">
                 <div class="col-md-6">
-                    <label for="role_id" class="required col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
+                    <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('Firm Name')
+                        }}</label>
 
                     <div class="form-group">
-                        <select id="role_id" type="text" class="form-control @error('role_id') is-invalid @enderror"
-                            name="role_id" required autocomplete="role_id" autofocus>
-                            <option value="" selected hidden>Please Select</option>
+                        <input id="firm_name" type="text" class="form-control @error('firm_name') is-invalid @enderror"
+                            name="firm_name" value="{{ old('firm_name', $user->firm_name) }}" required
+                            autocomplete="firm_name">
 
-                            @foreach ($roles as $id => $role)
-                            <option value="{{$id}}" {{ (old('role_id',$user->role->id ?? "") == $id ) ? 'selected' : ''
-                                }}>{{$role}}</option>
-                            @endforeach
-                        </select>
-
-                        @error('role_id')
+                        @error('firm_name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                     </div>
                 </div>
+
                 <input id="user_type" type="hidden" class="form-control @error('user_type') is-invalid @enderror"
                     name="user_type" value="4" required autocomplete="name">
                 <div class="col-md-6">
@@ -295,6 +291,27 @@
                         @enderror
                     </div>
                 </div> --}}
+                <div class="col-md-6">
+                    <label for="role_id" class="required col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
+
+                    <div class="form-group">
+                        <select id="role_id" type="text" class="form-control @error('role_id') is-invalid @enderror"
+                            name="role_id" required autocomplete="role_id" autofocus>
+                            <option value="" selected hidden>Please Select</option>
+
+                            @foreach ($roles as $id => $role)
+                            <option value="{{$id}}" {{ (old('role_id',$user->role->id ?? "") == $id ) ? 'selected' : ''
+                                }}>{{$role}}</option>
+                            @endforeach
+                        </select>
+
+                        @error('role_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
             </div>
 
 

@@ -46,6 +46,7 @@ class UpdateCAsRequest extends FormRequest
             'gst' => 'required',
             'pan' => 'required',
             'firm_type' => 'required',
+            'firm_name' => 'required',
         ];
     }
 }

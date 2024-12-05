@@ -31,7 +31,7 @@ class CasController extends Controller
         $city = City::all();
         $state = State::all();
         // $users = User::where('user_type', '4')->paginate(25)->appends($request->query());
-        $users = CAs::where('user_type', '4')->get();
+        $users = CAs::where('user_type', '4')->orderBy('id', 'desc')->get();
         return view('admin.cas.index', compact('users'));
     }
 
@@ -59,7 +59,7 @@ class CasController extends Controller
     public function store(StoreCAsRequest $request)
     {
         // dd($request);
-        User::create($request->validated());
+        CAs::create($request->validated());
         return redirect()->route('admin.cas.index')->with(['status-success' => "New CAS Created"]);
     }
 
@@ -72,6 +72,7 @@ class CasController extends Controller
      */
     public function show(CAs $user)
     {
+        dd('page work in progress');
         abort_if(Gate::denies('cas_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $country = Country::all();
         $city = City::all();

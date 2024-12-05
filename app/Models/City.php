@@ -22,13 +22,18 @@ class City extends Authenticatable
     protected $primaryKey = 'CityID';
     protected $fillable = [
         'City',
-        'CountryID',
+        // 'CountryID',
         'StateID',
     ];
 
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
     }
 
     public function role()

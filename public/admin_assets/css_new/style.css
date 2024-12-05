@@ -1,6 +1,6 @@
 /*
 
-Template Name: Novo Admin - Responsive Admin Template 
+Template Name: Novo Admin - Responsive Admin Template
 
 Author: Multipurpose Themes
 
@@ -2509,7 +2509,7 @@ small,
 
 /*******************
 
-Padding property 
+Padding property
 
 *******************/
 
@@ -17732,7 +17732,7 @@ Padding property
 
 /*******************
 
-Margin property 
+Margin property
 
 *******************/
 
@@ -32955,7 +32955,7 @@ Margin property
 
 /*******************
 
-Width property 
+Width property
 
 *******************/
 
@@ -39770,7 +39770,7 @@ Width property
 
 /*******************
 
-Height property 
+Height property
 
 *******************/
 
@@ -74008,4 +74008,9 @@ img.online {
 /*# sourceMappingURL=style.css.map */
 i.fa.fa-plus {
   padding-top: 35%;
+}
+
+.light-logo {
+    max-width: 85%;
+    margin-top: 12%;
 }

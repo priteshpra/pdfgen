@@ -29,7 +29,7 @@ class ClientController extends Controller
         abort_if(Gate::denies('client_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         // $users = User::with('role')->where('user_type', '3')->paginate(25)->appends($request->query());
-        $users = User::with('role')->where('user_type', '3')->get();
+        $users = User::with('role')->where('user_type', '3')->orderBy('id', 'desc')->get();
         $country = Country::all();
         $city = City::all();
         $state = State::all();
@@ -73,6 +73,7 @@ class ClientController extends Controller
      */
     public function show(User $user)
     {
+        dd('page work in progress');
         abort_if(Gate::denies('client_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $city = City::all();
         $state = State::all();

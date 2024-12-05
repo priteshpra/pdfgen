@@ -17,7 +17,8 @@
 
 
                 <!-- @canany(['country_access','state_access','city_access']) -->
-                <li class="treeview @if(request()->is('admin/bussinesscategory') || request()->is('admin/bussinesscategory/*') || request()->is('admin/country') || request()->is('admin/country/*') || request()->is('admin/state') || request()->is('admin/state/*') || request()->is('admin/city') || request()->is('admin/city/*') || request()->is('admin/page') || request()->is('admin/page/*') || request()->is('admin/cms') || request()->is('admin/cms/*')) active menu-open @endif">
+                <li
+                    class="treeview @if(request()->is('admin/bussinesscategory') || request()->is('admin/bussinesscategory/*') || request()->is('admin/country') || request()->is('admin/country/*') || request()->is('admin/state') || request()->is('admin/state/*') || request()->is('admin/city') || request()->is('admin/city/*') || request()->is('admin/page') || request()->is('admin/page/*') || request()->is('admin/cms') || request()->is('admin/cms/*')) active menu-open @endif">
                     <a href="#">
                         <i class="icon-Write"><span class="path1"></span><span class="path2"></span></i>
                         <span>Masters</span>
@@ -28,8 +29,10 @@
 
                     <ul class="treeview-menu">
                         @can('bussiness_access')
-                        <li class="@if(request()->is('admin/bussinesscategory') || request()->is('admin/bussinesscategory/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.bussinesscategory.index') }}" aria-expanded="false">
+                        <li
+                            class="@if(request()->is('admin/bussinesscategory') || request()->is('admin/bussinesscategory/*')) active @endif">
+                            <a class="sidebar-link waves-effect waves-dark  "
+                                href="{{ route('admin.bussinesscategory.index') }}" aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">Business Category</span>
                             </a>
@@ -37,8 +40,10 @@
                         @endcan
 
                         @can('country_access')
-                        <li class="@if(request()->is('admin/country') || request()->is('admin/country/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.country.index') }}" aria-expanded="false">
+                        <li
+                            class="@if(request()->is('admin/country') || request()->is('admin/country/*')) active @endif">
+                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.country.index') }}"
+                                aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">Country</span>
                             </a>
@@ -47,7 +52,8 @@
 
                         @can('state_access')
                         <li class="@if(request()->is('admin/state') || request()->is('admin/state/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.state.index') }}" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.state.index') }}"
+                                aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">State</span>
                             </a>
@@ -56,7 +62,8 @@
 
                         @can('city_access')
                         <li class="@if(request()->is('admin/city') || request()->is('admin/city/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.city.index') }}" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.city.index') }}"
+                                aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">City</span>
                             </a>
@@ -65,7 +72,8 @@
 
                         @can('page_access')
                         <li class="@if(request()->is('admin/page') || request()->is('admin/page/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.page.index') }}" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.page.index') }}"
+                                aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">Page</span>
                             </a>
@@ -74,7 +82,8 @@
 
                         @can('cms_access')
                         <li class="@if(request()->is('admin/cms') || request()->is('admin/cms/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.cms.index') }}" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.cms.index') }}"
+                                aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">CMS</span>
                             </a>
@@ -85,7 +94,8 @@
                 </li>
                 <!-- @endcanany -->
                 <!-- @canany(['users_access','roles_access','permissions_access']) -->
-                <li class="treeview @if(request()->is('admin/users') || request()->is('admin/users/*') || request()->is('admin/client') || request()->is('admin/client/*') || request()->is('admin/cas') || request()->is('admin/cas/*')) active menu-open @endif">
+                <li
+                    class="treeview @if(request()->is('admin/users') || request()->is('admin/users/*') || request()->is('admin/client') || request()->is('admin/client/*') || request()->is('admin/cas') || request()->is('admin/cas/*')) active menu-open @endif">
                     <a href="#">
                         <i span class="icon-User"><span class="path1"></span><span class="path2"></span></i>
                         <span>Users</span>
@@ -97,7 +107,8 @@
                     <ul class="treeview-menu">
                         @can('users_access')
                         <li class="@if(request()->is('admin/users') || request()->is('admin/users/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.users.index') }}" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.users.index') }}"
+                                aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">Employees</span>
                             </a>
@@ -106,7 +117,8 @@
 
                         @can('client_access')
                         <li class="@if(request()->is('admin/client') || request()->is('admin/client/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.client.index') }}" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark  " href="{{ route('admin.client.index') }}"
+                                aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">Client</span>
                             </a>
@@ -114,7 +126,8 @@
                         @endcan
                         @can('cas_access')
                         <li class=" @if(request()->is('admin/cas') || request()->is('admin/cas/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark " href="{{ route('admin.cas.index') }}" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark " href="{{ route('admin.cas.index') }}"
+                                aria-expanded="false">
                                 <i class="icon-Commit" aria-hidden="true"></i>
                                 <span class="hide-menu">CAs</span>
                             </a>
@@ -144,7 +157,8 @@
                 <li class="header">REPORTS </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="icon-File"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                        <i class="icon-File"><span class="path1"></span><span class="path2"></span><span
+                                class="path3"></span></i>
                         <span>Reports</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-right pull-right"></i>
@@ -153,7 +167,8 @@
                     <ul class="treeview-menu">
                         <li class="treeview">
                             <a href="#">
-                                <i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Client Wise Data
+                                <i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Client
+                                Wise Data
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-right pull-right"></i>
                                 </span>
@@ -161,7 +176,8 @@
                         </li>
                         <li class="treeview">
                             <a href="#">
-                                <i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Monthly PDFs
+                                <i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Monthly
+                                PDFs
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-right pull-right"></i>
                                 </span>
@@ -187,10 +203,13 @@
 </section>
 <div class="sidebar-footer">
 
-    <a href="javascript:void(0)" class="link" data-bs-toggle="tooltip" title="Settings"><span class="icon-Settings-2"></span></a>
+    {{-- <a href="javascript:void(0)" class="link" data-bs-toggle="tooltip" title="Settings"><span
+            class="icon-Settings-2"></span></a>
 
-    <a href="mailbox.html" class="link" data-bs-toggle="tooltip" title="Email"><span class="icon-Mail"></span></a>
+    <a href="mailbox.html" class="link" data-bs-toggle="tooltip" title="Email"><span class="icon-Mail"></span></a> --}}
 
-    <a href="javascript:void(0)" onclick="$('#logout-form').submit();" class="link" data-bs-toggle="tooltip" title="Logout"><span class="icon-Lock-overturning"><span class="path1"></span><span class="path2"></span></span></a>
+    <a href="javascript:void(0)" onclick="$('#logout-form').submit();" class="link" data-bs-toggle="tooltip"
+        title="Logout"><span class="icon-Lock-overturning"><span class="path1"></span><span
+                class="path2"></span></span></a>
 
 </div>

@@ -296,13 +296,10 @@
             <!-- Content Wrapper. Contains page content -->
         </aside>
         <div class="content-wrapper">
-            <div class="container-full">
-                @yield('content')
-                <form action="{{ route('logout') }}" method="POST" id="logout-form">
-                    @csrf
-                </form>
-
-            </div>
+            @yield('content')
+            <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                @csrf
+            </form>
 
         </div>
 
@@ -864,12 +861,13 @@
     <!-- Novo Admin App -->
     <script src="{{ asset('admin_assets/js_new/template.js') }}"></script>
     <script src="{{ asset('admin_assets/js_new/pages/dashboard3.js') }}"></script>
-    <script src="{{ asset('admin_assets/js_new/pages/calendar.js') }}"></script>
+    {{-- <script src="{{ asset('admin_assets/js_new/pages/calendar.js') }}"></script> --}}
 
     <!-- slim-select -->
     <script src="{{ asset('admin_assets/plugins/slim-select/slimselect.min.js') }}"></script>
 
-
+    <script src="{{ asset('admin_assets/assets/vendor_components/datatable/datatables.min.js') }}"></script>
+    <script src="{{ asset('admin_assets/js_new/pages/data-table.js') }}"></script>
     @yield('scripts')
     <script>
         setTimeout(function () {

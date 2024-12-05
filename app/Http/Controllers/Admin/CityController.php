@@ -28,7 +28,8 @@ class CityController extends Controller
         abort_if(Gate::denies('users_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         // $users = City::with('role')->paginate(25)->appends($request->query());
-        $users = City::with('role')->get();
+        $users = City::with('role', 'state')->leftJoin('states', 'cities.StateID', '=', 'states.StateID')->get();
+
         return view('admin.city.index', compact('users'));
     }
 

@@ -28,7 +28,7 @@ class StateController extends Controller
         abort_if(Gate::denies('state_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         // $users = State::with('role')->paginate(25)->appends($request->query());
-        $users = State::with('role')->get();
+        $users = State::with('role')->leftJoin('countries', 'states.CountryID', '=', 'countries.CountryID')->get();
         return view('admin.state.index', compact('users'));
     }
 

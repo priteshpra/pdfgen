@@ -24,7 +24,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <label for="CountryID" class="required col-md-4 col-form-label text-md-right">{{ __('Country')
                         }}</label>
 
@@ -45,7 +45,7 @@
                         </span>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="row">
                 <div class="col-md-6">
