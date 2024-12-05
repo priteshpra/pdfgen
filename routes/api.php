@@ -35,7 +35,7 @@ Route::get('v1/getDocumentList', [ApiController::class, 'getDocumentList']);
 
 Route::get('v1/getDashboardData', [ApiController::class, 'getDashboardData']);
 
-Route::post('v1/getEmployeeDetails', [ApiController::class, 'getEmployeeDetails']);
+Route::get('v1/getEmployeeDetails', [ApiController::class, 'getEmployeeDetails']);
 Route::get('v1/getCASDetails', [ApiController::class, 'getCASDetails']);
 Route::get('v1/getClientDetails', [ApiController::class, 'getClientDetails']);
 Route::get('v1/getPageContentById', [ApiController::class, 'getPageContentById']);
@@ -45,6 +45,7 @@ Route::get('v1/getCity', [ApiController::class, 'getCity']);
 Route::get('v1/getCountry', [ApiController::class, 'getCountry']);
 Route::get('v1/getState', [ApiController::class, 'getState']);
 Route::get('v1/getOtherDocument', [ApiController::class, 'getOtherDocument']);
+Route::get('v1/getNotificationList', [ApiController::class, 'getNotificationList']);
 
 // below update version API
 Route::get('v1/getAppversion', [ApiController::class, 'getAppversion']);

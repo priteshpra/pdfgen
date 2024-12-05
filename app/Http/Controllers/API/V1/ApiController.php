@@ -20,6 +20,7 @@ use App\Models\City;
 use App\Models\Cms;
 use App\Models\Configuration;
 use App\Models\Country;
+use App\Models\Notification;
 use App\Models\OtherDocument;
 use App\Models\Page;
 use App\Models\Role;
@@ -467,7 +468,7 @@ class ApiController extends Controller
             $user->firm_type = $request->input('firm_type');
             $user->password = Hash::make($request->input('password'));
             $user->user_type = '3';
-            $user->role_id = $request->input('role_id');
+            $user->role_id = '3';
             $user->save();
 
             // Return a response
@@ -520,7 +521,7 @@ class ApiController extends Controller
             $user->email = $request->input('email');
             $user->mobile_no = $request->input('mobile_no');
             $user->address = $request->input('address');
-            $user->role_id = $request->input('role');
+            $user->role_id = '2';
             $user->password = Hash::make($request->input('password'));
             $user->user_type = '2';
             $user->save();
@@ -591,8 +592,8 @@ class ApiController extends Controller
             $user->GST = $request->input('GST');
             $user->firm_type = $request->input('firm_type');
             $user->password = Hash::make($request->input('password'));
-            $user->user_type = '3';
-            $user->role_id = $request->input('role_id');
+            $user->user_type = '4';
+            $user->role_id = '4';
             $user->save();
 
             // Return a response
@@ -852,7 +853,7 @@ class ApiController extends Controller
         $base_url = $this->base_url;
         try {
 
-            $roles = City::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $roles = City::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $roles->total(),
@@ -916,7 +917,7 @@ class ApiController extends Controller
             $token = $request->header('token');
             $base_url = $this->base_url;
 
-            $roles = State::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $roles = State::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $roles->total(),
@@ -1190,6 +1191,9 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * add other Document list data.
+     */
     public function otherDocumentUpload(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -1300,6 +1304,28 @@ class ApiController extends Controller
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Other document list successfully', 'data' => $dataEmployee], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+        }
+    }
+
+    /**
+     * get Notification List data.
+     */
+    public function getNotificationList(Request $request)
+    {
+        try {
+            $user_id = $request->user_id;
+            $page_number = $request->page;
+            $token = $request->header('token');
+
+            $page = Notification::select('*')->where('UserID', $user_id)->get();
+
+            $datapages = [
+                'data' => $page,
+            ];
+
+            return response()->json(['status' => true, 'message' => 'Get Notification list successfully', 'data' => $datapages], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
         }
