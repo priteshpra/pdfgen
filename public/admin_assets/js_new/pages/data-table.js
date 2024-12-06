@@ -378,7 +378,45 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
 		]
 
-	} );
+    });
+
+    $('#scandoctableexample').DataTable( {
+
+		// dom: 'Bfrtip',
+
+		// buttons: [
+
+		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+
+		// ]
+
+    });
+
+    $('#otherdoctableexample').DataTable( {
+
+		// dom: 'Bfrtip',
+
+		// buttons: [
+
+		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+
+		// ]
+
+    });
+
+    $('#notificationtableexample').DataTable( {
+
+		// dom: 'Bfrtip',
+
+		// buttons: [
+
+		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+
+		// ]
+
+    });
+
+
 
 
 

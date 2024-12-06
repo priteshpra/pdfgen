@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Notification;
+use App\Models\OtherDocument;
+use App\Models\Scandocument;
 use App\Models\State;
 
 class CasController extends Controller
@@ -70,14 +73,21 @@ class CasController extends Controller
      * @param  \App\Models\User  $permission
      * @return \Illuminate\Http\Response
      */
-    public function show(CAs $user)
+    public function show(int $id)
     {
-        dd('page work in progress');
         abort_if(Gate::denies('cas_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $country = Country::all();
-        $city = City::all();
-        $state = State::all();
-        return view('admin.cas.show', compact('user', 'city', 'state', 'country'));
+        $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+        $user = CAs::find($id);
+        $employee = CAs::where('client_id', $id)->where('Status', '1')->get()->toArray();
+        $employeesNameData = array_column($employee, 'name', 'id');
+        $employeesId = array_column($employee, 'id');
+        $scanDocuments = Scandocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
+        $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
+        $notificationList = Notification::where('UserID', $id)->get();
+        // dd($scanDocuments);
+        return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList'));
     }
 
     /**
@@ -91,8 +101,8 @@ class CasController extends Controller
         abort_if(Gate::denies('cas_edit'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $user = CAs::find($id);
         $country = Country::all();
-        $city = City::all();
-        $state = State::all();
+        $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         $roles = Role::pluck('title', 'id');
         return view('admin.cas.edit', compact('user', 'roles', 'city', 'state', 'country'));
     }
@@ -130,6 +140,69 @@ class CasController extends Controller
     public function toggleStatus(Request $request)
     {
         $user = CAs::find($request->id); // Get the user by ID
+        if ($user) {
+            $user->Status = $request->Status; // Toggle status
+            $user->save(); // Save the updated status
+
+            return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
+        }
+
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        // Validate input
+        $request->validate([
+            'old_password' => ['required'],
+            'new_password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        // Find the user by ID
+        $user = CAs::findOrFail($id);
+
+        // Check if the old password matches
+        if (!Hash::check($request->old_password, $user->password)) {
+            return back()->withErrors(['old_password' => 'The old password is incorrect.']);
+        }
+
+        // Update the password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        // Return success response
+        return back()->with('status-success', 'Password updated successfully!');
+    }
+
+    public function notificationToggleStatus(Request $request)
+    {
+        $user = Notification::find($request->id); // Get the user by ID
+        if ($user) {
+            $user->IsRead = $request->Status; // Toggle status
+            $user->save(); // Save the updated status
+
+            return response()->json(['success' => 'success', 'message' => 'Notification read successfully!', 'status' => $user->status]);
+        }
+
+        return response()->json(['success' => 'error', 'message' => 'Notification read failed.']);
+    }
+
+    public function otherDocToggleStatus(Request $request)
+    {
+        $user = OtherDocument::find($request->id); // Get the user by ID
+        if ($user) {
+            $user->Status = $request->Status; // Toggle status
+            $user->save(); // Save the updated status
+
+            return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
+        }
+
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
+    }
+
+    public function scanDocToggleStatus(Request $request)
+    {
+        $user = Scandocument::find($request->id); // Get the user by ID
         if ($user) {
             $user->Status = $request->Status; // Toggle status
             $user->save(); // Save the updated status

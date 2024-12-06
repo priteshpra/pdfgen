@@ -63,7 +63,13 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::post('/city-toggle-status', [CityController::class, 'toggleStatus'])->name('citytoggle.status');
     Route::post('/cms-toggle-status', [CmsController::class, 'toggleStatus'])->name('cmstoggle.status');
     Route::post('/page-toggle-status', [PageController::class, 'toggleStatus'])->name('pagetoggle.status');
-
+    Route::post('/cas/{id}/update-password', [CasController::class, 'updatePassword'])->name('cas.update-password');
+    Route::post('/notification-toggle-status', [
+        CasController::class,
+        'notificationToggleStatus'
+    ])->name('notificationtoggle.status');
+    Route::post('/otherdoc-toggle-status', [CasController::class, 'otherDocToggleStatus'])->name('otherdoctoggle.status');
+    Route::post('/scandoc-toggle-status', [CasController::class, 'scanDocToggleStatus'])->name('scandoctoggle.status');
 
     // Route::post('/search', 'CityController');
 });

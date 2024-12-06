@@ -44,7 +44,7 @@ class CityController extends Controller
 
         $roles = Role::pluck('title', 'id');
         $country = Country::all();
-        $state = State::all();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         return view('admin.city.create', compact('roles', 'country', 'state'));
     }
 
@@ -84,7 +84,7 @@ class CityController extends Controller
     {
         $user = City::where(['CityID' => $id])->first();
         $country = Country::all();
-        $state = State::all();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         // dd($user);
         abort_if(Gate::denies('city_edit'), Response::HTTP_FORBIDDEN, 'Forbidden');
 

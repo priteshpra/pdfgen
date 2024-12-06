@@ -69,9 +69,14 @@ class ApiController extends Controller
             $email = $request->email;
             $password = $request->password;
             $device_token = isset($request->device_token) ? $request->device_token : '';
-            $device_type = $request->device_type;
+            $device_type =
+                isset($request->device_type) ? $request->device_type : '';
+            $api_version = isset($request->api_version) ? $request->api_version : '';
+            $app_version = isset($request->app_version) ? $request->app_version : '';
+            $os_version = isset($request->os_version) ? $request->os_version : '';
+            $device_model_name = isset($request->device_model_name) ? $request->device_model_name : '';
+            $app_language = isset($request->app_language) ? $request->app_language : '';
             $base_url = $this->base_url;
-            $otp = rand(1000, 9999); //'0096';
             DB::enableQueryLog();
 
             $chkUser = User::where('email', $email)->where('Status', 1)->first();
@@ -86,6 +91,7 @@ class ApiController extends Controller
             }
 
             if ($chkUser) {
+                $chkUser->CompanyID = 0;
                 $token = $chkUser->createToken('authToken')->plainTextToken;
                 $result['status'] = false;
                 $result['message'] = "Login Succssfully!";
@@ -118,6 +124,11 @@ class ApiController extends Controller
                     'device_token' => $device_token,
                     'login_token' => $token,
                     'device_type' => $device_type,
+                    'api_version' => $api_version,
+                    'app_version' => $app_version,
+                    'os_version' => $os_version,
+                    'device_model_name' => $device_model_name,
+                    'app_language' => $app_language,
                     'user_id' => $chkUser->id,
                 ];
                 DB::table('user_devices')->insertGetId($arr);
@@ -524,6 +535,7 @@ class ApiController extends Controller
             $user->role_id = '2';
             $user->password = Hash::make($request->input('password'));
             $user->user_type = '2';
+            $user->client_id = $request->input('user_id');
             $user->save();
 
             // Return a response
@@ -1000,6 +1012,7 @@ class ApiController extends Controller
             'images' => 'required|array',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
             'user_id' => 'required',
+            'company_id' => '',
         ]);
 
         if ($validator->fails()) {
@@ -1010,6 +1023,7 @@ class ApiController extends Controller
         }
         try {
             $user_id = $request->user_id;
+            $company_id = isset($request->company_id) ? $request->company_id : 0;
             $page_number = $request->page;
             $token = $request->header('token');
             $base_url = $this->base_url;
@@ -1047,7 +1061,7 @@ class ApiController extends Controller
             $documents = new Scandocument();
             $documents->Title = 'Document';
             $documents->BatchNo = rand(1000, 1000);
-            $documents->CompanyID = $user_id;
+            $documents->CompanyID = $company_id;
             $documents->UserID = $user_id;
             $documents->ImageCount = $imageCount;
             $documents->DocumentURL = $downloadUrl;
@@ -1201,7 +1215,7 @@ class ApiController extends Controller
             'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
             'user_id' => 'required',
             'title' => '',
-            'company_id' => 'required',
+            'company_id' => '',
         ]);
 
         if ($validator->fails()) {
@@ -1212,7 +1226,7 @@ class ApiController extends Controller
         }
         try {
             $user_id = $request->user_id;
-            $CompanyID = $request->company_id;
+            $company_id = isset($request->company_id) ? $request->company_id : 0;
             $Title = $request->title;
             $Remarks = $request->remarks;
 
@@ -1251,7 +1265,7 @@ class ApiController extends Controller
 
             $documents = new OtherDocument();
             $documents->Title = $Title;
-            $documents->CompanyID = $CompanyID;
+            $documents->CompanyID = $company_id;
             $documents->UserID = $user_id;
             $documents->ImageCount = $imageCount;
             $documents->Remarks = $Remarks;
@@ -1277,7 +1291,6 @@ class ApiController extends Controller
         $token = $request->header('token');
         $base_url = $this->base_url;
         try {
-
             $employee = OtherDocument::select([
                 'OtherdocumentsID',
                 'Title',

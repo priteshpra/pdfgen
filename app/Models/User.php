@@ -37,6 +37,7 @@ class User extends Authenticatable
         'firm_type',
         'user_type',
         'firm_name',
+        'client_id'
     ];
 
     /**

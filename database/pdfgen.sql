@@ -90,7 +90,7 @@ END$$
 
 CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCAS` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
-    SET 
+    SET
         first_name = p_first_name,
         last_name = p_last_name,
         email = p_email,
@@ -102,7 +102,7 @@ END$$
 
 CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCategory` (IN `p_category_id` INT, IN `p_category_name` VARCHAR(100), IN `p_title_name` VARCHAR(100), IN `p_keyword_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
     UPDATE businesscategory
-    SET 
+    SET
         CategoryName = p_category_name,
         MetaTitle = p_title_name,
         MetaKeywords = p_keyword_name,
@@ -112,7 +112,7 @@ END$$
 
 CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCity` (IN `p_state_id` INT, IN `p_city_name` VARCHAR(100), IN `p_country_code` VARCHAR(10), IN `p_state_code` VARCHAR(10))   BEGIN
     UPDATE cities
-    SET 
+    SET
         City = p_city_name,
         CountryID = p_country_code,
         StateID = p_state_code
@@ -121,7 +121,7 @@ END$$
 
 CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateClient` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
-    SET 
+    SET
         first_name = p_first_name,
         last_name = p_last_name,
         email = p_email,
@@ -133,7 +133,7 @@ END$$
 
 CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCMS` (IN `p_cms_id` INT, IN `p_page` VARCHAR(255), IN `p_content` TEXT)   BEGIN
     UPDATE cms
-    SET 
+    SET
         PageID = p_page,
         Content = p_content
     WHERE CMSID = p_cms_id;
@@ -141,7 +141,7 @@ END$$
 
 CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateEmployee` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
-    SET 
+    SET
         first_name = p_first_name,
         last_name = p_last_name,
         email = p_email,
@@ -153,7 +153,7 @@ END$$
 
 CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateState` (IN `p_state_id` INT, IN `p_state_name` VARCHAR(100), IN `p_country_code` VARCHAR(10))   BEGIN
     UPDATE states
-    SET 
+    SET
         StateName = p_state_name,
         CountryID = p_country_code
     WHERE StateID = p_state_id;

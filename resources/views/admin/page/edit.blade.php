@@ -33,6 +33,9 @@
                     <button type="submit" class="btn btn-primary">
                         {{ __('Update') }}
                     </button>
+                    <button type="button" class="btn btn-warning me-1" tabindex="6">
+                        <i class="ti-trash"></i> Cancel
+                    </button>
                 </div>
             </div>
         </form>

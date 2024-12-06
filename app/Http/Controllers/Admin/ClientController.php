@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Notification;
+use App\Models\OtherDocument;
+use App\Models\Scandocument;
 use App\Models\State;
 
 class ClientController extends Controller
@@ -45,8 +48,8 @@ class ClientController extends Controller
     {
         abort_if(Gate::denies('client_create'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $country = Country::all();
-        $city = City::all();
-        $state = State::all();
+        $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         $roles = Role::pluck('title', 'id');
         return view('admin.clients.create', compact('roles', 'city', 'state', 'country'));
     }
@@ -71,14 +74,21 @@ class ClientController extends Controller
      * @param  \App\Models\User  $permission
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(int $id)
     {
-        dd('page work in progress');
         abort_if(Gate::denies('client_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $city = City::all();
         $state = State::all();
         $roles = Role::pluck('title', 'id');
-        return view('admin.clients.show', compact('user', 'country', 'city', 'state'));
+        $user = User::find($id);
+        $employee = User::where('client_id', $id)->where('Status', '1')->get()->toArray();
+        $employeesNameData = array_column($employee, 'name', 'id');
+        $employeesId = array_column($employee, 'id');
+        $scanDocuments = Scandocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
+        $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
+        $notificationList = Notification::where('UserID', $id)->get();
+
+        return view('admin.clients.show', compact('user', 'city', 'state', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList'));
     }
 
     /**
@@ -92,8 +102,8 @@ class ClientController extends Controller
         abort_if(Gate::denies('client_edit'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $user = User::find($id);
         $country = Country::all();
-        $city = City::all();
-        $state = State::all();
+        $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         $roles = Role::pluck('title', 'id');
         return view('admin.clients.edit', compact('user', 'roles', 'country', 'state', 'city'));
     }

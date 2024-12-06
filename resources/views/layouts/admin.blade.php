@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('admin_assets/images_new/favicon.ico') }}">
-    <title>PDF Generator - Dashboard</title>
+    <title>PostsDoc - Dashboard</title>
     <!-- Vendors Style-->
     <link rel=" stylesheet" href="{{ asset('admin_assets/css_new/vendors_css.css') }}">
     <!-- Style-->
@@ -873,6 +873,10 @@
         setTimeout(function () {
             $('#alert-container').fadeOut();
         }, 4500);
+
+        $(".btn-warning.me-1").click(function() {
+            history.back();
+        });
     </script>
 
 </body>

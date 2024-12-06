@@ -12,7 +12,8 @@
                 <label for="Country" class="required col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
 
                 <div class="col-md-6">
-                    <input id="Country" type="text" class="form-control @error('Country') is-invalid @enderror" name="Country" value="{{ old('Country') }}" required autocomplete="Country">
+                    <input id="Country" type="text" class="form-control @error('Country') is-invalid @enderror"
+                        name="Country" value="{{ old('Country') }}" required autocomplete="Country">
 
                     @error('Country')
                     <span class="invalid-feedback" role="alert">
@@ -26,6 +27,9 @@
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" class="btn btn-primary">
                         {{ __('Create') }}
+                    </button>
+                    <button type="button" class="btn btn-warning me-1" tabindex="6">
+                        <i class="ti-trash"></i> Cancel
                     </button>
                 </div>
             </div>

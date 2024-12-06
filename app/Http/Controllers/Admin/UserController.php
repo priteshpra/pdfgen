@@ -62,12 +62,14 @@ class UserController extends Controller
      * @param  \App\Models\User  $permission
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(int $id)
     {
-        dd('page working');
+        // dd('page working');
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
+        $roles = Role::pluck('title', 'id');
+        $user = User::find($id);
 
-        return view('admin.users.show', compact('user'));
+        return view('admin.users.show', compact('user', 'roles'));
     }
 
     /**
