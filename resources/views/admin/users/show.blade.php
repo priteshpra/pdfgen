@@ -91,6 +91,29 @@
                             </div>
                             <div class="tab-pane" id="profile2" role="tabpanel">
                                 <div class="col-lg-12 col-12">
+                                    @if(Session::has('status-success'))
+                                    <div class="alert alert-success">
+                                        {{Session::get('status-success')}}
+                                    </div>
+                                    @endif
+
+                                    @if(Session::has('status-info'))
+                                    <div class="alert alert-info">
+                                        {{Session::get('status-info')}}
+                                    </div>
+                                    @endif
+
+                                    @if(Session::has('status-warning'))
+                                    <div class="alert alert-warning">
+                                        {{Session::get('status-warning')}}
+                                    </div>
+                                    @endif
+
+                                    @if(Session::has('status-danger'))
+                                    <div class="alert alert-danger">
+                                        {{Session::get('status-danger')}}
+                                    </div>
+                                    @endif
                                     <div class="box">
                                         <form class="form" action="{{ route('admin.cas.update-password', $user->id) }}"
                                             method="POST">
@@ -106,6 +129,12 @@
                                                             <input type="password" name="old_password" id="old_password"
                                                                 class="form-control" placeholder="Old Password"
                                                                 maxlength="50" autofocus tabindex="1">
+                                                            @error('old_password')
+                                                            <span class="invalid-feedback" style="display: block"
+                                                                role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -114,6 +143,12 @@
                                                             <input type="password" name="new_password" id="new_password"
                                                                 class="form-control" placeholder="New Password"
                                                                 maxlength="50" tabindex="2">
+                                                            @error('new_password')
+                                                            <span class="invalid-feedback" style="display: block"
+                                                                role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -125,6 +160,12 @@
                                                                 id="new_password_confirmation" class="form-control"
                                                                 placeholder="Confirm Password" maxlength="50"
                                                                 tabindex="3">
+                                                            @error('new_password_confirmation')
+                                                            <span class="invalid-feedback" style="display: block"
+                                                                role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -133,9 +174,8 @@
                                             </div>
                                             <!-- /.box-body -->
                                             <div class="box-footer">
-                                                <button type="submit" class="btn btn-primary" tabindex="4">
-                                                    <i class="ti-save-alt"></i> Save
-                                                </button>
+                                                <a href="#" id="submitLink" class="btn btn-primary"><i
+                                                        class="ti-save-alt"></i> Save</a>
                                                 <button type="button" class="btn btn-warning me-1" tabindex="5">
                                                     <i class="ti-trash"></i> Cancel
                                                 </button>

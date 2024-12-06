@@ -6,7 +6,7 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <a href="{{ route('admin.clients.index') }}">
+                <a href="{{ route('admin.client.index') }}">
                     <h3 class="page-title">{{ $user->name }} {{ $user->lname }} - Details</h3>
                 </a>
             </div>
@@ -55,101 +55,122 @@
                             <div class="tab-pane active" id="home2" role="tabpanel">
                                 <div class="col-lg-12 col-12">
                                     <div class="box">
-                                        <form class="form">
-                                            <div class="box-body">
-                                                <h4 class="box-title text-info mb-0"><i class="ti-user me-15"></i>
-                                                    Personal Info</h4>
-                                                <hr class="my-15">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">First Name</label><br>
-                                                            <label>{{ $user->name }}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Last Name</label><br>
-                                                            <label>{{ $user->lname }}</label>
-                                                        </div>
+                                        <div class="box-body">
+                                            <h4 class="box-title text-info mb-0"><i class="ti-user me-15"></i>
+                                                Personal Info</h4>
+                                            <hr class="my-15">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">First Name</label><br>
+                                                        <label>{{ $user->name }}</label>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">E-mail</label><br>
-                                                            <label>{{ $user->email }}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Contact Number</label><br>
-                                                            <label>{{ $user->mobile_no }}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <h4 class="box-title text-info mb-0 mt-20"><i class="ti-save me-15"></i>
-                                                    Company Info</h4>
-                                                <hr class="my-15">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Firm Name</label><br>
-                                                            <label>{{ $user->firm_name }} </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Address</label><br>
-                                                            <label>{{ $user->address }}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">PAN Number</label><br>
-                                                            <label>{{ $user->pan }}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Aadhar Number</label><br>
-                                                            @php
-                                                            $formattedAadhar = substr($user->aadhar, 0, 4) . '-' .
-                                                            substr($user->aadhar, 4, 4) . '-' . substr($user->aadhar, 8,
-                                                            4);
-                                                            @endphp
-                                                            <label>{{ $formattedAadhar }}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">GST Number</label><br>
-                                                            <label>{{ $user->gst }} </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Firm Type</label><br>
-                                                            <label>{{ $user->firm_type }}</label>
-                                                        </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Last Name</label><br>
+                                                        <label>{{ $user->lname }}</label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- /.box-body -->
-                                        </form>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">E-mail</label><br>
+                                                        <label>{{ $user->email }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Contact Number</label><br>
+                                                        <label>{{ $user->mobile_no }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h4 class="box-title text-info mb-0 mt-20"><i class="ti-save me-15"></i>
+                                                Company Info</h4>
+                                            <hr class="my-15">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Firm Name</label><br>
+                                                        <label>{{ $user->firm_name }} </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Address</label><br>
+                                                        <label>{{ $user->address }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">PAN Number</label><br>
+                                                        <label>{{ $user->pan }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Aadhar Number</label><br>
+                                                        @php
+                                                        $formattedAadhar = substr($user->aadhar, 0, 4) . '-' .
+                                                        substr($user->aadhar, 4, 4) . '-' . substr($user->aadhar, 8,
+                                                        4);
+                                                        @endphp
+                                                        <label>{{ $formattedAadhar }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">GST Number</label><br>
+                                                        <label>{{ $user->gst }} </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Firm Type</label><br>
+                                                        <label>{{ $user->firm_type }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
                                     </div>
                                     <!-- /.box -->
                                 </div>
                             </div>
                             <div class="tab-pane" id="profile2" role="tabpanel">
                                 <div class="col-lg-12 col-12">
+                                    @if(Session::has('status-success'))
+                                    <div class="alert alert-success">
+                                        {{Session::get('status-success')}}
+                                    </div>
+                                    @endif
+
+                                    @if(Session::has('status-info'))
+                                    <div class="alert alert-info">
+                                        {{Session::get('status-info')}}
+                                    </div>
+                                    @endif
+
+                                    @if(Session::has('status-warning'))
+                                    <div class="alert alert-warning">
+                                        {{Session::get('status-warning')}}
+                                    </div>
+                                    @endif
+
+                                    @if(Session::has('status-danger'))
+                                    <div class="alert alert-danger">
+                                        {{Session::get('status-danger')}}
+                                    </div>
+                                    @endif
                                     <div class="box">
-                                        <form class="form" action="{{ route('admin.cas.update-password', $user->id) }}"
-                                            method="POST">
+                                        <form id="myForm" method="POST" class="form"
+                                            action="{{ route('admin.cas.update-password', $user->id) }}">
                                             @csrf
                                             <div class="box-body">
                                                 <h4 class="box-title text-info mb-0"><i class="ti-user me-15"></i>
@@ -159,17 +180,30 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Old Password</label>
-                                                            <input type="password" name="old_password" id="old_password"
-                                                                class="form-control" placeholder="Old Password"
-                                                                maxlength="50" autofocus tabindex="1">
+                                                            <input type="password" required name="old_password"
+                                                                id="old_password" class="form-control"
+                                                                placeholder="Old Password" maxlength="50" autofocus
+                                                                tabindex="1">
+                                                            @error('old_password')
+                                                            <span class="invalid-feedback" style="display: block"
+                                                                role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">New Password</label>
-                                                            <input type="password" name="new_password" id="new_password"
-                                                                class="form-control" placeholder="New Password"
-                                                                maxlength="50" tabindex="2">
+                                                            <input type="password" required name="new_password"
+                                                                id="new_password" class="form-control"
+                                                                placeholder="New Password" maxlength="50" tabindex="2">
+                                                            @error('new_password')
+                                                            <span class="invalid-feedback" style="display: block"
+                                                                role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -181,6 +215,12 @@
                                                                 id="new_password_confirmation" class="form-control"
                                                                 placeholder="Confirm Password" maxlength="50"
                                                                 tabindex="3">
+                                                            @error('new_password_confirmation')
+                                                            <span class="invalid-feedback" style="display: block"
+                                                                role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -189,9 +229,8 @@
                                             </div>
                                             <!-- /.box-body -->
                                             <div class="box-footer">
-                                                <button type="submit" class="btn btn-primary" tabindex="4">
-                                                    <i class="ti-save-alt"></i> Save
-                                                </button>
+                                                <a href="#" id="submitLink" class="btn btn-primary"><i
+                                                        class="ti-save-alt"></i> Save</a>
                                                 <button type="button" class="btn btn-warning me-1" tabindex="5">
                                                     <i class="ti-trash"></i> Cancel
                                                 </button>
@@ -501,6 +540,10 @@
     <!-- /.content -->
 </div>
 <script>
+    document.getElementById('submitLink').addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent default link behavior
+        document.getElementById('myForm').submit(); // Trigger form submission
+    });
     function toggleStatus(ID,  status) {
         if(status == 0) {
             statuss = 0;

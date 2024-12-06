@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserPhotoRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,6 +20,8 @@ use App\Models\Notification;
 use App\Models\OtherDocument;
 use App\Models\Scandocument;
 use App\Models\State;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class CasController extends Controller
 {
@@ -152,18 +155,21 @@ class CasController extends Controller
 
     public function updatePassword(Request $request, $id)
     {
-        // Validate input
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'old_password' => ['required'],
-            'new_password' => ['required', 'string', 'min:8', 'confirmed'],
+            'new_password' => ['required', 'string', 'min:6', 'confirmed'],
+        ], [
+            'new_password.confirmed' => 'The new password confirmation does not match.',
         ]);
-
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         // Find the user by ID
-        $user = CAs::findOrFail($id);
 
+        $user = CAs::findOrFail($id);
         // Check if the old password matches
         if (!Hash::check($request->old_password, $user->password)) {
-            return back()->withErrors(['old_password' => 'The old password is incorrect.']);
+            return back()->with(['status-danger' => 'The old password is incorrect.']);
         }
 
         // Update the password
@@ -171,7 +177,7 @@ class CasController extends Controller
         $user->save();
 
         // Return success response
-        return back()->with('status-success', 'Password updated successfully!');
+        return back()->with('status-success', 'Password changed successfully!');
     }
 
     public function notificationToggleStatus(Request $request)
