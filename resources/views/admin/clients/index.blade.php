@@ -103,6 +103,9 @@
                                             <a href="{{ route('admin.client.edit', $user->id) }}"
                                                 class="btn btn-sm btn-warning">Edit</a>
                                             @endcan
+
+                                            <a href="{{ route('admin.company.edit', $user->id) }}"
+                                                class="btn btn-sm btn-success">Create Company</a>
                                             <!-- @can('user_delete')
                                                 <form action="{{ route('admin.client.destroy', $user->id) }}" class="d-inline-block" method="post">
                                                     @csrf
@@ -129,50 +132,50 @@
     </section>
 </div>
 <script>
-    function toggleStatus(ID,  status) {
-            if(status == 1) {
-                statuss = 0;
-                console.log('off');
-                $('#toggleChang_'+ID).addClass('btn-success');
-                $('#toggleChang_'+ID).removeClass('btn-error');
-            } else {
-                statuss = 1;
-                $('#toggleChang_'+ID).removeClass('btn-success');
-                 $('#toggleChang_'+ID).addClass('btn-error');
-            }
-            $("#toggleChang_"+ID). attr("onclick","toggleStatus("+ID+", "+statuss+")");
+    function toggleStatus(ID, status) {
+        if (status == 1) {
+            statuss = 0;
+            console.log('off');
+            $('#toggleChang_' + ID).addClass('btn-success');
+            $('#toggleChang_' + ID).removeClass('btn-error');
+        } else {
+            statuss = 1;
+            $('#toggleChang_' + ID).removeClass('btn-success');
+            $('#toggleChang_' + ID).addClass('btn-error');
+        }
+        $("#toggleChang_" + ID).attr("onclick", "toggleStatus(" + ID + ", " + statuss + ")");
 
-            $('#loader').show();
-            $('#loader').css('opacity',1);
-            $.ajax({
-                url: "{{ route('admin.clienttoggle.status') }}", // URL to your route
-                type: "POST",
-                data: {
-                    id: ID, // Pass the user ID
-                    Status: status, // Pass the user ID
-                    _token: '{{ csrf_token() }}' // CSRF token for Laravel
-                },
-                success: function(response) {
-                    $('#loader').hide();
-                    $('#loader').css('opacity',0);
-                    $('#alert-container').html(`
+        $('#loader').show();
+        $('#loader').css('opacity', 1);
+        $.ajax({
+            url: "{{ route('admin.clienttoggle.status') }}", // URL to your route
+            type: "POST",
+            data: {
+                id: ID, // Pass the user ID
+                Status: status, // Pass the user ID
+                _token: '{{ csrf_token() }}' // CSRF token for Laravel
+            },
+            success: function(response) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $('#alert-container').html(`
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         ${response.message}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     `);
-                },
-                error: function(xhr) {
-                    $('#loader').hide();
-                    $('#loader').css('opacity',0);
-                    $('#alert-container').html(`
+            },
+            error: function(xhr) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $('#alert-container').html(`
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         ${xhr.responseJSON.message}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     `);
-                }
-            });
-        }
+            }
+        });
+    }
 </script>
 @endsection

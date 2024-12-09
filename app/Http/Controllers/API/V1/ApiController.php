@@ -30,6 +30,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Password;
 use PDF;
 use PhpParser\Node\Stmt\TryCatch;
+use setasign\Fpdi\Fpdi;
 
 class ApiController extends Controller
 {
@@ -70,7 +71,7 @@ class ApiController extends Controller
             $password = $request->password;
             $device_token = isset($request->device_token) ? $request->device_token : '';
             $device_type =
-                isset($request->device_type) ? $request->device_type : '';
+                isset($request->device_type) ? $request->device_type : 'Android';
             $api_version = isset($request->api_version) ? $request->api_version : '';
             $app_version = isset($request->app_version) ? $request->app_version : '';
             $os_version = isset($request->os_version) ? $request->os_version : '';
@@ -141,7 +142,7 @@ class ApiController extends Controller
                 return response()->json($result, 200);
             }
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -193,7 +194,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $client = User::select('*')->where('Status', 1)->where('user_type', '3')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $client = User::select('*')->where('Status', 1)->where('client_id', $user_id)->where('user_type', '3')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $client->total(),
@@ -210,7 +211,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Client list successfully', 'data' => $dataClients], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -230,7 +231,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $cas = User::select('*')->where('Status', 1)->where('user_type', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $cas = User::select('*')->where('Status', 1)->where('client_id', $user_id)->where('user_type', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $cas->total(),
@@ -247,7 +248,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get CAS list successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -267,7 +268,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $employee = User::select('*')->where('Status', 1)->where('user_type', '2')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $employee = User::select('*')->where('Status', 1)->where('client_id', $user_id)->where('user_type', '2')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $employee->total(),
@@ -284,7 +285,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Emaployee list successfully', 'data' => $dataEmployee], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -327,7 +328,7 @@ class ApiController extends Controller
             }
             return response()->json(['status' => true, 'message' => 'Get Employee details successfully', 'data' => $datas], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -370,7 +371,7 @@ class ApiController extends Controller
             }
             return response()->json(['status' => true, 'message' => 'Get CAS details successfully', 'data' => $datas], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -413,7 +414,7 @@ class ApiController extends Controller
             }
             return response()->json(['status' => true, 'message' => 'Get Client details successfully', 'data' => $datas], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -449,6 +450,7 @@ class ApiController extends Controller
                 'pincode' => 'required',
                 'aadharNumber' => 'required',
                 'GST' => 'required',
+                'user_id' => 'required',
                 'PAN' => 'required',
                 'firm_type' => 'required',
                 'user_type' => 'required',
@@ -477,6 +479,7 @@ class ApiController extends Controller
             $user->PAN = $request->input('PAN');
             $user->GST = $request->input('GST');
             $user->firm_type = $request->input('firm_type');
+            $user->client_id = $request->input('user_id');
             $user->password = Hash::make($request->input('password'));
             $user->user_type = '3';
             $user->role_id = '3';
@@ -485,7 +488,7 @@ class ApiController extends Controller
             // Return a response
             return response()->json(['status' => true, 'message' => 'Clients created successfully', 'data' => $user], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed.', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time..', 'data' => []], 200);
         }
     }
 
@@ -513,7 +516,7 @@ class ApiController extends Controller
                 'email' => 'required|email|unique:users,email|max:255',
                 'mobile_no' => 'required|min:10|digits:10',
                 'address' => 'required',
-                // 'role' => 'required',
+                'user_id' => 'required',
                 'user_type' => 'required',
                 'password' => 'required|string|max:100',
             ]);
@@ -541,7 +544,7 @@ class ApiController extends Controller
             // Return a response
             return response()->json(['status' => true, 'message' => 'Employee created successfully', 'data' => $user], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -569,6 +572,7 @@ class ApiController extends Controller
                 'email' => 'required|email|unique:users,email|max:255',
                 'mobile_no' => 'required|min:10|digits:10',
                 'address' => 'required',
+                'user_id' => 'required',
                 'countryID' => 'required',
                 'stateID' => 'required',
                 'cityID' => 'required',
@@ -603,6 +607,7 @@ class ApiController extends Controller
             $user->PAN = $request->input('PAN');
             $user->GST = $request->input('GST');
             $user->firm_type = $request->input('firm_type');
+            $user->client_id = $request->input('user_id');
             $user->password = Hash::make($request->input('password'));
             $user->user_type = '4';
             $user->role_id = '4';
@@ -611,7 +616,7 @@ class ApiController extends Controller
             // Return a response
             return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => $user], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -639,7 +644,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => $totalImageCount]], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -678,7 +683,7 @@ class ApiController extends Controller
             // Return a response
             return response()->json(['status' => true, 'message' => 'Account deleted successfully', 'data' => []], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -724,7 +729,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Password changed successfully.', 'data' => []], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -850,7 +855,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Roles list successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -865,24 +870,15 @@ class ApiController extends Controller
         $base_url = $this->base_url;
         try {
 
-            $roles = City::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->paginate($this->per_page_show, ['*'], 'page', $page_number);
-
-            $pagination = [
-                'total' => $roles->total(),
-                'count' => $roles->count(),
-                'per_page' => $roles->perPage(),
-                'current_page' => $roles->currentPage(),
-                'total_pages' => $roles->lastPage(),
-            ];
+            $roles = City::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
 
             $dataCAS = [
-                'pagination' => $pagination,
                 'data' => $roles,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Clity list successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -897,24 +893,14 @@ class ApiController extends Controller
         $base_url = $this->base_url;
         try {
 
-            $roles = Country::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
-
-            $pagination = [
-                'total' => $roles->total(),
-                'count' => $roles->count(),
-                'per_page' => $roles->perPage(),
-                'current_page' => $roles->currentPage(),
-                'total_pages' => $roles->lastPage(),
-            ];
-
+            $roles = Country::select('*')->where('Status', 1)->get();
             $dataCAS = [
-                'pagination' => $pagination,
                 'data' => $roles,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Country list successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -929,24 +915,14 @@ class ApiController extends Controller
             $token = $request->header('token');
             $base_url = $this->base_url;
 
-            $roles = State::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->paginate($this->per_page_show, ['*'], 'page', $page_number);
-
-            $pagination = [
-                'total' => $roles->total(),
-                'count' => $roles->count(),
-                'per_page' => $roles->perPage(),
-                'current_page' => $roles->currentPage(),
-                'total_pages' => $roles->lastPage(),
-            ];
-
+            $roles = State::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
             $dataCAS = [
-                'pagination' => $pagination,
                 'data' => $roles,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get State list successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -971,7 +947,7 @@ class ApiController extends Controller
                 ? back()->with('status', __($status))
                 : back()->withErrors(['email' => __($status)]);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1002,7 +978,7 @@ class ApiController extends Controller
                 ? redirect()->route('login')->with('status', __($status))
                 : back()->withErrors(['email' => [__($status)]]);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1055,8 +1031,12 @@ class ApiController extends Controller
             $pdfPath = 'pdfs/' . $user_id . '/images_' . date('Y-m-d-h-i-s') . '.pdf';
             Storage::disk('public')->put($pdfPath, $pdf->output());
 
+            $localPath = storage_path("app/public/{$pdfPath}");
+            $fpdi = new Fpdi();
+            $pageCount = $fpdi->setSourceFile($localPath);
             // Provide download link
-            $downloadUrl = asset("storage/{$pdfPath}");
+            $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
+            // $downloadUrl = asset("storage/{$pdfPath}");
 
             $documents = new Scandocument();
             $documents->Title = 'Document';
@@ -1064,6 +1044,7 @@ class ApiController extends Controller
             $documents->CompanyID = $company_id;
             $documents->UserID = $user_id;
             $documents->ImageCount = $imageCount;
+            $documents->PageCount = $pageCount;
             $documents->DocumentURL = $downloadUrl;
             $documents->save();
 
@@ -1072,7 +1053,7 @@ class ApiController extends Controller
             ];
             return response()->json(['status' => true, 'message' => 'PDF created successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1091,7 +1072,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get pages list successfully', 'data' => $datapages], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1111,7 +1092,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Content Data successfully', 'data' => $dataClients], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1148,7 +1129,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Document list successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1169,7 +1150,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Configuration Data successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1201,7 +1182,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Bussiness category list successfully', 'data' => $dataEmployee], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1260,14 +1241,20 @@ class ApiController extends Controller
             $pdfPath = 'pdfs/' . $user_id . '/images_' . date('Y-m-d-h-i-s') . '.pdf';
             Storage::disk('public')->put($pdfPath, $pdf->output());
 
+            $localPath = storage_path("app/public/{$pdfPath}");
+            $fpdi = new Fpdi();
+            $pageCount = $fpdi->setSourceFile($localPath);
+
             // Provide download link
-            $downloadUrl = asset("storage/{$pdfPath}");
+            // $downloadUrl = asset("storage/{$pdfPath}");
+            $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
 
             $documents = new OtherDocument();
             $documents->Title = $Title;
             $documents->CompanyID = $company_id;
             $documents->UserID = $user_id;
             $documents->ImageCount = $imageCount;
+            $documents->PageCount = $pageCount;
             $documents->Remarks = $Remarks;
             $documents->DocumentURL = $downloadUrl;
             $documents->save();
@@ -1277,7 +1264,7 @@ class ApiController extends Controller
             ];
             return response()->json(['status' => true, 'message' => 'PDF created successfully', 'data' => $dataCAS], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1318,7 +1305,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Other document list successfully', 'data' => $dataEmployee], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 
@@ -1340,7 +1327,7 @@ class ApiController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Get Notification list successfully', 'data' => $datapages], 200);
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Method Not Allowed', 'data' => []], 200);
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
 }

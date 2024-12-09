@@ -18,8 +18,9 @@ class Company extends Authenticatable
      *
      * @var array
      */
+    public $table = "company";
+    protected $primaryKey = 'CompanyID';
     protected $fillable = [
-        'CompanyID',
         'RoleID',
         'FirmName',
         'FirstName',
@@ -35,6 +36,7 @@ class Company extends Authenticatable
         'GSTNumber',
         'PANNumber',
         'FirmType',
+        'ClientID'
     ];
 
     /**
@@ -74,7 +76,8 @@ class Company extends Authenticatable
         parent::boot();
 
         static::created(function (Model $model) {
-            if ($model->role_id == "") {
+            // dd($model);
+            if ($model->RoleID == "") {
                 $model->update([
                     'role_id' => Role::where('title', 'user')->first()->id,
                 ]);

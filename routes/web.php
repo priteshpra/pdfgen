@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\CompanyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +39,7 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::resource('/users', 'UserController');
     Route::resource('/client', 'ClientController');
     Route::resource('/cas', 'CasController');
+    Route::resource('/company', 'CompanyController');
     Route::resource('/bussinesscategory', 'BussinessCategoryController');
     Route::resource('/roles', 'RoleController');
     Route::resource('/permissions', 'PermissionController')->except(['show']);
@@ -64,6 +66,7 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::post('/cms-toggle-status', [CmsController::class, 'toggleStatus'])->name('cmstoggle.status');
     Route::post('/page-toggle-status', [PageController::class, 'toggleStatus'])->name('pagetoggle.status');
     Route::post('/cas/{id}/update-password', [CasController::class, 'updatePassword'])->name('cas.update-password');
+    // Route::post('/update-password/{id}', [CasController::class, 'updatePassword'])->name('cas.update.password');
     Route::post('/notification-toggle-status', [
         CasController::class,
         'notificationToggleStatus'

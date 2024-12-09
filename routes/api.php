@@ -75,3 +75,16 @@ Route::post('v1/forgot-password', [ApiController::class, 'sendResetLinkEmail']);
 
 Route::get('v1/reset-password/{token}', [ApiController::class, 'showResetForm'])->name('password.reset');
 Route::post('v1/reset-password', [ApiController::class, 'reset'])->name('password.update');
+
+Route::get('/download/{user_id}/{filename}', function ($user_id, $filename) {
+    $path = storage_path("app/public/pdfs/{$user_id}/{$filename}");
+    return response()->download($path);
+});
+
+Route::get('/download/{user_id}/{filename}', function ($user_id, $filename) {
+    $path = storage_path("app/public/pdfs/{$user_id}/{$filename}");
+    if (!file_exists($path)) {
+        abort(404, "File not found");
+    }
+    return response()->download($path);
+})->name('download.file');

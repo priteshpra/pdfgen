@@ -870,8 +870,11 @@
     <script src="{{ asset('admin_assets/js_new/pages/data-table.js') }}"></script>
     @yield('scripts')
     <script>
-        setTimeout(function () {
+        setTimeout(function() {
             $('#alert-container').fadeOut();
+        }, 4500);
+        setTimeout(function() {
+            $('.alert-success').fadeOut();
         }, 4500);
 
         $(".btn-warning.me-1").click(function() {
