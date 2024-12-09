@@ -485,6 +485,10 @@ class ApiController extends Controller
             $user->role_id = '3';
             $user->save();
 
+            //add the notification table
+            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the client ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
+            $this->addNotificationData($notifiArray);
+
             // Return a response
             return response()->json(['status' => true, 'message' => 'Clients created successfully', 'data' => $user], 200);
         } catch (\Throwable $th) {
@@ -540,6 +544,10 @@ class ApiController extends Controller
             $user->user_type = '2';
             $user->client_id = $request->input('user_id');
             $user->save();
+
+            //add the notification table
+            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the employee ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
+            $this->addNotificationData($notifiArray);
 
             // Return a response
             return response()->json(['status' => true, 'message' => 'Employee created successfully', 'data' => $user], 200);
@@ -613,6 +621,10 @@ class ApiController extends Controller
             $user->role_id = '4';
             $user->save();
 
+            //add the notification table
+            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the CAs ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
+            $this->addNotificationData($notifiArray);
+
             // Return a response
             return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => $user], 200);
         } catch (\Throwable $th) {
@@ -680,6 +692,10 @@ class ApiController extends Controller
                 ->where("user_devices.user_id", "=", $request->account_id)
                 ->update(["user_devices.status" => '0', "users.Status" => '0', "user_devices.updated_at" => date("Y-m-d H:i:s"), "users.updated_at" => date("Y-m-d H:i:s"), 'user_devices.device_token' => '']);
 
+            //add the notification table
+            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Deleted the account ' . $request->account_id . '.', 'TypeID' => 0];
+            $this->addNotificationData($notifiArray);
+
             // Return a response
             return response()->json(['status' => true, 'message' => 'Account deleted successfully', 'data' => []], 200);
         } catch (\Throwable $th) {
@@ -726,6 +742,10 @@ class ApiController extends Controller
             $user->update([
                 'password' => Hash::make($request->current_password),
             ]);
+
+            //add the notification table
+            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Password changed ' . $request->user_id . '.', 'TypeID' => 0];
+            $this->addNotificationData($notifiArray);
 
             return response()->json(['status' => true, 'message' => 'Password changed successfully.', 'data' => []], 200);
         } catch (\Throwable $th) {
@@ -1048,6 +1068,10 @@ class ApiController extends Controller
             $documents->DocumentURL = $downloadUrl;
             $documents->save();
 
+            //add the notification table
+            $notifiArray = ['UserID' => $user_id, 'Description' => 'Uploaded the scanned document file.', 'TypeID' => 0];
+            $this->addNotificationData($notifiArray);
+
             $dataCAS = [
                 'download_link' => $downloadUrl,
             ];
@@ -1259,6 +1283,10 @@ class ApiController extends Controller
             $documents->DocumentURL = $downloadUrl;
             $documents->save();
 
+            //add the notification table
+            $notifiArray = ['UserID' => $user_id, 'Description' => 'Uploaded the other documents file.', 'TypeID' => 0];
+            $this->addNotificationData($notifiArray);
+
             $dataCAS = [
                 'download_link' => $downloadUrl,
             ];
@@ -1326,6 +1354,27 @@ class ApiController extends Controller
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Notification list successfully', 'data' => $datapages], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
+        }
+    }
+
+    /**
+     * add notification Table.
+     */
+    public function addNotificationData($request)
+    {
+
+        try {
+            $notification = new Notification();
+            // add notification details
+            $notification->UserID = $request['UserID'];
+            $notification->Description = $request['Description'];
+            $notification->TypeID = $request['TypeID'];
+            $notification->save();
+
+            // Return a response
+            return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => []], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }

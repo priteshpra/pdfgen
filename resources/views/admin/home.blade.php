@@ -8,7 +8,7 @@
 
     <div class="row">
 
-        <div class="col-xl-3 col-lg-6 col-12">
+        {{-- <div class="col-xl-3 col-lg-6 col-12">
 
             <div class="box overflow-hidden bg-primary ">
 
@@ -28,9 +28,9 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
-        <div class="col-xl-6 col-lg-6 col-12">
+        {{-- <div class="col-xl-6 col-lg-6 col-12">
 
             <div class="box">
 
@@ -48,9 +48,9 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
-        <div class="col-xl-3 col-12">
+        {{-- <div class="col-xl-3 col-12">
 
             <div class="box">
 
@@ -134,11 +134,11 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
 
 
-        <div class="col-lg-4 col-12">
+        {{-- <div class="col-lg-4 col-12">
 
             <div class="box pull-up">
 
@@ -232,11 +232,11 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
 
 
-        <div class="col-lg-4 col-12">
+        {{-- <div class="col-lg-4 col-12">
 
             <div class="box overflow-hidden">
 
@@ -262,11 +262,11 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
 
 
-        <div class="col-lg-4 col-12">
+        {{-- <div class="col-lg-4 col-12">
 
             <div class="box">
 
@@ -284,7 +284,7 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
 
 
@@ -296,7 +296,7 @@
 
                     <li class="dropdown">
 
-                        <a data-bs-toggle="dropdown" href="#" class="px-10 pt-5"><i class="ti-more-alt"></i></a>
+                        <a data-bs-toggle="dropdown" href="#" class="px-10 pt-5"></a>
 
                         <div class="dropdown-menu dropdown-menu-end">
 
@@ -322,9 +322,9 @@
 
                         <div>
 
-                            <h3 class="text-dark mb-0 fw-500">5,215</h3>
+                            <h3 class="text-dark mb-0 fw-500">{{ $clients }}</h3>
 
-                            <p class="text-mute mb-0">Total Sales</p>
+                            <p class="text-mute mb-0">Total Clients</p>
 
                         </div>
 
@@ -350,7 +350,7 @@
 
                     <li class="dropdown">
 
-                        <a data-bs-toggle="dropdown" href="#" class="px-10 pt-5"><i class="ti-more-alt"></i></a>
+                        <a data-bs-toggle="dropdown" href="#" class="px-10 pt-5"></a>
 
                         <div class="dropdown-menu dropdown-menu-end">
 
@@ -376,9 +376,9 @@
 
                         <div>
 
-                            <h3 class="text-dark mb-0 fw-500">489</h3>
+                            <h3 class="text-dark mb-0 fw-500">{{ $cas }}</h3>
 
-                            <p class="text-mute mb-0">Total Clients</p>
+                            <p class="text-mute mb-0">Total CAs</p>
 
                         </div>
 
@@ -404,9 +404,9 @@
 
                     <li class="dropdown">
 
-                        <a data-bs-toggle="dropdown" href="#" class="px-10 pt-5"><i class="ti-more-alt"></i></a>
+                        <a data-bs-toggle="dropdown" href="#" class="px-10 pt-5"></a>
 
-                        <div class="dropdown-menu dropdown-menu-end">
+                        {{-- <div class="dropdown-menu dropdown-menu-end">
 
                             <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
 
@@ -418,7 +418,7 @@
 
                             <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
 
-                        </div>
+                        </div> --}}
 
                     </li>
 
@@ -430,9 +430,9 @@
 
                         <div>
 
-                            <h3 class="text-dark mb-0 fw-500">$68,125</h3>
+                            <h3 class="text-dark mb-0 fw-500">{{ $employee }}</h3>
 
-                            <p class="text-mute mb-0">Total Revenue</p>
+                            <p class="text-mute mb-0">Total Employee</p>
 
                         </div>
 
@@ -458,9 +458,9 @@
 
                     <li class="dropdown">
 
-                        <a data-bs-toggle="dropdown" href="#" class="px-10 pt-5"><i class="ti-more-alt"></i></a>
+                        <a data-bs-toggle="dropdown" href="#" class="px-10 pt-5"></a>
 
-                        <div class="dropdown-menu dropdown-menu-end">
+                        {{-- <div class="dropdown-menu dropdown-menu-end">
 
                             <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
 
@@ -472,7 +472,7 @@
 
                             <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
 
-                        </div>
+                        </div> --}}
 
                     </li>
 
@@ -484,9 +484,9 @@
 
                         <div>
 
-                            <h3 class="text-dark mb-0 fw-500">526</h3>
+                            <h3 class="text-dark mb-0 fw-500">{{ $documents }}</h3>
 
-                            <p class="text-mute mb-0">Total Customers</p>
+                            <p class="text-mute mb-0">Total Document created</p>
 
                         </div>
 
@@ -515,87 +515,47 @@
             <div class="box">
 
                 <div class="box-header d-flex justify-content-between align-items-center">
-
-                    <h4 class="box-title">Sales Dashboard</h4>
-
-                    <!-- <h4 class="box-title fw-500">87</h4> -->
-
-                    <ul class="m-0" style="list-style: none;">
-
-                        <li class="dropdown">
-
-                            <button class="btn btn-rounded btn-outline btn-primary dropdown-toggle btn-small px-10 py-0" data-bs-toggle="dropdown" href="#" aria-expanded="false">Show By Months</button>
-
-                            <div class="dropdown-menu dropdown-menu-right" style="will-change: transform;">
-
-                                <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-
-                                <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-
-                                <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-
-                                <div class="dropdown-divider"></div>
-
-                                <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-
-                            </div>
-
-                        </li>
-
-                    </ul>
-
+                    <h4 class="box-title">Employee List</h4>
                 </div>
 
                 <div class="row">
 
-                    <div class="col-xl-8 col-lg-8 col-md-12 col-12">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
 
-                        <div class="box-body ps-10 pb-0">
+                        <div class="table-responsive">
+                            <table id="employeeTables"
+                                class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                <thead class="bg-primary">
+                                    <tr class="">
+                                        <th>Employee Name</th>
+                                        <th>Email</th>
+                                        <th>MobileNo</th>
+                                        <th>Address</th>
+                                        <th>Registration Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($employeeLists as $user)
 
-                            <!-- <div class="ps-20 d-flex align-items-center justify-content-between">
+                                    <tr>
+                                        <td class="text-center"><a
+                                                href="{{ route('admin.users.show',$user->id) }}">{{$user->name}}
+                                                {{$user->lname}}</a>
+                                        </td>
+                                        <td>{{$user->email}}</td>
+                                        <td>{{$user->mobile_no}}</td>
+                                        <td>{{$user->address}}</td>
+                                        <td>{{$user->registration_type}}</td>
 
-              <div>	
-
-                  <h5 class="mb-0 text-fade">Ongoing <span class="text-primary">24 Projects</span></h5>
-
-              </div>
-
-              <div class="bg-primary-light px-3 py-2 text-primary text-center rounded">
-
-                  <script> document.write(new Date().toLocaleDateString()); </script>
-
-              </div>
-
-          </div> -->
-
-                            <div id="project-chart"></div>
-
-                        </div>
-
-                        <div class="box-footer no-border bg-transparent">
-
-                            <div class="d-flex justify-content-center align-items-center">
-
-                                <div class="rounded text-center pb-0 mb-0 w-p100 text-overflow"><span class="badge badge-xl me-10 badge-dot badge-primary"></span> Upcoming client</div>
-
-                                <div class="rounded text-center pb-0 mb-0 w-p100 text-overflow"><span class="badge badge-xl me-10 badge-dot badge-danger"></span> Revenue</div>
-
-                                <!-- <div class="b-1 rounded text-center pb-10 mb-10 w-p100 text-overflow"><span class="badge badge-xl badge-dot badge-light"></span> Complate</div> -->
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-xl-4 col-lg-4 col-md-12 col-12 align-self-center">
-
-                        <div class="text-center">
-
-                            <input class="knob" data-width="200" data-height="200" data-linecap="round" data-fgColor="#FF6C6C" value="65" data-skin="tron" data-angleOffset="180" data-readOnly="true" data-thickness=".1" />
-
-                            <h4 class="text-center mt-20 mb-10 mb-md-20 mb-xs-20 ">Based on overall sales</h4>
-
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="100%" class="text-center text-muted py-3">No Users Found
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
 
                     </div>
@@ -606,41 +566,59 @@
 
         </div>
 
-        <div class="col-xxl-5 col-12">
+    </div>
 
+    <div class="row">
+        <div class="col-xxl-7 col-12">
             <div class="box">
-
-                <div class="box-header d-flex justify-content-between">
-
-                    <h4 class="box-title">Utilization Rate</h4>
-
-                    <!-- <h4 class="box-title fw-500">590</h4> -->
-
+                <div class="box-header d-flex justify-content-between align-items-center">
+                    <h4 class="box-title">Client List</h4>
                 </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        <div class="table-responsive">
+                            <table id="clientTables"
+                                class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                <thead class="bg-primary">
+                                    <tr class="">
+                                        <th>Client Name</th>
+                                        <th>Firm Name</th>
+                                        <th>MobileNo</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Aadhar Number</th>
+                                        <th>GST Number</th>
+                                        <th>PAN Number</th>
+                                        <th>Firm Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($clientLists as $user)
+                                    <tr>
+                                        <td>{{$user->name}}</td>
+                                        <td><a
+                                                href="{{ route('admin.client.show',$user->id) }}">{{$user->firm_name}}</a>
+                                        </td>
+                                        <td>{{$user->mobile_no}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>{{$user->address}}</td>
+                                        <td>{{$user->aadhar}}</td>
+                                        <td>{{$user->gst}}</td>
+                                        <td>{{$user->pan}}</td>
+                                        <td>{{$user->firm_type}}</td>
 
-                <div class="box-body">
-
-                    <div class="row text-center">
-
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-
-                            <input class="knob" data-width="200" data-height="200" data-linecap="round" data-fgColor="#00baff" value="80" data-skin="tron" data-angleOffset="180" data-readOnly="true" data-thickness=".1" />
-
-                            <div class="rounded text-center p-0 me-0 w-p100 mt-20 mt-xs-5"><span class="me-10 badge badge-xl badge-dot badge-info"></span> Billable</div>
-
-                        </div>
-
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-12 mt-0 mt-xs-10">
-
-                            <input class="knob" data-width="200" data-height="200" data-linecap="round" data-fgColor="#04a08b" value="65" data-skin="tron" data-angleOffset="180" data-readOnly="true" data-thickness=".1" />
-
-                            <div class="rounded text-center p-0 ms-0 w-p100 mt-20 mt-xs-5"><span class="me-10 badge badge-xl badge-dot badge-success"></span> Non-Billable</div>
-
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="100%" class="text-center text-muted py-3">No Users Found
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
 
                     </div>
-
-
 
                 </div>
 
@@ -648,8 +626,60 @@
 
         </div>
 
+    </div>
+
+    <div class="row">
+        <div class="col-xxl-7 col-12">
+            <div class="box">
+                <div class="box-header d-flex justify-content-between align-items-center">
+                    <h4 class="box-title">CAs List</h4>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        <div class="table-responsive">
+                            <table id="casTables"
+                                class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                <thead class="bg-primary">
+                                    <tr class="">
+                                        <th>CA Name</th>
+                                        <th>Firm Name</th>
+                                        <th>Email</th>
+                                        <th>MobileNo</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Aadhar Number</th>
+                                        <th>GST Number</th>
+                                        <th>PAN Number</th>
+                                        <th>Firm Type</th>
+                                    </tr>
+                                </thead>
+                                @forelse ($casList as $user)
+                                <tr>
+                                    <td>{{$user->name}} {{$user->lname}}</td>
+                                    <td><a href="{{ route('admin.cas.show',$user->id) }}">{{$user->firm_name}}</a>
+                                    </td>
+                                    <td>{{$user->email}}</td>
+                                    <td>{{$user->mobile_no}}</td>
+                                    <td>{{$user->email}}</td>
+                                    <td>{{$user->address}}</td>
+                                    <td>{{$user->aadhar}}</td>
+                                    <td>{{$user->gst}}</td>
+                                    <td>{{$user->pan}}</td>
+                                    <td>{{$user->firm_type}}</td>
 
 
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="100%" class="text-center text-muted py-3">No Users Found</td>
+                                </tr>
+                                @endforelse
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </section>

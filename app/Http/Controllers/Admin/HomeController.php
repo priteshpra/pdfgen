@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Scandocument;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('admin.home');
+        $employee = User::where(['Status' => '1', 'user_type' => '2'])->count();
+        $clients = User::where(['Status' => '1', 'user_type' => '3'])->count();
+        $cas = User::where(['Status' => '1', 'user_type' => '4'])->count();
+        $documents = Scandocument::where(['Status' => '1'])->count();
+        $employeeLists = User::with('role')->where('user_type', '2')->orderBy('id', 'desc')->limit('5')->get();
+        $clientLists = User::with('role')->where('user_type', '3')->orderBy('id', 'desc')->limit('5')->get();
+        $casList = User::where('user_type', '4')->orderBy('id', 'desc')->limit('5')->get();
+        return view('admin.home', compact('employee', 'clients', 'cas', 'documents', 'employeeLists', 'clientLists', 'casList'));
     }
 }
