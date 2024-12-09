@@ -80,7 +80,9 @@ class ApiController extends Controller
             $base_url = $this->base_url;
             DB::enableQueryLog();
 
-            $chkUser = User::where('email', $email)->where('Status', 1)->first();
+            $chkUser = User::where('email', $email)->where('Status', 1)
+                ->first();
+
             if ($chkUser) {
                 // Check if the password matches
                 if (!Hash::check($password, $chkUser->password)) {
@@ -92,32 +94,14 @@ class ApiController extends Controller
             }
 
             if ($chkUser) {
+                // $chkUser->makeHidden(['client_id']);
                 $chkUser->CompanyID = 0;
                 $token = $chkUser->createToken('authToken')->plainTextToken;
                 $result['status'] = false;
                 $result['message'] = "Login Succssfully!";
                 $result['data'] = (object) [];
-                // $user = [
-                //     'id' => (string) $chkUser->id,
-                //     'user_id' => (string) $chkUser->id,
-                //     'user_type' => (string) $chkUser->user_type,
-                //     'name' => (string) $chkUser->name,
-                //     'lname' => (string) $chkUser->lname,
-                //     'storename' => (string) $chkUser->storename,
-                //     'email' => (string) $chkUser->email,
-                //     'date_of_birth' => (string) $chkUser->date_of_birth,
-                //     'phone_number' => (string) $chkUser->phone_number,
-                //     'otp' => (string) $otp,
-                //     'PAN' => (string) $chkUser->PAN,
-                //     'GST' => (string) $chkUser->GST,
-                //     'flatNo' => (string) $chkUser->flatNo,
-                //     'pincode' => (string) $chkUser->pincode,
-                //     'area' => (string) $chkUser->area,
-                //     'city' => (string) $chkUser->city,
-                //     'state' => (string) $chkUser->state,
-                //     'avatar' => ($chkUser->avatar) ? $base_url . $this->profile_path . $chkUser->avatar : '',
-                //     'token' => $token,
-                // ];
+
+                $chkUser->client_id = $chkUser->id;
                 $chkUser->token = $token;
                 // add token devices login
                 $arr = [
@@ -194,7 +178,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $client = User::select('*')->where('Status', 1)->where('client_id', $user_id)->where('user_type', '3')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $client = User::select('*')->where('Status', 1)->where('user_type', '3')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $client->total(),
@@ -231,7 +215,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $cas = User::select('*')->where('Status', 1)->where('client_id', $user_id)->where('user_type', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $cas = User::select('*')->where('Status', 1)->where('user_type', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $cas->total(),
@@ -428,13 +412,11 @@ class ApiController extends Controller
         $token = $request->header('token');
         $base_url = $this->base_url;
         try {
-            $checkToken = $this->tokenVerify($token);
-            // Decode the JSON response
-
-            $userData = json_decode($checkToken->getContent(), true);
-            if ($userData['status'] == false) {
-                return $checkToken->getContent();
-            }
+            // $checkToken = $this->tokenVerify($token);
+            // $userData = json_decode($checkToken->getContent(), true);
+            // if ($userData['status'] == false) {
+            //     return $checkToken->getContent();
+            // }
 
             // Define validation rules
             $validator = Validator::make($request->all(), [
@@ -450,7 +432,7 @@ class ApiController extends Controller
                 'pincode' => 'required',
                 'aadharNumber' => 'required',
                 'GST' => 'required',
-                'user_id' => 'required',
+                // 'user_id' => 'required',
                 'PAN' => 'required',
                 'firm_type' => 'required',
                 'user_type' => 'required',
@@ -479,15 +461,15 @@ class ApiController extends Controller
             $user->PAN = $request->input('PAN');
             $user->GST = $request->input('GST');
             $user->firm_type = $request->input('firm_type');
-            $user->client_id = $request->input('user_id');
+            // $user->client_id = $request->input('user_id');
             $user->password = Hash::make($request->input('password'));
             $user->user_type = '3';
             $user->role_id = '3';
             $user->save();
 
             //add the notification table
-            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the client ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
-            $this->addNotificationData($notifiArray);
+            // $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the client ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
+            // $this->addNotificationData($notifiArray);
 
             // Return a response
             return response()->json(['status' => true, 'message' => 'Clients created successfully', 'data' => $user], 200);
@@ -566,12 +548,11 @@ class ApiController extends Controller
         $token = $request->header('token');
         $base_url = $this->base_url;
         try {
-            $checkToken = $this->tokenVerify($token);
-            // Decode the JSON response
-            $userData = json_decode($checkToken->getContent(), true);
-            if ($userData['status'] == false) {
-                return $checkToken->getContent();
-            }
+            // $checkToken = $this->tokenVerify($token);
+            // $userData = json_decode($checkToken->getContent(), true);
+            // if ($userData['status'] == false) {
+            //     return $checkToken->getContent();
+            // }
             // Define validation rules
             $validator = Validator::make($request->all(), [
                 'fname' => 'required|string|max:255',
@@ -580,7 +561,7 @@ class ApiController extends Controller
                 'email' => 'required|email|unique:users,email|max:255',
                 'mobile_no' => 'required|min:10|digits:10',
                 'address' => 'required',
-                'user_id' => 'required',
+                // 'user_id' => 'required',
                 'countryID' => 'required',
                 'stateID' => 'required',
                 'cityID' => 'required',
@@ -615,15 +596,15 @@ class ApiController extends Controller
             $user->PAN = $request->input('PAN');
             $user->GST = $request->input('GST');
             $user->firm_type = $request->input('firm_type');
-            $user->client_id = $request->input('user_id');
+            // $user->client_id = $request->input('user_id');
             $user->password = Hash::make($request->input('password'));
             $user->user_type = '4';
             $user->role_id = '4';
             $user->save();
 
             //add the notification table
-            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the CAs ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
-            $this->addNotificationData($notifiArray);
+            // $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the CAs ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
+            // $this->addNotificationData($notifiArray);
 
             // Return a response
             return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => $user], 200);
