@@ -806,13 +806,9 @@ class ApiController extends Controller
         $validator = Validator::make($request->all(), [
             'fcmtoken' => 'required',
             'user_id' => 'required',
-            'receiver_id' => 'required',
-            'title' => 'required',
-            'message' => 'required',
         ]);
-        $body = $request;
         $newData  = json_encode(array());
-        $body = array('user_id' => $request->user_id, 'sender_id' => $request->user_id, 'receiver_id' => $request->receiver_id, 'title' => $request->title, 'message' => $request->message, 'data' => $newData, 'content_available' => true);
+        $body = array('receiver_id' => $request->user_id, 'title' => 'Testing test', 'message' => "Demo Test", 'data' => $newData, 'content_available' => true);
         $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
         $notifData = json_decode($sendNotification->getContent(), true);
 

@@ -90,12 +90,12 @@ class FcmNotificationService
             curl_close($ch);
 
             if ($err) {
-                response()->json([
+                return response()->json([
                     'status' => false,
                     'message' => 'Curl Error: ' . $err
                 ], 500);
             } else {
-                response()->json([
+                return response()->json([
                     'status' => true,
                     'message' => 'Notification has been sent',
                     'response' => json_decode($response, true)
