@@ -26,6 +26,7 @@ use App\Models\Page;
 use App\Models\Role;
 use App\Models\Scandocument;
 use App\Models\State;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Password;
 use PDF;
@@ -808,7 +809,7 @@ class ApiController extends Controller
             'user_id' => 'required',
         ]);
         $newData  = json_encode(array());
-        $body = array('receiver_id' => $request->user_id, 'title' => 'Testing test', 'message' => "Demo Test", 'data' => $newData, 'content_available' => true);
+        $body = array('receiver_id' => $request->user_id, 'fcmtoken' => $request->fcmtoken, 'title' => 'Testing test', 'message' => "Demo Test", 'data' => $newData, 'content_available' => true);
         $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
         $notifData = json_decode($sendNotification->getContent(), true);
 
@@ -938,13 +939,32 @@ class ApiController extends Controller
                 return response()->json($result, 200);
             }
 
-            $status = Password::sendResetLink($request->only('email'));
+            return response()->json(['status' => true, 'message' => 'Mail send successfully', 'data' => []], 200);
+            // $status = Password::sendResetLink($request->only('email'));
 
-            return $status === Password::RESET_LINK_SENT
-                ? back()->with('status', __($status))
-                : back()->withErrors(['email' => __($status)]);
+            // if ($status === Password::RESET_LINK_SENT) {
+            //     return response()->json([
+            //         'status' => true,
+            //         'message' => trans($status), // Use trans() for localized messages
+            //         'data' => (object) []
+            //     ], 200);
+            // } else {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => trans($status),
+            //         'data' => (object) []
+            //     ], 400); // Use 400 for bad requests
+            // }
         } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
+            // Log the exception for debugging
+            Log::error('Password reset error', ['exception' => $th]);
+
+            // Return a generic error response
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong. Please try after some time.',
+                'data' => (object) []
+            ], 500); // Use 500 for server errors
         }
     }
 

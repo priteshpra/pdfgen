@@ -510,7 +510,7 @@
 
     <div class="row">
 
-        <div class="col-xxl-7 col-12">
+        <div class="col-xxl-12 col-12">
 
             <div class="box">
 
@@ -569,7 +569,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xxl-7 col-12">
+        <div class="col-xxl-12 col-12">
             <div class="box">
                 <div class="box-header d-flex justify-content-between align-items-center">
                     <h4 class="box-title">Client List</h4>
@@ -629,7 +629,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xxl-7 col-12">
+        <div class="col-xxl-12 col-12">
             <div class="box">
                 <div class="box-header d-flex justify-content-between align-items-center">
                     <h4 class="box-title">CAs List</h4>

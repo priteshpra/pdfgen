@@ -13,14 +13,20 @@ class FcmNotificationService
     public function sendFcmNotification($body)
     {
         if (is_array($body['receiver_id'])) {
-            $user = UserDevices::whereIn('user_id', $body['receiver_id'])->where('status', '1')->get();
+            $user = UserDevices::whereIn('user_id', $body['receiver_id'])->where('status', '1')->whereNotNull('device_token')
+                ->where('device_token', '!=', '')->get();
         } else {
-            $user = UserDevices::where('user_id', $body['receiver_id'])->where('status', '1')->get();
+            $user = UserDevices::where('user_id', $body['receiver_id'])->where('status', '1')->whereNotNull('device_token')
+                ->where('device_token', '!=', '')->get();
         }
         // dd($user);
         $fcm = [];
-        foreach ($user as $tokens) {
-            $fcm[] = $tokens['device_token'];
+        if ($body['fcmtoken']) {
+            $fcm[] = $body['fcmtoken'];
+        } else {
+            foreach ($user as $tokens) {
+                $fcm[] = $tokens['device_token'];
+            }
         }
         // $fcm = isset($fcm) ? implode(', ',$fcm) : '';
         // dd($fcm);
