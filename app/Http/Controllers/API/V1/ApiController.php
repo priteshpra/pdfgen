@@ -303,15 +303,13 @@ class ApiController extends Controller
             $employees = User::select('*')
                 ->where('id', '=', $employee_id)
                 ->where('status', '=', 1)
-                ->where('user_type', '=', '2')
                 ->get();
 
             $datas = [];
             foreach ($employees as $key => $value) {
                 $evnt[] = $value;
-                $datas = $evnt;
             }
-            return response()->json(['status' => true, 'message' => 'Get Employee details successfully', 'data' => $datas], 200);
+            return response()->json(['status' => true, 'message' => 'Get Employee details successfully', 'data' => $evnt], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
@@ -1311,7 +1309,8 @@ class ApiController extends Controller
                 'Remarks',
                 'DocumentURL',
                 'DocumentStatus',
-                DB::raw("(SELECT SUM(ImageCount) FROM otherdocuments WHERE Status = 1 AND UserID = $user_id) as totalImageCount")
+                'ImageCount'
+                // DB::raw("(SELECT SUM(ImageCount) FROM otherdocuments WHERE Status = 1 AND UserID = $user_id) as totalImageCount")
             ])->where('Status', 1)->where('UserID', $user_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
