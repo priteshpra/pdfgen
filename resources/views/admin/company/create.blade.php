@@ -3,21 +3,26 @@
 @section('content')
 
 <div class="card">
-    <div class="card-header">{{ __('Add New CAs') }}</div>
+    <div class="card-header">{{ __('Add New Company') }}</div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.cas.store') }}">
+        <form id="update-password-form" method="POST" action="{{ route('admin.company.store') }}">
             @csrf
             <div class="row">
                 <div class="col-md-6">
+                    <input id="ClientID" type="hidden" class="form-control" name="ClientID" value="{{ $clientId }}"
+                        autocomplete="aadhar">
+                    <input id="lastSegment" type="hidden" class="form-control" name="lastSegment"
+                        value="{{ $lastSegment }}" autocomplete="aadhar">
                     <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('Firm Name')
                         }}</label>
 
                     <div class="form-group">
-                        <input id="firm_name" type="text" class="form-control @error('firm_name') is-invalid @enderror"
-                            name="firm_name" value="" required autocomplete="firm_name">
+                        <input id="FirmName" type="text" class="form-control @error('FirmName') is-invalid @enderror"
+                            name="FirmName" value="{{ old('FirmName', isset($user->FirmName) ? $user->FirmName: '') }}"
+                            required autocomplete="FirmName">
 
-                        @error('firm_name')
+                        @error('FirmName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -28,14 +33,16 @@
                 <input id="user_type" type="hidden" class="form-control @error('user_type') is-invalid @enderror"
                     name="user_type" value="4" required autocomplete="name">
                 <div class="col-md-6">
-                    <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('First Name')
+                    <label for="FirstName" class="required col-md-4 col-form-label text-md-right">{{ __('First Name')
                         }}</label>
 
-                    <div class="controls">
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                            name="name" value="{{ old('name') }}" required autocomplete="name">
+                    <div class="form-group">
+                        <input id="FirstName" type="text" class="form-control @error('FirstName') is-invalid @enderror"
+                            name="FirstName"
+                            value="{{ old('FirstName', isset($user->FirstName) ? $user->FirstName : '') }}" required
+                            autocomplete="FirstName">
 
-                        @error('name')
+                        @error('FirstName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -48,11 +55,12 @@
                     <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('Last Name')
                         }}</label>
 
-                    <div class="controls">
-                        <input id="lname" type="text" class="form-control @error('lname') is-invalid @enderror"
-                            name="lname" value="{{ old('lname') }}" required autocomplete="name">
+                    <div class="form-group">
+                        <input id="LastName" type="text" class="form-control @error('LastName') is-invalid @enderror"
+                            name="LastName" value="{{ old('LastName', isset($user->LastName) ? $user->LastName : '') }}"
+                            required autocomplete="LastName">
 
-                        @error('lname')
+                        @error('LastName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -60,14 +68,15 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="email" class="required col-md-4 col-form-label text-md-right">{{ __('E-Mail Address')
+                    <label for="EmailID" class="required col-md-4 col-form-label text-md-right">{{ __('E-Mail Address')
                         }}</label>
 
-                    <div class="controls">
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email') }}" required autocomplete="email">
+                    <div class="form-group">
+                        <input id="EmailID" type="EmailID" class="form-control @error('EmailID') is-invalid @enderror"
+                            name="EmailID" value="{{ old('EmailID', isset($user->EmailID) ? $user->EmailID : '') }}"
+                            required autocomplete="EmailID">
 
-                        @error('email')
+                        @error('EmailID')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -76,14 +85,17 @@
                 </div>
             </div>
             <div class="row">
+
                 <div class="col-md-6">
-                    <label for="email" class="required col-md-4 col-form-label text-md-right">{{ __('Mobile') }}</label>
+                    <label for="MobileNo" class="required col-md-4 col-form-label text-md-right">{{ __('Mobile')
+                        }}</label>
 
-                    <div class="controls">
-                        <input id="mobile_no" type="text" class="form-control @error('mobile_no') is-invalid @enderror"
-                            name="mobile_no" value="{{ old('mobile_no') }}" required autocomplete="mobile_no">
+                    <div class="form-group">
+                        <input id="MobileNo" type="text" class="form-control @error('MobileNo') is-invalid @enderror"
+                            name="MobileNo" value="{{ old('MobileNo', isset($user->MobileNo) ? $user->MobileNo : '') }}"
+                            required autocomplete="MobileNo">
 
-                        @error('mobile_no')
+                        @error('MobileNo')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -91,14 +103,15 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="email" class="required col-md-4 col-form-label text-md-right">{{ __('Address')
+                    <label for="Address" class="required col-md-4 col-form-label text-md-right">{{ __('Address')
                         }}</label>
 
-                    <div class="controls">
-                        <input id="address" type="text" class="form-control @error('address') is-invalid @enderror"
-                            name="address" value="{{ old('address') }}" required autocomplete="address">
+                    <div class="form-group">
+                        <input id="Address" type="text" class="form-control @error('Address') is-invalid @enderror"
+                            name="Address" value="{{ old('Address', isset($user->Address) ? $user->Address : '') }}"
+                            required autocomplete="Address">
 
-                        @error('address')
+                        @error('Address')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -107,18 +120,21 @@
                 </div>
             </div>
             <div class="row">
+
                 <div class="col-md-6">
                     <label for="CountryID" class="required col-md-4 col-form-label text-md-right">{{ __('Country')
                         }}</label>
 
-                    <div class="controls">
+                    <div class="form-group">
                         <select id="CountryID" type="text" class="form-control @error('CountryID') is-invalid @enderror"
                             name="CountryID" required autocomplete="CountryID" autofocus>
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($country as $id => $role)
-                            <option value="{{$role->CountryID}}" {{ (old('CountryID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->Country}}</option>
+                            <option value="{{$role->CountryID}}" {{ (old('CountryID',isset($role->CountryID) ?
+                                $role->CountryID :
+                                "") ==
+                                isset($user->CountryID )) ? 'selected' : '' }}>{{$role->Country}}</option>
                             @endforeach
                         </select>
 
@@ -133,14 +149,16 @@
                     <label for="StateID" class="required col-md-4 col-form-label text-md-right">{{ __('State')
                         }}</label>
 
-                    <div class="controls">
+                    <div class="form-group">
                         <select id="StateID" type="text" class="form-control @error('StateID') is-invalid @enderror"
                             name="StateID" required autocomplete="StateID" autofocus>
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($state as $id => $role)
-                            <option value="{{$role->StateID}}" {{ (old('StateID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->State}}</option>
+                            <option value="{{$role->StateID}}" {{ (old('StateID',isset($role->StateID) ? $role->StateID
+                                : "") ==
+                                isset($user->StateID)
+                                ) ? 'selected' : '' }}>{{$role->State}}</option>
                             @endforeach
                         </select>
 
@@ -153,17 +171,21 @@
                 </div>
             </div>
             <div class="row">
+
+
                 <div class="col-md-6">
                     <label for="CityID" class="required col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
 
-                    <div class="controls">
+                    <div class="form-group">
                         <select id="CityID" type="text" class="form-control @error('CityID') is-invalid @enderror"
                             name="CityID" required autocomplete="CityID" autofocus>
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($city as $id => $role)
-                            <option value="{{$role->CityID}}" {{ (old('CityID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->City}}</option>
+                            <option value="{{$role->CityID}}" {{ (old('CityID',isset($role->CityID) ? $role->CityID: "")
+                                ==
+                                isset($user->CityID) ) ?
+                                'selected' : '' }}>{{$role->City}}</option>
                             @endforeach
                         </select>
 
@@ -175,14 +197,15 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="pincode" class="required col-md-4 col-form-label text-md-right">{{ __('Pincode')
+                    <label for="PinCode" class="required col-md-4 col-form-label text-md-right">{{ __('PinCode')
                         }}</label>
 
-                    <div class="controls">
-                        <input id="pincode" type="text" class="form-control @error('pincode') is-invalid @enderror"
-                            name="pincode" value="{{ old('pincode') }}" required autocomplete="pincode">
+                    <div class="form-group">
+                        <input id="PinCode" type="text" class="form-control @error('PinCode') is-invalid @enderror"
+                            name="PinCode" value="{{ old('PinCode', isset($user->PinCode) ? $user->PinCode : '') }}"
+                            required autocomplete="PinCode">
 
-                        @error('pincode')
+                        @error('PinCode')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -192,15 +215,19 @@
             </div>
             <div class="row">
 
+
                 <div class="col-md-6">
-                    <label for="aadhar" class="required col-md-4 col-form-label text-md-right">{{ __('Aadhar Number')
+                    <label for="AadharNumber" class="required col-md-4 col-form-label text-md-right">{{ __('AadharNumber
+                        Number')
                         }}</label>
 
-                    <div class="controls">
-                        <input id="aadhar" type="text" class="form-control @error('aadhar') is-invalid @enderror"
-                            name="aadhar" value="{{ old('aadhar') }}" required autocomplete="aadhar">
+                    <div class="form-group">
+                        <input id="AadharNumber" type="text"
+                            class="form-control @error('AadharNumber') is-invalid @enderror" name="AadharNumber"
+                            value="{{ old('AadharNumber', isset($user->AadharNumber) ? $user->AadharNumber : '') }}"
+                            required autocomplete="AadharNumber">
 
-                        @error('aadhar')
+                        @error('AadharNumber')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -208,14 +235,16 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="gst" class="required col-md-4 col-form-label text-md-right">{{ __('GST Number')
+                    <label for="GSTNumber" class="required col-md-4 col-form-label text-md-right">{{ __('GST Number')
                         }}</label>
 
-                    <div class="controls">
-                        <input id="gst" type="text" class="form-control @error('gst') is-invalid @enderror" name="gst"
-                            value="{{ old('gst') }}" required autocomplete="gst">
+                    <div class="form-group">
+                        <input id="GSTNumber" type="text" class="form-control @error('GSTNumber') is-invalid @enderror"
+                            name="GSTNumber"
+                            value="{{ old('GSTNumber', isset($user->GSTNumber) ? $user->GSTNumber : '') }}" required
+                            autocomplete="GSTNumber">
 
-                        @error('gst')
+                        @error('GSTNumber')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -225,15 +254,19 @@
             </div>
             <div class="row">
 
+
                 <div class="col-md-6">
-                    <label for="pan" class="required col-md-4 col-form-label text-md-right">{{ __('PAN Number')
+                    <label for="PANNumber" class="required col-md-4 col-form-label text-md-right">{{ __('PANNumber
+                        Number')
                         }}</label>
 
-                    <div class="controls">
-                        <input id="pan" type="text" class="form-control @error('pan') is-invalid @enderror" name="pan"
-                            value="{{ old('pan') }}" required autocomplete="pan">
+                    <div class="form-group">
+                        <input id="PANNumber" type="text" class="form-control @error('PANNumber') is-invalid @enderror"
+                            name="PANNumber"
+                            value="{{ old('PANNumber', isset($user->PANNumber) ? $user->PANNumber : '') }}" required
+                            autocomplete="PANNumber">
 
-                        @error('pan')
+                        @error('PANNumber')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -244,17 +277,25 @@
                     <div class="form-group">
                         <h5>Firm Type <span class="text-danger">*</span></h5>
                         <fieldset class="controls">
-                            <input name="firm_type" type="radio" id="radio_1" value="Proprietary" required="" checked=""
-                                tabindex="14">
+                            <input name="FirmType" type="radio" id="radio_1" value="Proprietary" {{
+                                (old('FirmType',isset($user->FirmType)
+                            ?? "") == 'Proprietary' ) ? 'checked=""' : '' }}
+                            tabindex="14">
                             <label for="radio_1">Proprietary</label>
                             <div class="help-block"></div>
                         </fieldset>
                         <fieldset>
-                            <input name="firm_type" type="radio" id="radio_2" value="Private Limited" tabindex="15">
+                            <input name="FirmType" type="radio" id="radio_2" {{ (old('FirmType',isset($user->FirmType)
+                            ??
+                            "") == 'Private Limited' ) ? 'checked=""' : '' }} value="Private Limited" tabindex="15">
                             <label for="radio_2">Private Limited</label>
                         </fieldset>
                         <fieldset>
-                            <input name="firm_type" type="radio" id="radio_3" value="LLP" tabindex="16">
+                            <input name="FirmType" type="radio" id="radio_3" value="LLP" {{
+                                (old('FirmType',isset($user->FirmType)
+                            ?? "") ==
+                            'LLP' ) ? 'checked=""' : '' }}
+                            tabindex="16">
                             <label for="radio_3">LLP</label>
                         </fieldset>
                     </div>
@@ -262,49 +303,24 @@
             </div>
             <div class="row">
 
-                <div class="col-md-6">
-                    <label for="password" class="required col-md-4 col-form-label text-md-right">{{ __('Password')
-                        }}</label>
 
-                    <div class="controls">
-                        <input id="password" type="password"
-                            class="form-control @error('password') is-invalid @enderror" name="password" required
-                            autocomplete="new-password">
-
-                        @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
                 <div class="col-md-6">
-                    <label for="password-confirm" class="required col-md-4 col-form-label text-md-right">{{ __('Confirm
-                        Password') }}</label>
+                    <label for="RoleID" class="required col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
 
-                    <div class="controls">
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
-                            required autocomplete="new-password">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="role_id" class="required col-md-4 col-form-label text-md-right">{{ __('Role')
-                            }}</label>
-
-                        <select id="role_id" type="text" class="form-control @error('role_id') is-invalid @enderror"
-                            name="role_id" required autocomplete="role_id" autofocus>
+                        <select id="RoleID" type="text" class="form-control @error('RoleID') is-invalid @enderror"
+                            name="RoleID" required autocomplete="RoleID" autofocus>
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($roles as $id => $role)
-                            <option value="{{$id}}" {{ (old('role_id', '' )==$id ) ? 'selected' : '' }}>{{$role}}
-                            </option>
+                            <option value="{{$id}}" {{ (old('RoleID',isset($user->RoleID) ? $user->RoleID: "") == $id )
+                                ? 'selected'
+                                : ''
+                                }}>{{$role}}</option>
                             @endforeach
                         </select>
 
-                        @error('role_id')
+                        @error('RoleID')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -312,16 +328,8 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <div class="form-group row mb-0">
-                <div class="col-md-6 offset-md-4">
-                    <button type="submit" class="btn btn-primary">
-                        {{ __('Create') }}
-                    </button>
-                </div>
-            </div> -->
             <div class="box-footer">
-                <button type="submit" class="btn btn-primary" tabindex="5">
+                <button type="submit" id="submitButton" class="btn btn-primary" tabindex="5">
                     <i class="ti-save-alt"></i> SUBMIT
                 </button>
                 <button type="button" class="btn btn-warning me-1" tabindex="6">
@@ -331,5 +339,11 @@
         </form>
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $('#submitButton').on('click', function() {
+        // You can add validation or other logic here before submitting
+        $('#update-password-form').submit(); // Triggers the form submission
+    });
+</script>
 @endsection

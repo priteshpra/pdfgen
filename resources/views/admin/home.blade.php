@@ -322,7 +322,9 @@
 
                         <div>
 
-                            <h3 class="text-dark mb-0 fw-500">{{ $clients }}</h3>
+                            <a href="{{ route('admin.client.index') }}">
+                                <h3 class="text-dark mb-0 fw-500">{{ $clients }}</h3>
+                            </a>
 
                             <p class="text-mute mb-0">Total Clients</p>
 
@@ -375,9 +377,9 @@
                     <div class="d-flex align-items-center justify-content-between">
 
                         <div>
-
-                            <h3 class="text-dark mb-0 fw-500">{{ $cas }}</h3>
-
+                            <a href="{{ route('admin.cas.index') }}">
+                                <h3 class="text-dark mb-0 fw-500">{{ $cas }}</h3>
+                            </a>
                             <p class="text-mute mb-0">Total CAs</p>
 
                         </div>
@@ -429,9 +431,9 @@
                     <div class="d-flex align-items-center justify-content-between">
 
                         <div>
-
-                            <h3 class="text-dark mb-0 fw-500">{{ $employee }}</h3>
-
+                            <a href="{{ route('admin.users.index') }}">
+                                <h3 class="text-dark mb-0 fw-500">{{ $employee }}</h3>
+                            </a>
                             <p class="text-mute mb-0">Total Employee</p>
 
                         </div>
@@ -508,7 +510,7 @@
 
 
 
-    <div class="row">
+    {{-- <div class="row">
 
         <div class="col-xxl-12 col-12">
 
@@ -566,7 +568,7 @@
 
         </div>
 
-    </div>
+    </div> --}}
 
     <div class="row">
         <div class="col-xxl-12 col-12">

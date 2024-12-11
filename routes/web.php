@@ -13,6 +13,10 @@ use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\ScandocumentController;
+use App\Http\Controllers\Admin\OtherdocumentController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ConfigurationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,6 +57,11 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::resource('/city', 'CityController');
     Route::resource('/cms', 'CmsController');
     Route::resource('/page', 'PageController');
+    Route::resource('/scandocument', 'ScandocumentController');
+    Route::resource('/otherdocument', 'OtherdocumentController');
+    Route::resource('/profile', 'ProfileController');
+    Route::resource('/configuration', 'ConfigurationController');
+
     Route::get('/generate-pdf', [App\Http\Controllers\Admin\PDFController::class, 'generatePDF']);
     Route::get('/upload-images', [PDFController::class, 'showUploadForm']);
     Route::post('/upload-images', [PDFController::class, 'handleImageUpload']);
@@ -73,6 +82,8 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     ])->name('notificationtoggle.status');
     Route::post('/otherdoc-toggle-status', [CasController::class, 'otherDocToggleStatus'])->name('otherdoctoggle.status');
     Route::post('/scandoc-toggle-status', [CasController::class, 'scanDocToggleStatus'])->name('scandoctoggle.status');
+
+    Route::get('/admin/company/create/{userId}', [CompanyController::class, 'create'])->name('admin.company.create');
 
     // Route::post('/search', 'CityController');
 });

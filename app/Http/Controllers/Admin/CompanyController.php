@@ -49,14 +49,23 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $referer = $request->headers->get('referer');
+        if ($referer) {
+            // Parse the referer URL and get the path component
+            $parsedUrl = parse_url($referer);
+
+            // Extract the last part of the path (the last segment)
+            $lastSegment = basename($parsedUrl['path']); // 'cas' will be returned
+        }
+        $clientId = $request->query('clientId');
         abort_if(Gate::denies('cas_create'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $country = Country::all();
-        $city = City::all();
-        $state = State::all();
+        $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         $roles = Role::pluck('title', 'id');
-        return view('admin.cas.create', compact('roles', 'city', 'state', 'country'));
+        return view('admin.company.create', compact('roles', 'city', 'state', 'country', 'clientId', 'lastSegment'));
     }
 
     /**
@@ -65,11 +74,23 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCAsRequest $request)
+    public function store(UpdateCompanyRequest $request)
     {
         // dd($request);
-        Company::create($request->validated());
-        return redirect()->route('admin.cas.index')->with(['status-success' => "New Comapny Created"]);
+        $clientId = $request->ClientID;
+        $company = Company::create($request->validated());
+        $lastInsertedId = $company->CompanyID;
+        $companys = User::find($clientId);
+        if ($companys) {
+            $companys->CompanyID = $lastInsertedId; // Update the field
+            $companys->save(); // Save the changes
+        }
+        if ($request->lastSegment) {
+            $lastBackUrl = 'admin.' . $request->lastSegment . '.index';
+        } else {
+            $lastBackUrl = 'admin.cas.index';
+        }
+        return redirect()->route($lastBackUrl)->with(['status-success' => "New Comapny Created"]);
     }
 
 

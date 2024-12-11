@@ -314,9 +314,40 @@
                                 <div class="col-lg-12 col-12">
                                     <div class="box">
                                         <div class="row">
+                                            <div class="pull-right">
+                                                {{-- @can('user_create') --}}
+                                                <a class="btn btn-success"
+                                                    style="float: right;margin-top: 5px;margin-right: 5px;"
+                                                    href="{{ route('admin.scandocument.create', ['clientId' => $id]) }}">Add
+                                                    Document</a>
+                                                {{-- @endcan --}}
+                                            </div>
                                             <div class="col-12">
                                                 <div class="box">
                                                     <div class="box-body">
+                                                        @if(Session::has('status-success'))
+                                                        <div class="alert alert-success">
+                                                            {{Session::get('status-success')}}
+                                                        </div>
+                                                        @endif
+
+                                                        @if(Session::has('status-info'))
+                                                        <div class="alert alert-info">
+                                                            {{Session::get('status-info')}}
+                                                        </div>
+                                                        @endif
+
+                                                        @if(Session::has('status-warning'))
+                                                        <div class="alert alert-warning">
+                                                            {{Session::get('status-warning')}}
+                                                        </div>
+                                                        @endif
+
+                                                        @if(Session::has('status-danger'))
+                                                        <div class="alert alert-danger">
+                                                            {{Session::get('status-danger')}}
+                                                        </div>
+                                                        @endif
                                                         <div class="table-responsive">
                                                             <table id="scandoctableexample"
                                                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
@@ -343,7 +374,8 @@
                                                                             strtotime($scanDocuments->created_at))
                                                                             }}</td>
                                                                         <td>{{
-                                                                            $employeesNameData[$scanDocuments->UserID]
+                                                                            ($employeesNameData)?$employeesNameData[$scanDocuments->UserID]
+                                                                            : '-'
                                                                             }}</td>
                                                                         <td>{{ $scanDocuments->ImageCount }}</td>
                                                                         <td>{{ $scanDocuments->Remarks }}</td>
@@ -391,9 +423,40 @@
                                 <div class="col-lg-12 col-12">
                                     <div class="box">
                                         <div class="row">
+                                            <div class="pull-right">
+                                                {{-- @can('user_create') --}}
+                                                <a class="btn btn-success"
+                                                    style="float: right;margin-top: 5px;margin-right: 5px;"
+                                                    href="{{ route('admin.otherdocument.create', ['clientId' => $id]) }}">Add
+                                                    Document</a>
+                                                {{-- @endcan --}}
+                                            </div>
                                             <div class="col-12">
                                                 <div class="box">
                                                     <div class="box-body">
+                                                        @if(Session::has('status-success'))
+                                                        <div class="alert alert-success">
+                                                            {{Session::get('status-success')}}
+                                                        </div>
+                                                        @endif
+
+                                                        @if(Session::has('status-info'))
+                                                        <div class="alert alert-info">
+                                                            {{Session::get('status-info')}}
+                                                        </div>
+                                                        @endif
+
+                                                        @if(Session::has('status-warning'))
+                                                        <div class="alert alert-warning">
+                                                            {{Session::get('status-warning')}}
+                                                        </div>
+                                                        @endif
+
+                                                        @if(Session::has('status-danger'))
+                                                        <div class="alert alert-danger">
+                                                            {{Session::get('status-danger')}}
+                                                        </div>
+                                                        @endif
                                                         <div class="table-responsive">
                                                             <table id="otherdoctableexample"
                                                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
@@ -416,7 +479,7 @@
                                                                             strtotime($otherDocument->created_at))
                                                                             }}</td>
                                                                         <td>{{
-                                                                            $employeesNameData[$otherDocument->UserID]
+                                                                            ($employeesNameData)?$employeesNameData[$otherDocument->UserID]:'-'
                                                                             }}</td>
                                                                         <td>{{ $otherDocument->Remarks }}</td>
                                                                         <td>

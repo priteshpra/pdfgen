@@ -70,6 +70,7 @@
                                     </tr>
                                 </thead>
                                 @forelse ($users as $user)
+                                <?php $isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); ?>
                                 <tr>
                                     <td>{{$user->name}} {{$user->lname}}</td>
                                     <td><a href="{{ route('admin.cas.show',$user->id) }}">{{$user->firm_name}}</a>
@@ -102,8 +103,15 @@
                                             class="btn btn-sm btn-warning">Edit</a>
                                         @endcan
 
+                                        @if ($isCompanyCreate > 0)
                                         <a href="{{ route('admin.company.edit', $user->id) }}"
-                                            class="btn btn-sm btn-success">Create Company</a>
+                                            class="btn btn-sm btn-success">
+                                            Edit Company
+                                        </a>
+                                        @else
+                                        <a href="{{ route('admin.company.create', ['clientId' => $user->id]) }}"
+                                            class="btn btn-sm btn-success"> Create Company</a>
+                                        @endif
                                         <!-- @can('user_delete')
                                             <form action="{{ route('admin.cas.destroy', $user->id) }}" class="d-inline-block" method="post">
                                                 @csrf

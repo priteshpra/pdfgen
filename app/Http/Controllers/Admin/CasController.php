@@ -90,7 +90,7 @@ class CasController extends Controller
         $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
         $notificationList = Notification::where('UserID', $id)->get();
         // dd($scanDocuments);
-        return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList'));
+        return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id'));
     }
 
     /**

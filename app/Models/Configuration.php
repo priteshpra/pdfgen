@@ -22,7 +22,10 @@ class Configuration extends Authenticatable
     protected $primaryKey = 'ID';
     protected $fillable = [
         'IosAppVersion',
-        'AndroidAppVersion'
+        'AndroidAppVersion',
+        'SupportEmail',
+        'SMTPPASS',
+        'SMTPPORT',
     ];
 
     public function country()

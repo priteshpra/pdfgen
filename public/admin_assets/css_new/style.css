@@ -74010,7 +74010,16 @@ i.fa.fa-plus {
   padding-top: 35%;
 }
 
-.light-logo {
+/* .light-logo {
     max-width: 85%;
     margin-top: 12%;
+} */
+
+.theme-primary .btn-error:hover, .theme-primary .btn-error, .theme-primary .btn-error:focus, .theme-primary .btn-error {
+    background-color: #df4755 !important;
+    border-color: #df4755 !important;
+    color: #ffffff !important;
+}
+.invalid-feedback {
+    display: inline !important;
 }

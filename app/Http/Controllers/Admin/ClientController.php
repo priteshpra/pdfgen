@@ -84,11 +84,11 @@ class ClientController extends Controller
         $employee = User::where('client_id', $id)->where('Status', '1')->get()->toArray();
         $employeesNameData = array_column($employee, 'name', 'id');
         $employeesId = array_column($employee, 'id');
-        $scanDocuments = Scandocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
-        $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
+        $scanDocuments = Scandocument::where('UserID', $id)->where('Status', '1')->get();
+        $otherDocuments = OtherDocument::where('UserID', $id)->where('Status', '1')->get();
         $notificationList = Notification::where('UserID', $id)->get();
 
-        return view('admin.clients.show', compact('user', 'city', 'state', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList'));
+        return view('admin.clients.show', compact('user', 'city', 'state', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id'));
     }
 
     /**

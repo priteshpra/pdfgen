@@ -13,12 +13,17 @@
             <div class="pull-right">
                 @can('user_create')
                 <!-- <a href="{{ route('admin.client.create') }}" class="waves-effect waves-circle btn btn-circle btn-success btn-lg mb-5">Add New Clients</a> -->
-                <a href="{{ route('admin.client.create') }}"
+                <a href="{{ route('admin.client.create') }}" title="Create Client"
                     class="waves-effect waves-circle btn btn-circle btn-success btn-lg mb-5"><i class="fa fa-plus"
                         aria-hidden="true"></i></a>
                 @endcan
             </div>
+            {{-- <div style="float: left"> <a href="{{ route('admin.company.create') }}" title="Create Company"
+                    class="waves-effect waves-circle btn btn-circle btn-success btn-lg mb-5"><i class="fa fa-plus"
+                        aria-hidden="true"></i></a>
+            </div> --}}
         </div>
+
     </div>
     <section class="content">
         <div class="row">
@@ -72,6 +77,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($users as $user)
+                                    <?php $isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); ?>
                                     <tr>
                                         <td>{{$user->name}}</td>
                                         <td><a
@@ -103,9 +109,15 @@
                                             <a href="{{ route('admin.client.edit', $user->id) }}"
                                                 class="btn btn-sm btn-warning">Edit</a>
                                             @endcan
-
+                                            @if ($isCompanyCreate > 0)
                                             <a href="{{ route('admin.company.edit', $user->id) }}"
-                                                class="btn btn-sm btn-success">Create Company</a>
+                                                class="btn btn-sm btn-success">
+                                                Edit Company
+                                            </a>
+                                            @else
+                                            <a href="{{ route('admin.company.create', ['clientId' => $user->id]) }}"
+                                                class="btn btn-sm btn-success"> Create Company</a>
+                                            @endif
                                             <!-- @can('user_delete')
                                                 <form action="{{ route('admin.client.destroy', $user->id) }}" class="d-inline-block" method="post">
                                                     @csrf
