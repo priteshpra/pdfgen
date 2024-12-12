@@ -89,7 +89,7 @@ class OtherdocumentController extends Controller
         $downloadUrl = route('download.file', ['user_id' => $request->UserID, 'filename' => basename($pdfPath)]);
 
         $admin->Title = $request->Title;
-        $admin->BatchNo = rand(1000, 1000);
+        $admin->BatchNo = date('dmYHis') . '_' . $request->UserID;
         $admin->CompanyID = $request->CompanyID;
         $admin->UserID = $request->UserID;
         $admin->PageCount = $pageCount;

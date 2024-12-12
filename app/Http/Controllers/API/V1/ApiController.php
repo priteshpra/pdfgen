@@ -96,7 +96,7 @@ class ApiController extends Controller
 
             if ($chkUser) {
                 // $chkUser->makeHidden(['client_id']);
-                $chkUser->CompanyID = 0;
+                $chkUser->CompanyID = $chkUser['CompanyID'];
                 $token = $chkUser->createToken('authToken')->plainTextToken;
                 $result['status'] = false;
                 $result['message'] = "Login Succssfully!";
@@ -466,6 +466,8 @@ class ApiController extends Controller
             $user->role_id = '3';
             $user->save();
 
+            // Get the last inserted ID
+            $lastInsertedId = $user->id;
             //add the notification table
             // $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the client ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
             // $this->addNotificationData($notifiArray);
@@ -1016,6 +1018,7 @@ class ApiController extends Controller
             $user_id = $request->user_id;
             $company_id = isset($request->company_id) ? $request->company_id : 0;
             $page_number = $request->page;
+            $Remarks = isset($request->remarks) ? $request->remarks : '';
             $token = $request->header('token');
             $base_url = $this->base_url;
             $checkToken = $this->tokenVerify($token);
@@ -1055,9 +1058,10 @@ class ApiController extends Controller
 
             $documents = new Scandocument();
             $documents->Title = 'Document';
-            $documents->BatchNo = rand(1000, 1000);
+            $documents->BatchNo = isset($request->batch_no) ? $request->batch_no : date('dmYHis') . '_' . $user_id;
             $documents->CompanyID = $company_id;
             $documents->UserID = $user_id;
+            $documents->Remarks = $Remarks;
             $documents->ImageCount = $imageCount;
             $documents->PageCount = $pageCount;
             $documents->DocumentURL = $downloadUrl;
@@ -1271,6 +1275,7 @@ class ApiController extends Controller
             $documents = new OtherDocument();
             $documents->Title = $Title;
             $documents->CompanyID = $company_id;
+            $documents->BatchNo = isset($request->batch_no) ? $request->batch_no : date('dmYHis') . '_' . $user_id;
             $documents->UserID = $user_id;
             $documents->ImageCount = $imageCount;
             $documents->PageCount = $pageCount;
@@ -1305,6 +1310,7 @@ class ApiController extends Controller
                 'OtherdocumentsID',
                 'Title',
                 'CompanyID',
+                'BatchNo',
                 'UserID',
                 'Remarks',
                 'DocumentURL',

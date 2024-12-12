@@ -23,6 +23,7 @@ class OtherDocument extends Authenticatable
     protected $fillable = [
         'Title',
         'PageCount',
+        'BatchNo',
         'CompanyID',
         'UserID',
         'Remarks',

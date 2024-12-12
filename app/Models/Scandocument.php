@@ -25,6 +25,7 @@ class Scandocument extends Authenticatable
         'BatchNo',
         'CompanyID',
         'UserID',
+        'Remarks',
         'PageCount',
         'DocumentURL',
     ];

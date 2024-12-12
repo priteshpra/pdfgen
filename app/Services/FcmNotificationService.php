@@ -104,7 +104,7 @@ class FcmNotificationService
                 return response()->json([
                     'status' => true,
                     'message' => 'Notification has been sent',
-                    'response' => json_decode($response, true)
+                    // 'response' => json_decode($response, true)
                 ]);
             }
         }
