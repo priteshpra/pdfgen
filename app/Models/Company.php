@@ -21,14 +21,10 @@ class Company extends Authenticatable
     public $table = "company";
     protected $primaryKey = 'CompanyID';
     protected $fillable = [
-        'RoleID',
         'FirmName',
-        'FirstName',
-        'LastName',
-        'EmailID',
-        'MobileNo',
-        'Address',
+        'ClientCode',
         'CountryID',
+        'Address',
         'StateID',
         'CityID',
         'PinCode',
@@ -36,7 +32,6 @@ class Company extends Authenticatable
         'GSTNumber',
         'PANNumber',
         'FirmType',
-        'ClientID'
     ];
 
     /**
@@ -63,25 +58,5 @@ class Company extends Authenticatable
         if ($input) {
             $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
         }
-    }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-
-    static function boot()
-    {
-        parent::boot();
-
-        static::created(function (Model $model) {
-            // dd($model);
-            if ($model->RoleID == "") {
-                $model->update([
-                    'role_id' => Role::where('title', 'user')->first()->id,
-                ]);
-            }
-        });
     }
 }

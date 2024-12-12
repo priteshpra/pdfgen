@@ -18,6 +18,7 @@ use App\Exports\CouponsExport;
 use App\Models\BussinessCategory;
 use App\Models\City;
 use App\Models\Cms;
+use App\Models\Company;
 use App\Models\Configuration;
 use App\Models\Country;
 use App\Models\Notification;
@@ -81,11 +82,10 @@ class ApiController extends Controller
             $base_url = $this->base_url;
             DB::enableQueryLog();
 
-            $chkUser = User::where('email', $email)->where('Status', 1)
+            $chkUser = User::where('Email', $email)->where('Status', 1)
                 ->first();
 
             if ($chkUser) {
-                // Check if the password matches
                 if (!Hash::check($password, $chkUser->password)) {
                     $result['status'] = false;
                     $result['message'] = "Invalid email or password";
@@ -95,14 +95,13 @@ class ApiController extends Controller
             }
 
             if ($chkUser) {
-                // $chkUser->makeHidden(['client_id']);
                 $chkUser->CompanyID = $chkUser['CompanyID'];
                 $token = $chkUser->createToken('authToken')->plainTextToken;
                 $result['status'] = false;
                 $result['message'] = "Login Succssfully!";
                 $result['data'] = (object) [];
 
-                $chkUser->client_id = $chkUser->id;
+                $chkUser->user_id = $chkUser->id;
                 $chkUser->token = $token;
                 // add token devices login
                 $arr = [
@@ -119,7 +118,12 @@ class ApiController extends Controller
                 ];
                 DB::table('user_devices')->insertGetId($arr);
 
-                return response()->json(['status' => true, 'message' => 'Login successful.', 'data' => $chkUser]);
+                $userData = $chkUser->toArray();
+                unset($userData['role_id']);
+                unset($userData['email_verified_at']);
+                unset($userData['Address']);
+
+                return response()->json(['status' => true, 'message' => 'Login successfully.', 'data' => $userData]);
             } else {
                 $result['status'] = false;
                 $result['message'] = "Invalid email or password";
@@ -170,7 +174,8 @@ class ApiController extends Controller
     {
         $page_number = $request->page;
         $token = $request->header('token');
-        $user_id = $request->header('user_id');
+        $user_id = $request->user_id;
+        $company_id = $request->company_id;
         $base_url = $this->base_url;
         $checkToken = $this->tokenVerify($token);
         try {
@@ -179,7 +184,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $client = User::select('*')->where('Status', 1)->where('user_type', '3')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $client = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Status', 1)->where('users.UserType', '3')->where('users.CompanyID', $company_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $client->total(),
@@ -189,9 +194,13 @@ class ApiController extends Controller
                 'total_pages' => $client->lastPage(),
             ];
 
+            $data = $client->map(function ($user) {
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])->put('UserId', $user['id'])->toArray();
+            })->toArray();
+
             $dataClients = [
                 'pagination' => $pagination,
-                'data' => $client,
+                'data' => $data,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Client list successfully', 'data' => $dataClients], 200);
@@ -207,7 +216,8 @@ class ApiController extends Controller
     {
         $page_number = $request->page;
         $token = $request->header('token');
-        $user_id = $request->header('user_id');
+        $user_id = $request->user_id;
+        $company_id = $request->company_id;
         $base_url = $this->base_url;
         try {
             $checkToken = $this->tokenVerify($token);
@@ -216,7 +226,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $cas = User::select('*')->where('Status', 1)->where('user_type', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $cas = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Status', 1)->where('users.CompanyID', $company_id)->where('users.UserType', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $cas->total(),
@@ -226,9 +236,13 @@ class ApiController extends Controller
                 'total_pages' => $cas->lastPage(),
             ];
 
+            $data = $cas->map(function ($user) {
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])->put('UserId', $user['id'])->toArray();
+            })->toArray();
+
             $dataCAS = [
                 'pagination' => $pagination,
-                'data' => $cas,
+                'data' => $data,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get CAS list successfully', 'data' => $dataCAS], 200);
@@ -243,6 +257,7 @@ class ApiController extends Controller
     public function getEmployee(Request $request)
     {
         $user_id = $request->user_id;
+        $company_id = $request->company_id;
         $page_number = $request->page;
         $token = $request->header('token');
         $base_url = $this->base_url;
@@ -253,7 +268,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $employee = User::select('*')->where('Status', 1)->where('client_id', $user_id)->where('user_type', '2')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $employee = User::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserType', '2')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $employee->total(),
@@ -262,10 +277,13 @@ class ApiController extends Controller
                 'current_page' => $employee->currentPage(),
                 'total_pages' => $employee->lastPage(),
             ];
+            $data = $employee->map(function ($user) {
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])->put('UserId', $user['id'])->toArray();
+            })->toArray();
 
             $dataEmployee = [
                 'pagination' => $pagination,
-                'data' => $employee,
+                'data' => $data,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Emaployee list successfully', 'data' => $dataEmployee], 200);
@@ -302,10 +320,11 @@ class ApiController extends Controller
             $employee_id = $request->employee_id;
             $employees = User::select('*')
                 ->where('id', '=', $employee_id)
-                ->where('status', '=', 1)
+                ->where('Status', '=', 1)
+                ->where('UserType', '=', '2')
                 ->get();
 
-            $datas = [];
+            $evnt = [];
             foreach ($employees as $key => $value) {
                 $evnt[] = $value;
             }
@@ -341,16 +360,15 @@ class ApiController extends Controller
             }
 
             $cas_id = $request->cas_id;
-            $cass = User::select('*')
-                ->where('id', '=', $cas_id)
-                ->where('status', '=', 1)
-                ->where('user_type', '=', '4')
+            $cass = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')
+                ->where('users.CompanyID', '=', $cas_id)
+                ->where('users.Status', '=', 1)
+                ->where('users.UserType', '=', '4')
                 ->get();
 
             $datas = [];
             foreach ($cass as $key => $value) {
-                $evnt[] = $value;
-                $datas = $evnt;
+                $datas[] = $value;
             }
             return response()->json(['status' => true, 'message' => 'Get CAS details successfully', 'data' => $datas], 200);
         } catch (\Throwable $th) {
@@ -384,16 +402,15 @@ class ApiController extends Controller
             }
 
             $client_id = $request->client_id;
-            $clients = User::select('*')
-                ->where('id', '=', $client_id)
-                ->where('status', '=', 1)
-                ->where('user_type', '=', '4')
+            $clients = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')
+                ->where('users.CompanyID', '=', $client_id)
+                ->where('users.Status', '=', 1)
+                ->where('users.UserType', '=', '3')
                 ->get();
 
             $datas = [];
             foreach ($clients as $key => $value) {
-                $evnt[] = $value;
-                $datas = $evnt;
+                $datas[] = $value;
             }
             return response()->json(['status' => true, 'message' => 'Get Client details successfully', 'data' => $datas], 200);
         } catch (\Throwable $th) {
@@ -411,69 +428,79 @@ class ApiController extends Controller
         $token = $request->header('token');
         $base_url = $this->base_url;
         try {
-            // $checkToken = $this->tokenVerify($token);
-            // $userData = json_decode($checkToken->getContent(), true);
-            // if ($userData['status'] == false) {
-            //     return $checkToken->getContent();
-            // }
 
-            // Define validation rules
             $validator = Validator::make($request->all(), [
-                'fname' => 'required|string|max:255',
-                'lname' => 'required|string|max:255',
-                'firm_name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email|max:255',
-                'mobile_no' => 'required|min:10|digits:10',
-                'address' => 'required',
-                'countryID' => 'required',
-                'stateID' => 'required',
-                'cityID' => 'required',
-                'pincode' => 'required',
-                'aadharNumber' => 'required',
-                'GST' => 'required',
-                // 'user_id' => 'required',
-                'PAN' => 'required',
-                'firm_type' => 'required',
-                'user_type' => 'required',
-                'password' => 'required|string|max:100',
+                'userData.fname' => 'required|string|max:255',
+                'userData.lname' => 'required|string|max:255',
+                'userData.email' => 'required|email|unique:users,email',
+                'userData.mobile_no' => 'required|min:10|digits:10',
+                'userData.password' => 'required|string|min:6',
+                'userData.user_type' => 'required|integer',
+                'clientData.firm_name' => 'required|string|max:255',
+                'clientData.client_code' => 'required|string|max:4|unique:company,ClientCode',
+                'clientData.PAN' => 'required|string|max:50',
+                'clientData.GST' => 'required|string|max:50',
+                'clientData.aadharNumber' => 'required|numeric',
+                'clientData.address' => 'required|string',
+                'clientData.countryID' => 'required|integer',
+                'clientData.cityID' => 'required|integer',
+                'clientData.stateID' => 'required|integer',
+                'clientData.pincode' => 'required|numeric',
+                'clientData.firm_type' => 'required|string',
             ]);
 
-            // Check if the validation fails
             if ($validator->fails()) {
-                $result['status'] = false;
-                $result['message'] = $validator->errors()->first();
-                $result['data'] = (object) [];
-                return response()->json($result, 200);
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                    'data' => (object) [],
+                ], 200);
             }
+            $validatedData = $validator->validated();
 
-            // add user details
-            $user->name = $request->input('fname');
-            $user->lname = $request->input('lname');
-            $user->firm_name = $request->input('firm_name');
-            $user->email = $request->input('email');
-            $user->mobile_no = $request->input('mobile_no');
-            $user->address = $request->input('address');
-            $user->CountryID = $request->input('countryID');
-            $user->StateID = $request->input('stateID');
-            $user->CityID = $request->input('cityID');
-            $user->pincode = $request->input('pincode');
-            $user->PAN = $request->input('PAN');
-            $user->GST = $request->input('GST');
-            $user->firm_type = $request->input('firm_type');
-            // $user->client_id = $request->input('user_id');
-            $user->password = Hash::make($request->input('password'));
-            $user->user_type = '3';
-            $user->role_id = '3';
-            $user->save();
+            // Create the User
+            $user = User::create([
+                'FirstName' => $validatedData['userData']['fname'],
+                'LastName' => $validatedData['userData']['lname'],
+                'Email' => $validatedData['userData']['email'],
+                'MobileNo' => $validatedData['userData']['mobile_no'],
+                'password' => bcrypt($validatedData['userData']['password']),
+                'UserType' => $validatedData['userData']['user_type'],
+                'role_id' => 3
+            ]);
+            $lastInsertedUserId = $user->id;
 
-            // Get the last inserted ID
-            $lastInsertedId = $user->id;
+            // Create the Client
+            $client = Company::create([
+                'FirmName' => $validatedData['clientData']['firm_name'],
+                'GSTNumber' => $validatedData['clientData']['PAN'],
+                'ClientCode' => $validatedData['clientData']['client_code'],
+                'GSTNumber' => $validatedData['clientData']['GST'],
+                'AadharNumber' => $validatedData['clientData']['aadharNumber'],
+                'Address' => $validatedData['clientData']['address'],
+                'CountryID' => $validatedData['clientData']['countryID'],
+                'CityID' => $validatedData['clientData']['cityID'],
+                'StateID' => $validatedData['clientData']['stateID'],
+                'PinCode' => $validatedData['clientData']['pincode'],
+                'FirmType' => $validatedData['clientData']['firm_type'],
+                'CreatedBy' => $lastInsertedUserId,
+            ]);
+            $lastInsertedclientId = $client->CompanyID;
+            $updateClient = User::find($lastInsertedUserId);
+            $updateClient->CompanyID = $lastInsertedclientId;
+            $updateClient->save();
+
+            $clientData = [
+                'user' => array_merge(array_diff_key($user->toArray(), ['password' => '', 'role_id' => '', 'Address' => '']), ['CompanyID' => $lastInsertedclientId, 'UserId' => $lastInsertedUserId]),
+                'client' => $client,
+            ];
+
             //add the notification table
             // $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the client ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
             // $this->addNotificationData($notifiArray);
 
             // Return a response
-            return response()->json(['status' => true, 'message' => 'Clients created successfully', 'data' => $user], 200);
+            return response()->json(['status' => true, 'message' => 'Clients created successfully', 'data' => $clientData], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time..', 'data' => []], 200);
         }
@@ -500,12 +527,13 @@ class ApiController extends Controller
             $validator = Validator::make($request->all(), [
                 'fname' => 'required|string|max:255',
                 'lname' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email|max:255',
                 'mobile_no' => 'required|min:10|digits:10',
+                'email' => 'required|email|unique:users,email|max:255',
+                'password' => 'required|string|max:100',
                 'address' => 'required',
                 'user_id' => 'required',
+                'company_id' => 'required',
                 'user_type' => 'required',
-                'password' => 'required|string|max:100',
             ]);
 
             // Check if the validation fails
@@ -517,16 +545,18 @@ class ApiController extends Controller
             }
 
             // add user details
-            $user->name = $request->input('fname');
-            $user->lname = $request->input('lname');
-            $user->email = $request->input('email');
-            $user->mobile_no = $request->input('mobile_no');
-            $user->address = $request->input('address');
+            $user->FirstName = $request->input('fname');
+            $user->LastName = $request->input('lname');
+            $user->Email = $request->input('email');
+            $user->MobileNo = $request->input('mobile_no');
+            $user->Address = $request->input('address');
             $user->role_id = '2';
             $user->password = Hash::make($request->input('password'));
-            $user->user_type = '2';
-            $user->client_id = $request->input('user_id');
+            $user->UserType = '2';
+            $user->CompanyID = $request->input('company_id');
             $user->save();
+
+            $user->UserId = $user->id;
 
             //add the notification table
             $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the employee ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
@@ -549,66 +579,78 @@ class ApiController extends Controller
         $token = $request->header('token');
         $base_url = $this->base_url;
         try {
-            // $checkToken = $this->tokenVerify($token);
-            // $userData = json_decode($checkToken->getContent(), true);
-            // if ($userData['status'] == false) {
-            //     return $checkToken->getContent();
-            // }
-            // Define validation rules
             $validator = Validator::make($request->all(), [
-                'fname' => 'required|string|max:255',
-                'lname' => 'required|string|max:255',
-                'firm_name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email|max:255',
-                'mobile_no' => 'required|min:10|digits:10',
-                'address' => 'required',
-                // 'user_id' => 'required',
-                'countryID' => 'required',
-                'stateID' => 'required',
-                'cityID' => 'required',
-                'pincode' => 'required',
-                'aadharNumber' => 'required',
-                'GST' => 'required',
-                'PAN' => 'required',
-                'firm_type' => 'required',
-                'user_type' => 'required',
-                'password' => 'required|string|max:100',
+                'userData.fname' => 'required|string|max:255',
+                'userData.lname' => 'required|string|max:255',
+                'userData.email' => 'required|email|unique:users,email',
+                'userData.mobile_no' => 'required|min:10|digits:10',
+                'userData.password' => 'required|string|min:6',
+                'userData.user_type' => 'required|integer',
+                'clientData.firm_name' => 'required|string|max:255',
+                'clientData.client_code' => 'required|string|max:4|unique:company,ClientCode',
+                'clientData.PAN' => 'required|string|max:50',
+                'clientData.GST' => 'required|string|max:50',
+                'clientData.aadharNumber' => 'required|numeric',
+                'clientData.address' => 'required|string',
+                'clientData.countryID' => 'required|integer',
+                'clientData.cityID' => 'required|integer',
+                'clientData.stateID' => 'required|integer',
+                'clientData.pincode' => 'required|numeric',
+                'clientData.firm_type' => 'required|string',
             ]);
 
-            // Check if the validation fails
             if ($validator->fails()) {
-                $result['status'] = false;
-                $result['message'] = $validator->errors()->first();
-                $result['data'] = (object) [];
-                return response()->json($result, 200);
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                    'data' => (object) [],
+                ], 200);
             }
+            $validatedData = $validator->validated();
 
-            // add user details
-            $user->name = $request->input('fname');
-            $user->lname = $request->input('lname');
-            $user->firm_name = $request->input('firm_name');
-            $user->email = $request->input('email');
-            $user->mobile_no = $request->input('mobile_no');
-            $user->address = $request->input('address');
-            $user->CountryID = $request->input('countryID');
-            $user->StateID = $request->input('stateID');
-            $user->CityID = $request->input('cityID');
-            $user->pincode = $request->input('pincode');
-            $user->PAN = $request->input('PAN');
-            $user->GST = $request->input('GST');
-            $user->firm_type = $request->input('firm_type');
-            // $user->client_id = $request->input('user_id');
-            $user->password = Hash::make($request->input('password'));
-            $user->user_type = '4';
-            $user->role_id = '4';
-            $user->save();
+            // Create the User
+            $user = User::create([
+                'FirstName' => $validatedData['userData']['fname'],
+                'LastName' => $validatedData['userData']['lname'],
+                'Email' => $validatedData['userData']['email'],
+                'MobileNo' => $validatedData['userData']['mobile_no'],
+                'password' => bcrypt($validatedData['userData']['password']),
+                'UserType' => $validatedData['userData']['user_type'],
+                'role_id' => 4
+            ]);
+            $lastInsertedUserId = $user->id;
+
+            // Create the Client
+            $client = Company::create([
+                'FirmName' => $validatedData['clientData']['firm_name'],
+                'GSTNumber' => $validatedData['clientData']['PAN'],
+                'ClientCode' => $validatedData['clientData']['client_code'],
+                'GSTNumber' => $validatedData['clientData']['GST'],
+                'AadharNumber' => $validatedData['clientData']['aadharNumber'],
+                'Address' => $validatedData['clientData']['address'],
+                'CountryID' => $validatedData['clientData']['countryID'],
+                'CityID' => $validatedData['clientData']['cityID'],
+                'StateID' => $validatedData['clientData']['stateID'],
+                'PinCode' => $validatedData['clientData']['pincode'],
+                'FirmType' => $validatedData['clientData']['firm_type'],
+                'CreatedBy' => $lastInsertedUserId,
+            ]);
+            $lastInsertedclientId = $client->CompanyID;
+            $updateClient = User::find($lastInsertedUserId);
+            $updateClient->CompanyID = $lastInsertedclientId;
+            $updateClient->save();
+
+            $clientData = [
+                'user' => array_merge(array_diff_key($user->toArray(), ['password' => '', 'role_id' => '', 'Address' => '']), ['CompanyID' => $lastInsertedclientId, 'UserId' => $lastInsertedUserId]),
+                'client' => $client,
+            ];
 
             //add the notification table
             // $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the CAs ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
             // $this->addNotificationData($notifiArray);
 
             // Return a response
-            return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => $user], 200);
+            return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => $clientData], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
@@ -623,6 +665,7 @@ class ApiController extends Controller
         $loginType = $request->user_type;
         $token = $request->header('token');
         $user_id = $request->user_id;
+        $company_id = $request->company_id;
         $user_type = $request->user_type;
         try {
             $checkToken = $this->tokenVerify($token);
@@ -634,6 +677,7 @@ class ApiController extends Controller
 
             $totalImageCount = Scandocument::where('Status', 1)
                 ->where('UserID', $user_id)
+                ->where('CompanyID', $company_id)
                 ->sum('ImageCount');
 
             return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => $totalImageCount]], 200);
@@ -1125,6 +1169,7 @@ class ApiController extends Controller
     public function getDocumentList(Request $request)
     {
         $user_id = $request->user_id;
+        $company_id = $request->company_id;
         $page_number = $request->page;
         $token = $request->header('token');
         $base_url = $this->base_url;
@@ -1135,7 +1180,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $roles = Scandocument::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $roles = Scandocument::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserID', $user_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $roles->total(),
@@ -1302,6 +1347,7 @@ class ApiController extends Controller
     public function getOtherDocument(Request $request)
     {
         $user_id = $request->user_id;
+        $company_id = $request->company_id;
         $page_number = $request->page;
         $token = $request->header('token');
         $base_url = $this->base_url;
@@ -1317,7 +1363,7 @@ class ApiController extends Controller
                 'DocumentStatus',
                 'ImageCount'
                 // DB::raw("(SELECT SUM(ImageCount) FROM otherdocuments WHERE Status = 1 AND UserID = $user_id) as totalImageCount")
-            ])->where('Status', 1)->where('UserID', $user_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            ])->where('Status', 1)->where('UserID', $user_id)->where('CompanyID', $company_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $employee->total(),

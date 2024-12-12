@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -81,6 +82,7 @@ class ProfileController extends Controller
 
         $token = $request->header('token');
         $user_id = $request->user_id;
+        $company_id = $request->company_id;
         $base_url =  $this->base_url;
         $user = DB::table('user_devices')
             ->where('user_devices.login_token', '=', $token)
@@ -95,6 +97,7 @@ class ProfileController extends Controller
 
         // Get the currently authenticated user
         $user = User::where('id', $user_id)->first();
+        $company = Company::where('CompanyID', $company_id)->first();
         // Define validation rules
         if ($request->user_type == 4) {
             $validator = Validator::make($request->all(), [
@@ -140,18 +143,20 @@ class ProfileController extends Controller
         }
 
         // Update user details
-        $user->name = $request->input('fname');
-        $user->lname = $request->input('lname');
-        $user->firm_name = $request->input('firm_name');
-        $user->email = $request->input('email');
-        $user->PAN = $request->input('PAN');
-        $user->GST = $request->input('GST');
-        $user->pincode = $request->input('pinCode');
-        $user->mobile_no = $request->input('mobile_no');
-        if ($request->input('aadharNumber')) {
-            $user->aadhar = $request->input('aadharNumber');
-        }
+        $user->FirstName = $request->input('fname');
+        $user->LastName = $request->input('lname');
+        $user->Email = $request->input('email');
+        $user->MobileNo = $request->input('mobile_no');
         $user->save();
+
+        $company->FirmName = $request->input('firm_name');
+        $company->PANNumber = $request->input('PAN');
+        $company->GSTNumber = $request->input('GST');
+        $company->PinCode = $request->input('pinCode');
+        if ($request->input('aadharNumber')) {
+            $company->AadharNumber = $request->input('aadharNumber');
+        }
+        $company->save();
 
         $users = User::where('id', $user_id)->first();
 
