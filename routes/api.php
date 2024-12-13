@@ -60,6 +60,7 @@ Route::post('v1/sendNotification', [ApiController::class, 'sendNotification']);
 Route::post('v1/reportCouponDownload', [ApiController::class, 'reportCouponDownload']);
 Route::post('v1/documentUpload', [ApiController::class, 'documentUpload']);
 Route::post('v1/otherDocumentUpload', [ApiController::class, 'otherDocumentUpload']);
+Route::post('v1/CheckClientCode', [ApiController::class, 'CheckClientCode']);
 
 
 //profiles

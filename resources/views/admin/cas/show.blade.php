@@ -7,7 +7,7 @@
         <div class="d-flex align-items-center">
             <div class="me-auto">
                 <a href="{{ route('admin.cas.index') }}">
-                    <h3 class="page-title">{{ $user->name }} {{ $user->lname }} - Details</h3>
+                    <h3 class="page-title">{{ $user->FirstName }} {{ $user->LastName }} - Details</h3>
                 </a>
             </div>
             {{-- <div class="pull-right">
@@ -64,13 +64,13 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">First Name</label><br>
-                                                            <label>{{ $user->name }}</label>
+                                                            <label>{{ $user->FirstName }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Last Name</label><br>
-                                                            <label>{{ $user->lname }}</label>
+                                                            <label>{{ $user->LastName }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -78,13 +78,13 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">E-mail</label><br>
-                                                            <label>{{ $user->email }}</label>
+                                                            <label>{{ $user->Email }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Contact Number</label><br>
-                                                            <label>{{ $user->mobile_no }}</label>
+                                                            <label>{{ $user->MobileNo }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -95,13 +95,13 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Firm Name</label><br>
-                                                            <label>{{ $user->firm_name }} </label>
+                                                            <label>{{ $user->FirmName }} </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Address</label><br>
-                                                            <label>{{ $user->address }}</label>
+                                                            <label>{{ $user->Address }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -109,15 +109,16 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">PAN Number</label><br>
-                                                            <label>{{ $user->pan }}</label>
+                                                            <label>{{ $user->PANNumber }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Aadhar Number</label><br>
                                                             @php
-                                                            $formattedAadhar = substr($user->aadhar, 0, 4) . '-' .
-                                                            substr($user->aadhar, 4, 4) . '-' . substr($user->aadhar, 8,
+                                                            $formattedAadhar = substr($user->AadharNumber, 0, 4) . '-' .
+                                                            substr($user->AadharNumber, 4, 4) . '-' .
+                                                            substr($user->AadharNumber, 8,
                                                             4);
                                                             @endphp
                                                             <label>{{ $formattedAadhar }}</label>
@@ -128,13 +129,13 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">GST Number</label><br>
-                                                            <label>{{ $user->gst }} </label>
+                                                            <label>{{ $user->GSTNumber }} </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Firm Type</label><br>
-                                                            <label>{{ $user->firm_type }}</label>
+                                                            <label>{{ $user->FirmType }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -267,13 +268,13 @@
                                                                     @foreach ($employee as $employee)
                                                                     <tr>
                                                                         <td><a
-                                                                                href="{{ route('admin.users.show', $employee['id']) }}"><strong>{{$employee['name']}}
-                                                                                    {{$employee['lname']}}</strong></a>
+                                                                                href="{{ route('admin.users.show', $employee['id']) }}"><strong>{{$employee['FirstName']}}
+                                                                                    {{$employee['LastName']}}</strong></a>
                                                                         </td>
-                                                                        <td>{{$employee['email']}}</td>
-                                                                        <td>{{$employee['mobile_no']}}</td>
-                                                                        <td>{{$employee['address']}}</td>
-                                                                        <td>{{$employee['registration_type']}}</td>
+                                                                        <td>{{$employee['Email']}}</td>
+                                                                        <td>{{$employee['MobileNo']}}</td>
+                                                                        <td>{{$employee['Address']}}</td>
+                                                                        <td>{{$employee['RegistrationType']}}</td>
                                                                         <td>
                                                                             <div
                                                                                 class="col-xl-2 col-6 text-center align-self-center mb-20">
@@ -319,7 +320,7 @@
                                                 {{-- @can('user_create') --}}
                                                 <a class="btn btn-success"
                                                     style="float: right;margin-top: 5px;margin-right: 5px;"
-                                                    href="{{ route('admin.scandocument.create', ['clientId' => $id]) }}">Add
+                                                    href="{{ route('admin.scandocument.create', ['userId' => $id]) }}">Add
                                                     Document</a>
                                                 {{-- @endcan --}}
                                             </div>
@@ -427,7 +428,7 @@
                                                 {{-- @can('user_create') --}}
                                                 <a class="btn btn-success"
                                                     style="float: right;margin-top: 5px;margin-right: 5px;"
-                                                    href="{{ route('admin.otherdocument.create', ['clientId' => $id]) }}">Add
+                                                    href="{{ route('admin.otherdocument.create', ['userId' => $id]) }}">Add
                                                     Document</a>
                                                 {{-- @endcan --}}
                                             </div>

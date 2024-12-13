@@ -10,7 +10,7 @@
             @csrf
             <div class="row">
                 <div class="col-md-6">
-                    <input id="ClientID" type="hidden" class="form-control" name="ClientID" value="{{ $clientId }}"
+                    <input id="CompanyID" type="hidden" class="form-control" name="CompanyID" value="{{ $clientId }}"
                         autocomplete="aadhar">
                     <input id="lastSegment" type="hidden" class="form-control" name="lastSegment"
                         value="{{ $lastSegment }}" autocomplete="aadhar">
@@ -30,8 +30,8 @@
                     </div>
                 </div>
 
-                <input id="user_type" type="hidden" class="form-control @error('user_type') is-invalid @enderror"
-                    name="user_type" value="4" required autocomplete="name">
+                <input id="UserType" type="hidden" class="form-control @error('UserType') is-invalid @enderror"
+                    name="UserType" value="4" required autocomplete="name">
                 <div class="col-md-6">
                     <label for="FirstName" class="required col-md-4 col-form-label text-md-right">{{ __('First Name')
                         }}</label>

@@ -33,7 +33,7 @@ class ScandocumentController extends Controller
 
     public function create(Request $request)
     {
-        $userId = $request->query('clientId');
+        $userId = $request->query('userId');
         $company = User::where('id', $userId)->first();
         $CompanyID = $company->CompanyID;
         $referer = $request->headers->get('referer');

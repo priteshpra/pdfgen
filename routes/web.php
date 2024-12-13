@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\PageController;
-use App\Http\Controllers\Admin\CompanyController;
+// use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ScandocumentController;
 use App\Http\Controllers\Admin\OtherdocumentController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -83,7 +83,7 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::post('/otherdoc-toggle-status', [CasController::class, 'otherDocToggleStatus'])->name('otherdoctoggle.status');
     Route::post('/scandoc-toggle-status', [CasController::class, 'scanDocToggleStatus'])->name('scandoctoggle.status');
 
-    Route::get('/admin/company/create/{userId}', [CompanyController::class, 'create'])->name('admin.company.create');
+    // Route::get('/admin/company/create/{userId}', [CompanyController::class, 'create'])->name('admin.company.create');
 
     // Route::post('/search', 'CityController');
 });

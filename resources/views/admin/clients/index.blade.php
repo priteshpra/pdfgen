@@ -77,19 +77,18 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($users as $user)
-                                    <?php $isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); ?>
+                                    <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); ?>
                                     <tr>
-                                        <td>{{$user->name}}</td>
-                                        <td><a
-                                                href="{{ route('admin.client.show',$user->id) }}">{{$user->firm_name}}</a>
+                                        <td>{{$user->FirstName}}</td>
+                                        <td><a href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a>
                                         </td>
-                                        <td>{{$user->mobile_no}}</td>
-                                        <td>{{$user->email}}</td>
-                                        <td>{{$user->address}}</td>
-                                        <td>{{$user->aadhar}}</td>
-                                        <td>{{$user->gst}}</td>
-                                        <td>{{$user->pan}}</td>
-                                        <td>{{$user->firm_type}}</td>
+                                        <td>{{$user->MobileNo}}</td>
+                                        <td>{{$user->Email}}</td>
+                                        <td>{{$user->Address}}</td>
+                                        <td>{{$user->AadharNumber}}</td>
+                                        <td>{{$user->GSTNumber}}</td>
+                                        <td>{{$user->PANNumber}}</td>
+                                        <td>{{$user->FirmType}}</td>
                                         <td>
                                             <div class="col-xl-2 col-6 text-center align-self-center mb-20">
                                                 <button id="toggleChang_{{$user->id}}"
@@ -109,7 +108,7 @@
                                             <a href="{{ route('admin.client.edit', $user->id) }}"
                                                 class="btn btn-sm btn-warning">Edit</a>
                                             @endcan
-                                            @if ($isCompanyCreate > 0)
+                                            {{-- @if ($isCompanyCreate > 0)
                                             <a href="{{ route('admin.company.edit', $user->id) }}"
                                                 class="btn btn-sm btn-success">
                                                 Edit Company
@@ -117,7 +116,7 @@
                                             @else
                                             <a href="{{ route('admin.company.create', ['clientId' => $user->id]) }}"
                                                 class="btn btn-sm btn-success"> Create Company</a>
-                                            @endif
+                                            @endif --}}
                                             <!-- @can('user_delete')
                                                 <form action="{{ route('admin.client.destroy', $user->id) }}" class="d-inline-block" method="post">
                                                     @csrf

@@ -50,11 +50,11 @@
                                 <div class="form-group">
                                     <h5>Email <span class="text-danger">*</span></h5>
                                     <div class="controls">
-                                        <input type="email" readonly value="{{ $user->email }}" name="email" id="email"
+                                        <input type="email" readonly value="{{ $user->Email }}" name="Email" id="Email"
                                             class="form-control" required
                                             data-validation-required-message="This field is required"
                                             placeholder="Email" maxlength="50" autofocus tabindex="1">
-                                        @error('email')
+                                        @error('Email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

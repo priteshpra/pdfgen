@@ -11,17 +11,17 @@
             @method('PUT')
             <div class="row">
                 <div class="col-md-6">
-                    <input id="ClientID" type="hidden" class="form-control"
-                        name="ClientID" value="{{ $id }}" autocomplete="aadhar">
-                    <input id="lastSegment" type="hidden" class="form-control"
-                        name="lastSegment" value="{{ $lastSegment }}" autocomplete="aadhar">
+                    <input id="CompanyID" type="hidden" class="form-control" name="CompanyID" value="{{ $id }}"
+                        autocomplete="aadhar">
+                    <input id="lastSegment" type="hidden" class="form-control" name="lastSegment"
+                        value="{{ $lastSegment }}" autocomplete="aadhar">
                     <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('Firm Name')
                         }}</label>
 
                     <div class="form-group">
                         <input id="FirmName" type="text" class="form-control @error('FirmName') is-invalid @enderror"
-                            name="FirmName" value="{{ old('FirmName', isset($user->FirmName) ? $user->FirmName: '') }}" required
-                            autocomplete="FirmName">
+                            name="FirmName" value="{{ old('FirmName', isset($user->FirmName) ? $user->FirmName: '') }}"
+                            required autocomplete="FirmName">
 
                         @error('FirmName')
                         <span class="invalid-feedback" role="alert">
@@ -31,14 +31,17 @@
                     </div>
                 </div>
 
-                <input id="user_type" type="hidden" class="form-control @error('user_type') is-invalid @enderror"
-                    name="user_type" value="4" required autocomplete="name">
+                <input id="UserType" type="hidden" class="form-control @error('UserType') is-invalid @enderror"
+                    name="UserType" value="4" required autocomplete="name">
                 <div class="col-md-6">
-                    <label for="FirstName" class="required col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
+                    <label for="FirstName" class="required col-md-4 col-form-label text-md-right">{{ __('First Name')
+                        }}</label>
 
                     <div class="form-group">
                         <input id="FirstName" type="text" class="form-control @error('FirstName') is-invalid @enderror"
-                            name="FirstName" value="{{ old('FirstName', isset($user->FirstName) ? $user->FirstName : '') }}" required autocomplete="FirstName">
+                            name="FirstName"
+                            value="{{ old('FirstName', isset($user->FirstName) ? $user->FirstName : '') }}" required
+                            autocomplete="FirstName">
 
                         @error('FirstName')
                         <span class="invalid-feedback" role="alert">
@@ -55,7 +58,8 @@
 
                     <div class="form-group">
                         <input id="LastName" type="text" class="form-control @error('LastName') is-invalid @enderror"
-                            name="LastName" value="{{ old('LastName', isset($user->LastName) ? $user->LastName : '') }}" required autocomplete="LastName">
+                            name="LastName" value="{{ old('LastName', isset($user->LastName) ? $user->LastName : '') }}"
+                            required autocomplete="LastName">
 
                         @error('LastName')
                         <span class="invalid-feedback" role="alert">
@@ -70,7 +74,8 @@
 
                     <div class="form-group">
                         <input id="EmailID" type="EmailID" class="form-control @error('EmailID') is-invalid @enderror"
-                            name="EmailID" value="{{ old('EmailID', isset($user->EmailID) ? $user->EmailID : '') }}" required autocomplete="EmailID">
+                            name="EmailID" value="{{ old('EmailID', isset($user->EmailID) ? $user->EmailID : '') }}"
+                            required autocomplete="EmailID">
 
                         @error('EmailID')
                         <span class="invalid-feedback" role="alert">
@@ -83,12 +88,13 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <label for="MobileNo" class="required col-md-4 col-form-label text-md-right">{{ __('Mobile') }}</label>
+                    <label for="MobileNo" class="required col-md-4 col-form-label text-md-right">{{ __('Mobile')
+                        }}</label>
 
                     <div class="form-group">
                         <input id="MobileNo" type="text" class="form-control @error('MobileNo') is-invalid @enderror"
-                            name="MobileNo" value="{{ old('MobileNo', isset($user->MobileNo) ? $user->MobileNo : '') }}" required
-                            autocomplete="MobileNo">
+                            name="MobileNo" value="{{ old('MobileNo', isset($user->MobileNo) ? $user->MobileNo : '') }}"
+                            required autocomplete="MobileNo">
 
                         @error('MobileNo')
                         <span class="invalid-feedback" role="alert">
@@ -103,7 +109,8 @@
 
                     <div class="form-group">
                         <input id="Address" type="text" class="form-control @error('Address') is-invalid @enderror"
-                            name="Address" value="{{ old('Address', isset($user->Address) ? $user->Address : '') }}" required autocomplete="Address">
+                            name="Address" value="{{ old('Address', isset($user->Address) ? $user->Address : '') }}"
+                            required autocomplete="Address">
 
                         @error('Address')
                         <span class="invalid-feedback" role="alert">
@@ -125,7 +132,8 @@
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($country as $id => $role)
-                            <option value="{{$role->CountryID}}" {{ (old('CountryID',isset($role->CountryID) ? $role->CountryID : "") ==
+                            <option value="{{$role->CountryID}}" {{ (old('CountryID',isset($role->CountryID) ?
+                                $role->CountryID : "") ==
                                 isset($user->CountryID )) ? 'selected' : '' }}>{{$role->Country}}</option>
                             @endforeach
                         </select>
@@ -147,7 +155,8 @@
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($state as $id => $role)
-                            <option value="{{$role->StateID}}" {{ (old('StateID',isset($role->StateID) ? $role->StateID : "") == isset($user->StateID)
+                            <option value="{{$role->StateID}}" {{ (old('StateID',isset($role->StateID) ? $role->StateID
+                                : "") == isset($user->StateID)
                                 ) ? 'selected' : '' }}>{{$role->State}}</option>
                             @endforeach
                         </select>
@@ -172,7 +181,8 @@
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($city as $id => $role)
-                            <option value="{{$role->CityID}}" {{ (old('CityID',isset($role->CityID) ? $role->CityID: "") == isset($user->CityID) ) ?
+                            <option value="{{$role->CityID}}" {{ (old('CityID',isset($role->CityID) ? $role->CityID: "")
+                                == isset($user->CityID) ) ?
                                 'selected' : '' }}>{{$role->City}}</option>
                             @endforeach
                         </select>
@@ -190,7 +200,8 @@
 
                     <div class="form-group">
                         <input id="PinCode" type="text" class="form-control @error('PinCode') is-invalid @enderror"
-                            name="PinCode" value="{{ old('PinCode', isset($user->PinCode) ? $user->PinCode : '') }}" required autocomplete="PinCode">
+                            name="PinCode" value="{{ old('PinCode', isset($user->PinCode) ? $user->PinCode : '') }}"
+                            required autocomplete="PinCode">
 
                         @error('PinCode')
                         <span class="invalid-feedback" role="alert">
@@ -204,12 +215,15 @@
 
 
                 <div class="col-md-6">
-                    <label for="AadharNumber" class="required col-md-4 col-form-label text-md-right">{{ __('AadharNumber Number')
+                    <label for="AadharNumber" class="required col-md-4 col-form-label text-md-right">{{ __('AadharNumber
+                        Number')
                         }}</label>
 
                     <div class="form-group">
-                        <input id="AadharNumber" type="text" class="form-control @error('AadharNumber') is-invalid @enderror"
-                            name="AadharNumber" value="{{ old('AadharNumber', isset($user->AadharNumber) ? $user->AadharNumber : '') }}" required autocomplete="AadharNumber">
+                        <input id="AadharNumber" type="text"
+                            class="form-control @error('AadharNumber') is-invalid @enderror" name="AadharNumber"
+                            value="{{ old('AadharNumber', isset($user->AadharNumber) ? $user->AadharNumber : '') }}"
+                            required autocomplete="AadharNumber">
 
                         @error('AadharNumber')
                         <span class="invalid-feedback" role="alert">
@@ -223,8 +237,10 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="GSTNumber" type="text" class="form-control @error('GSTNumber') is-invalid @enderror" name="GSTNumber"
-                            value="{{ old('GSTNumber', isset($user->GSTNumber) ? $user->GSTNumber : '') }}" required autocomplete="GSTNumber">
+                        <input id="GSTNumber" type="text" class="form-control @error('GSTNumber') is-invalid @enderror"
+                            name="GSTNumber"
+                            value="{{ old('GSTNumber', isset($user->GSTNumber) ? $user->GSTNumber : '') }}" required
+                            autocomplete="GSTNumber">
 
                         @error('GSTNumber')
                         <span class="invalid-feedback" role="alert">
@@ -238,12 +254,15 @@
 
 
                 <div class="col-md-6">
-                    <label for="PANNumber" class="required col-md-4 col-form-label text-md-right">{{ __('PANNumber Number')
+                    <label for="PANNumber" class="required col-md-4 col-form-label text-md-right">{{ __('PANNumber
+                        Number')
                         }}</label>
 
                     <div class="form-group">
-                        <input id="PANNumber" type="text" class="form-control @error('PANNumber') is-invalid @enderror" name="PANNumber"
-                            value="{{ old('PANNumber', isset($user->PANNumber) ? $user->PANNumber : '') }}" required autocomplete="PANNumber">
+                        <input id="PANNumber" type="text" class="form-control @error('PANNumber') is-invalid @enderror"
+                            name="PANNumber"
+                            value="{{ old('PANNumber', isset($user->PANNumber) ? $user->PANNumber : '') }}" required
+                            autocomplete="PANNumber">
 
                         @error('PANNumber')
                         <span class="invalid-feedback" role="alert">
@@ -259,12 +278,13 @@
                             <input name="FirmType" type="radio" id="radio_1" value="Proprietary" {{
                                 (old('FirmType',isset($user->FirmType)
                             ?? "") == 'Proprietary' ) ? 'checked=""' : '' }}
-                                tabindex="14">
+                            tabindex="14">
                             <label for="radio_1">Proprietary</label>
                             <div class="help-block"></div>
                         </fieldset>
                         <fieldset>
-                            <input name="FirmType" type="radio" id="radio_2" {{ (old('FirmType',isset($user->FirmType) ??
+                            <input name="FirmType" type="radio" id="radio_2" {{ (old('FirmType',isset($user->FirmType)
+                            ??
                             "") == 'Private Limited' ) ? 'checked=""' : '' }} value="Private Limited" tabindex="15">
                             <label for="radio_2">Private Limited</label>
                         </fieldset>
@@ -272,7 +292,7 @@
                             <input name="FirmType" type="radio" id="radio_3" value="LLP" {{
                                 (old('FirmType',isset($user->FirmType) ?? "") ==
                             'LLP' ) ? 'checked=""' : '' }}
-                                tabindex="16">
+                            tabindex="16">
                             <label for="radio_3">LLP</label>
                         </fieldset>
                     </div>
@@ -290,7 +310,8 @@
                             <option value="" selected hidden>Please Select</option>
 
                             @foreach ($roles as $id => $role)
-                            <option value="{{$id}}" {{ (old('RoleID',isset($user->RoleID) ? $user->RoleID: "") == $id ) ? 'selected' : ''
+                            <option value="{{$id}}" {{ (old('RoleID',isset($user->RoleID) ? $user->RoleID: "") == $id )
+                                ? 'selected' : ''
                                 }}>{{$role}}</option>
                             @endforeach
                         </select>

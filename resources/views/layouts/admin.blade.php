@@ -261,7 +261,7 @@
                                     <a class="dropdown-item"
                                         href="{{ route('admin.profile.edit', Auth()->user()->id) }}"><i
                                             class="ti-user text-muted me-2"></i> {{
-                                        Auth()->user()->name }}</a>
+                                        Auth()->user()->FirstName }}</a>
                                     @can('roles_access')
                                     <a class="dropdown-item" href="{{ route('admin.roles.index') }}"><i
                                             class="ti-wallet text-muted me-2"></i> Roles</a>
@@ -866,10 +866,11 @@
     <script src="{{ asset('admin_assets/assets/vendor_components/jquery-knob/js/jquery.knob.js') }}"></script>
     <script src="{{ asset('admin_assets/assets/vendor_components/raphael/raphael.min.js') }}"></script>
     <script src="{{ asset('admin_assets/assets/vendor_components/morris.js/morris.min.js') }}"></script>
-    <script src="{{ asset('admin_assets/assets/vendor_components/apexcharts-bundle/dist/apexcharts.js') }}"></script>
+    {{-- <script src="{{ asset('admin_assets/assets/vendor_components/apexcharts-bundle/dist/apexcharts.js') }}">
+    </script> --}}
     <!-- Novo Admin App -->
     <script src="{{ asset('admin_assets/js_new/template.js') }}"></script>
-    <script src="{{ asset('admin_assets/js_new/pages/dashboard3.js') }}"></script>
+    {{-- <script src="{{ asset('admin_assets/js_new/pages/dashboard3.js') }}"></script> --}}
     {{-- <script src="{{ asset('admin_assets/js_new/pages/calendar.js') }}"></script> --}}
 
     <!-- slim-select -->

@@ -6,7 +6,7 @@
     <div class="card-header">{{ __('Edit Employee') }}</div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
+        <form method="POST" id="submit-form" action="{{ route('admin.users.update', $user->id) }}">
             @csrf
             @method('PUT')
             <div class="row">
@@ -32,13 +32,15 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                    <label for="FirstName" class="required col-md-4 col-form-label text-md-right">{{ __('Name')
+                        }}</label>
 
                     <div class="form-group">
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                            name="name" value="{{ old('name', $user->name) }}" required autocomplete="name">
+                        <input id="FirstName" type="text" class="form-control @error('FirstName') is-invalid @enderror"
+                            name="FirstName" value="{{ old('FirstName', $user->FirstName) }}" required
+                            autocomplete="FirstName">
 
-                        @error('name')
+                        @error('FirstName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -49,14 +51,15 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('Last Name')
+                    <label for="LastName" class="required col-md-4 col-form-label text-md-right">{{ __('Last Name')
                         }}</label>
 
                     <div class="form-group">
-                        <input id="lname" type="text" class="form-control @error('lname') is-invalid @enderror"
-                            name="lname" value="{{ old('lname', $user->lname) }}" required autocomplete="name">
+                        <input id="LastName" type="text" class="form-control @error('LastName') is-invalid @enderror"
+                            name="LastName" value="{{ old('LastName', $user->LastName) }}" required
+                            autocomplete="LastName">
 
-                        @error('lname')
+                        @error('LastName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -64,14 +67,14 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="email" class="required col-md-4 col-form-label text-md-right">{{ __('E-Mail Address')
+                    <label for="Email" class="required col-md-4 col-form-label text-md-right">{{ __('E-Mail Address')
                         }}</label>
 
                     <div class="form-group">
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email', $user->email) }}" required autocomplete="email">
+                        <input id="Email" type="email" class="form-control @error('Email') is-invalid @enderror"
+                            name="Email" value="{{ old('Email', $user->Email) }}" required autocomplete="Email">
 
-                        @error('email')
+                        @error('Email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -81,14 +84,15 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label for="email" class="required col-md-4 col-form-label text-md-right">{{ __('Mobile') }}</label>
+                    <label for="MobileNo" class="required col-md-4 col-form-label text-md-right">{{ __('Mobile')
+                        }}</label>
 
                     <div class="form-group">
-                        <input id="mobile_no" type="mobile_no"
-                            class="form-control @error('mobile_no') is-invalid @enderror" name="mobile_no"
-                            value="{{ old('mobile_no', $user->mobile_no) }}" required autocomplete="mobile_no">
+                        <input id="MobileNo" type="MobileNo"
+                            class="form-control @error('MobileNo') is-invalid @enderror" name="MobileNo"
+                            value="{{ old('MobileNo', $user->MobileNo) }}" required autocomplete="MobileNo">
 
-                        @error('mobile_no')
+                        @error('MobileNo')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -96,14 +100,14 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="email" class="required col-md-4 col-form-label text-md-right">{{ __('Address')
+                    <label for="Address" class="required col-md-4 col-form-label text-md-right">{{ __('Address')
                         }}</label>
 
                     <div class="form-group">
-                        <input id="address" type="address" class="form-control @error('address') is-invalid @enderror"
-                            name="address" value="{{ old('address', $user->address) }}" required autocomplete="address">
+                        <input id="Address" type="Address" class="form-control @error('Address') is-invalid @enderror"
+                            name="Address" value="{{ old('Address', $user->Address) }}" required autocomplete="Address">
 
-                        @error('address')
+                        @error('Address')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -128,15 +132,9 @@
                     </div>
                 </div> --}}
             </div>
-            <!-- <div class="form-group row mb-0">
-                <div class="col-md-6 offset-md-4">
-                    <button type="submit" class="btn btn-primary">
-                        {{ __('Update') }}
-                    </button>
-                </div>
-            </div> -->
+
             <div class="box-footer">
-                <button type="submit" class="btn btn-primary" tabindex="5">
+                <button type="submit" id="submitButton" class="btn btn-primary" tabindex="5">
                     <i class="ti-save-alt"></i> UPDATE
                 </button>
                 <button type="button" class="btn btn-warning me-1" tabindex="6">
@@ -146,5 +144,11 @@
         </form>
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $('#submitButton').on('click', function() {
+        // You can add validation or other logic here before submitting
+        $('#submit-form').submit(); // Triggers the form submission
+    });
+</script>
 @endsection

@@ -7,7 +7,7 @@
         <div class="d-flex align-items-center">
             <div class="me-auto">
                 <a href="{{ route('admin.users.index') }}">
-                    <h3 class="page-title">{{ UCWORDS($user->name) }} {{ UCWORDS($user->lname) }} - Details</h3>
+                    <h3 class="page-title">{{ UCWORDS($user->FirstName) }} {{ UCWORDS($user->LastName) }} - Details</h3>
                 </a>
             </div>
         </div>
@@ -41,13 +41,13 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">First Name</label><br>
-                                                            <label>{{ $user->name }}</label>
+                                                            <label>{{ $user->FirstName }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Last Name</label><br>
-                                                            <label>{{ $user->lname }}</label>
+                                                            <label>{{ $user->LastName }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -55,13 +55,13 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">E-mail</label><br>
-                                                            <label>{{ $user->email }}</label>
+                                                            <label>{{ $user->Email }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Contact Number</label><br>
-                                                            <label>{{ $user->mobile_no }}</label>
+                                                            <label>{{ $user->MobileNo }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -72,7 +72,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Address</label><br>
-                                                            <label>{{ $user->address }}</label>
+                                                            <label>{{ $user->Address }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">

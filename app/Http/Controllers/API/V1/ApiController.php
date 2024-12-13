@@ -82,8 +82,7 @@ class ApiController extends Controller
             $base_url = $this->base_url;
             DB::enableQueryLog();
 
-            $chkUser = User::where('Email', $email)->where('Status', 1)
-                ->first();
+            $chkUser = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Email', $email)->where('users.Status', 1)->first();
 
             if ($chkUser) {
                 if (!Hash::check($password, $chkUser->password)) {
@@ -121,7 +120,9 @@ class ApiController extends Controller
                 $userData = $chkUser->toArray();
                 unset($userData['role_id']);
                 unset($userData['email_verified_at']);
-                unset($userData['Address']);
+                // unset($userData['Address']);
+                unset($userData['created_at']);
+                unset($userData['updated_at']);
 
                 return response()->json(['status' => true, 'message' => 'Login successfully.', 'data' => $userData]);
             } else {
@@ -473,7 +474,7 @@ class ApiController extends Controller
             // Create the Client
             $client = Company::create([
                 'FirmName' => $validatedData['clientData']['firm_name'],
-                'GSTNumber' => $validatedData['clientData']['PAN'],
+                'PANNumber' => $validatedData['clientData']['PAN'],
                 'ClientCode' => $validatedData['clientData']['client_code'],
                 'GSTNumber' => $validatedData['clientData']['GST'],
                 'AadharNumber' => $validatedData['clientData']['aadharNumber'],
@@ -623,7 +624,7 @@ class ApiController extends Controller
             // Create the Client
             $client = Company::create([
                 'FirmName' => $validatedData['clientData']['firm_name'],
-                'GSTNumber' => $validatedData['clientData']['PAN'],
+                'PANNumber' => $validatedData['clientData']['PAN'],
                 'ClientCode' => $validatedData['clientData']['client_code'],
                 'GSTNumber' => $validatedData['clientData']['GST'],
                 'AadharNumber' => $validatedData['clientData']['aadharNumber'],
@@ -661,12 +662,22 @@ class ApiController extends Controller
      */
     public function getDashboardData(Request $request)
     {
-        $base_url = $this->base_url;
-        $loginType = $request->user_type;
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'company_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
+        }
+
         $token = $request->header('token');
         $user_id = $request->user_id;
         $company_id = $request->company_id;
-        $user_type = $request->user_type;
+        $UserType = $request->UserType;
         try {
             $checkToken = $this->tokenVerify($token);
             // Decode the JSON response
@@ -692,7 +703,7 @@ class ApiController extends Controller
     public function deleteAccount(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required|numeric',
+            'user_id' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -714,8 +725,8 @@ class ApiController extends Controller
 
             DB::table('user_devices')
                 ->join("users", "user_devices.user_id", "=", "users.id")
-                ->where("users.id", "=", $request->account_id)
-                ->where("user_devices.user_id", "=", $request->account_id)
+                ->where("users.id", "=", $user_id)
+                ->where("user_devices.user_id", "=", $user_id)
                 ->update(["user_devices.status" => '0', "users.Status" => '0', "user_devices.updated_at" => date("Y-m-d H:i:s"), "users.updated_at" => date("Y-m-d H:i:s"), 'user_devices.device_token' => '']);
 
             //add the notification table
@@ -778,54 +789,6 @@ class ApiController extends Controller
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
     }
-
-
-    /**
-     * Report Download.
-     */
-    // public function reportCouponDownload(Request $request)
-    // {
-    //     $user_id = $request->user_id;
-    //     $event_id = $request->event_id;
-    //     $token = $request->header('token');
-    //     $page_number = $request->page;
-    //     $base_url = $this->base_url;
-    //     $checkToken = $this->tokenVerify($token);
-    //     // Decode the JSON response
-    //     $userData = json_decode($checkToken->getContent(), true);
-    //     if ($userData['status'] == false) {
-    //         return $checkToken->getContent();
-    //     }
-
-    //     // Define validation rules
-    //     $validator = Validator::make($request->all(), [
-    //         'user_id' => 'required',
-    //         'event_id' => 'required',
-    //     ]);
-
-    //     // Check if the validation fails
-    //     if ($validator->fails()) {
-    //         $result['status'] = false;
-    //         $result['message'] = $validator->errors()->first();
-    //         $result['data'] = (object) [];
-    //         return response()->json($result, 200);
-    //     }
-
-    //     $fileName = 'customer_coupons_' . time() . '.xlsx';
-    //     $export = new CouponsExport($user_id, $event_id);
-
-    //     // Use Storage to store the file temporarily
-    //     Excel::store($export, $fileName, 'public');  // Store in the 'public' disk
-
-    //     // Generate the download link for the stored file
-    //     $fileUrl = $base_url . Storage::url($fileName);  // Get the URL for the stored file
-
-
-    //     // return Excel::download(new CouponsExport($user_id, $event_id), $fileName);
-
-    //     return response()->json(['status' => true, 'message' => 'Report Download Successfully', 'data' => $fileUrl], 200);
-    // }
-
 
     public function tokenVerify($token)
     {
@@ -1049,7 +1012,10 @@ class ApiController extends Controller
             'images' => 'required|array',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
             'user_id' => 'required',
-            'company_id' => '',
+            'company_id' => 'required',
+            'remarks' => 'required',
+            'batch_no' => 'required',
+            'title' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -1083,9 +1049,7 @@ class ApiController extends Controller
 
             // Generate PDF
             $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
-            // dd($pdf);
             // Download the PDF
-            // return $pdf->download('images.pdf');
             $directory = 'public/pdfs/' . $user_id;
             if (!Storage::exists($directory)) {
                 Storage::makeDirectory($directory);
@@ -1101,19 +1065,31 @@ class ApiController extends Controller
             // $downloadUrl = asset("storage/{$pdfPath}");
 
             $documents = new Scandocument();
-            $documents->Title = 'Document';
+            $documents->Title = $request->title;
             $documents->BatchNo = isset($request->batch_no) ? $request->batch_no : date('dmYHis') . '_' . $user_id;
             $documents->CompanyID = $company_id;
             $documents->UserID = $user_id;
             $documents->Remarks = $Remarks;
             $documents->ImageCount = $imageCount;
             $documents->PageCount = $pageCount;
-            $documents->DocumentURL = $downloadUrl;
+            $documents->DocumentURL = basename($pdfPath);
             $documents->save();
 
             //add the notification table
             $notifiArray = ['UserID' => $user_id, 'Description' => 'Uploaded the scanned document file.', 'TypeID' => 0];
             $this->addNotificationData($notifiArray);
+
+            // Notification firebase
+            $newData  = json_encode(array());
+            $body = array('receiver_id' => $user_id, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
+            $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
+            // $notifData = json_decode($sendNotification->getContent(), true);
+            // if (isset($notifData['status']) && $notifData['status'] == true) {
+            //     return $sendNotification->getContent();
+            // } else {
+            //     return $sendNotification->getContent();
+            // }
+            // End Notification firebase
 
             $dataCAS = [
                 'download_link' => $downloadUrl,
@@ -1150,6 +1126,16 @@ class ApiController extends Controller
     {
         $page_id = $request->page_id;
         try {
+            $validator = Validator::make($request->all(), [
+                'page_id' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                $result['status'] = false;
+                $result['message'] = $validator->errors()->first();
+                $result['data'] = (object) [];
+                return response()->json($result, 200);
+            }
 
             $client = Cms::select('*')->where('Status', 1)->where('PageID', $page_id)->get();
 
@@ -1168,6 +1154,18 @@ class ApiController extends Controller
      */
     public function getDocumentList(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'company_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
+        }
+
         $user_id = $request->user_id;
         $company_id = $request->company_id;
         $page_number = $request->page;
@@ -1180,19 +1178,23 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $roles = Scandocument::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserID', $user_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
-
+            $documets = Scandocument::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserID', $user_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            // Update the documentname with the full URL
+            $documets->getCollection()->transform(function ($documet) use ($user_id) {
+                $documet->documentname = route('download.file', ['user_id' => $user_id, 'filename' => $documet->DocumentURL]);
+                return $documet;
+            });
             $pagination = [
-                'total' => $roles->total(),
-                'count' => $roles->count(),
-                'per_page' => $roles->perPage(),
-                'current_page' => $roles->currentPage(),
-                'total_pages' => $roles->lastPage(),
+                'total' => $documets->total(),
+                'count' => $documets->count(),
+                'per_page' => $documets->perPage(),
+                'current_page' => $documets->currentPage(),
+                'total_pages' => $documets->lastPage(),
             ];
 
             $dataCAS = [
                 'pagination' => $pagination,
-                'data' => $roles,
+                'data' => $documets,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Document list successfully', 'data' => $dataCAS], 200);
@@ -1263,8 +1265,10 @@ class ApiController extends Controller
             'images' => 'required|array',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
             'user_id' => 'required',
-            'title' => '',
-            'company_id' => '',
+            'company_id' => 'required',
+            'remarks' => 'required',
+            'batch_no' => 'required',
+            'title' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -1299,9 +1303,7 @@ class ApiController extends Controller
 
             // Generate PDF
             $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
-            // dd($pdf);
             // Download the PDF
-            // return $pdf->download('images.pdf');
             $directory = 'public/pdfs/' . $user_id;
             if (!Storage::exists($directory)) {
                 Storage::makeDirectory($directory);
@@ -1325,12 +1327,24 @@ class ApiController extends Controller
             $documents->ImageCount = $imageCount;
             $documents->PageCount = $pageCount;
             $documents->Remarks = $Remarks;
-            $documents->DocumentURL = $downloadUrl;
+            $documents->DocumentURL = basename($pdfPath);
             $documents->save();
 
             //add the notification table
             $notifiArray = ['UserID' => $user_id, 'Description' => 'Uploaded the other documents file.', 'TypeID' => 0];
             $this->addNotificationData($notifiArray);
+
+            // Notification firebase
+            $newData  = json_encode(array());
+            $body = array('receiver_id' => $user_id, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
+            $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
+            // $notifData = json_decode($sendNotification->getContent(), true);
+            // if (isset($notifData['status']) && $notifData['status'] == true) {
+            //     return $sendNotification->getContent();
+            // } else {
+            //     return $sendNotification->getContent();
+            // }
+            // End Notification firebase
 
             $dataCAS = [
                 'download_link' => $downloadUrl,
@@ -1346,13 +1360,24 @@ class ApiController extends Controller
      */
     public function getOtherDocument(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'company_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $result['status'] = false;
+            $result['message'] = $validator->errors()->first();
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
+        }
         $user_id = $request->user_id;
         $company_id = $request->company_id;
         $page_number = $request->page;
         $token = $request->header('token');
         $base_url = $this->base_url;
         try {
-            $employee = OtherDocument::select([
+            $documets = OtherDocument::select([
                 'OtherdocumentsID',
                 'Title',
                 'CompanyID',
@@ -1365,18 +1390,23 @@ class ApiController extends Controller
                 // DB::raw("(SELECT SUM(ImageCount) FROM otherdocuments WHERE Status = 1 AND UserID = $user_id) as totalImageCount")
             ])->where('Status', 1)->where('UserID', $user_id)->where('CompanyID', $company_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
+            $documets->getCollection()->transform(function ($documet) use ($user_id) {
+                $documet->documentname = route('download.file', ['user_id' => $user_id, 'filename' => $documet->DocumentURL]);
+                return $documet;
+            });
+
             $pagination = [
-                'total' => $employee->total(),
-                'count' => $employee->count(),
-                'per_page' => $employee->perPage(),
-                'current_page' => $employee->currentPage(),
-                'total_pages' => $employee->lastPage(),
+                'total' => $documets->total(),
+                'count' => $documets->count(),
+                'per_page' => $documets->perPage(),
+                'current_page' => $documets->currentPage(),
+                'total_pages' => $documets->lastPage(),
             ];
 
 
             $dataEmployee = [
                 'pagination' => $pagination,
-                'data' => $employee,
+                'data' => $documets,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Other document list successfully', 'data' => $dataEmployee], 200);
@@ -1391,6 +1421,17 @@ class ApiController extends Controller
     public function getNotificationList(Request $request)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'user_id' => 'required',
+                'company_id' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                $result['status'] = false;
+                $result['message'] = $validator->errors()->first();
+                $result['data'] = (object) [];
+                return response()->json($result, 200);
+            }
             $user_id = $request->user_id;
             $page_number = $request->page;
             $token = $request->header('token');
@@ -1423,6 +1464,35 @@ class ApiController extends Controller
 
             // Return a response
             return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => []], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
+        }
+    }
+
+    /**
+     * check Client Code.
+     */
+    public function CheckClientCode(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'client_code' => 'required|max:4|regex:/^[A-Z0-9]+$/',
+            ]);
+
+            if ($validator->fails()) {
+                $result['status'] = false;
+                $result['message'] = $validator->errors()->first();
+                $result['data'] = (object) [];
+                return response()->json($result, 200);
+            }
+
+            $client_code = $request->client_code;
+            $ClientCode = Company::where('Status', 1)->where('ClientCode', $client_code)->count();
+            if ($ClientCode > 0) {
+                return response()->json(['status' => true, 'message' => 'This code is already assign to someone. Please try another', 'data' => []], 200);
+            } else {
+                return response()->json(['status' => true, 'message' => 'This code is available.', 'data' => []], 200);
+            }
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }

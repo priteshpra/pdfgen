@@ -25,70 +25,70 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `GetCASDetails` (IN `emp_id` INT)   BEGIN
-    SELECT * FROM users WHERE id = emp_id AND user_type='4';
+CREATE PROCEDURE `GetCASDetails` (IN `emp_id` INT)   BEGIN
+    SELECT * FROM users WHERE id = emp_id AND UserType='4';
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `GetCategoryDetails` (IN `p_category_id` INT)   BEGIN
+CREATE PROCEDURE `GetCategoryDetails` (IN `p_category_id` INT)   BEGIN
     SELECT * FROM businesscategory WHERE BusinessCategoryID = p_category_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `GetCityDetails` (IN `city_id` INT)   BEGIN
+CREATE PROCEDURE `GetCityDetails` (IN `city_id` INT)   BEGIN
     SELECT * FROM cities WHERE CityID = city_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `GetclientsDetails` (IN `emp_id` INT)   BEGIN
-    SELECT * FROM users WHERE id = emp_id AND user_type='3';
+CREATE PROCEDURE `GetclientsDetails` (IN `emp_id` INT)   BEGIN
+    SELECT * FROM users WHERE id = emp_id AND UserType='3';
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `GetCMSDetails` (IN `cms_id` INT)   BEGIN
+CREATE PROCEDURE `GetCMSDetails` (IN `cms_id` INT)   BEGIN
     SELECT * FROM cms WHERE CMSID = cms_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `GetEmployeeDetails` (IN `emp_id` INT)   BEGIN
-    SELECT * FROM users WHERE id = emp_id AND user_type='3';
+CREATE PROCEDURE `GetEmployeeDetails` (IN `emp_id` INT)   BEGIN
+    SELECT * FROM users WHERE id = emp_id AND UserType='3';
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `GetStateDetails` (IN `state_id` INT)   BEGIN
+CREATE PROCEDURE `GetStateDetails` (IN `state_id` INT)   BEGIN
     SELECT * FROM states WHERE StateID = state_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `InsertCAS` (IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `firm_name` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` VARCHAR(15))   BEGIN
+CREATE PROCEDURE `InsertCAS` (IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `firm_name` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` VARCHAR(15))   BEGIN
     INSERT INTO users (first_name, last_name, firm_name, mobile_no, address)
     VALUES (p_first_name, p_last_name, firm_name, p_phone_number, p_hire_date);
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `InsertCategory` (IN `p_category_name` VARCHAR(100), IN `p_title_name` VARCHAR(100), IN `p_keyword_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
+CREATE PROCEDURE `InsertCategory` (IN `p_category_name` VARCHAR(100), IN `p_title_name` VARCHAR(100), IN `p_keyword_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
     INSERT INTO businesscategory (CategoryName, MetaTitle, MetaKeywords, MetaDescription)
     VALUES (p_category_name, p_title_name, p_keyword_name, p_description);
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `InsertCity` (IN `p_city_name` VARCHAR(100), IN `p_state_code` VARCHAR(10), IN `p_country_code` VARCHAR(10))   BEGIN
+CREATE PROCEDURE `InsertCity` (IN `p_city_name` VARCHAR(100), IN `p_state_code` VARCHAR(10), IN `p_country_code` VARCHAR(10))   BEGIN
     INSERT INTO states (City, StateID, CountryID)
     VALUES (p_city_name, p_state_code, p_country_code);
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `InsertClients` (IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `firm_name` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` VARCHAR(15))   BEGIN
+CREATE PROCEDURE `InsertClients` (IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `firm_name` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` VARCHAR(15))   BEGIN
     INSERT INTO users (first_name, last_name, firm_name, mobile_no, address)
     VALUES (p_first_name, p_last_name, firm_name, p_phone_number, p_hire_date);
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `InsertCMS` (IN `p_page` VARCHAR(255), IN `p_content` TEXT)   BEGIN
+CREATE PROCEDURE `InsertCMS` (IN `p_page` VARCHAR(255), IN `p_content` TEXT)   BEGIN
     INSERT INTO cms (PageID, content)
     VALUES (p_page, p_content);
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `InsertEmployee` (IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `firm_name` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` VARCHAR(15))   BEGIN
+CREATE PROCEDURE `InsertEmployee` (IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `firm_name` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` VARCHAR(15))   BEGIN
     INSERT INTO users (first_name, last_name, firm_name, mobile_no, address)
     VALUES (p_first_name, p_last_name, firm_name, p_phone_number, p_hire_date);
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `InsertState` (IN `p_state_name` VARCHAR(100), IN `p_country_code` VARCHAR(10))   BEGIN
+CREATE PROCEDURE `InsertState` (IN `p_state_name` VARCHAR(100), IN `p_country_code` VARCHAR(10))   BEGIN
     INSERT INTO states (State, CountryID)
     VALUES (p_state_name, p_country_code);
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCAS` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
+CREATE PROCEDURE `UpdateCAS` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
     SET 
         first_name = p_first_name,
@@ -100,7 +100,7 @@ CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCAS` (IN `emp_id` INT, IN `p_first_
     WHERE id = emp_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCategory` (IN `p_category_id` INT, IN `p_category_name` VARCHAR(100), IN `p_title_name` VARCHAR(100), IN `p_keyword_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
+CREATE PROCEDURE `UpdateCategory` (IN `p_category_id` INT, IN `p_category_name` VARCHAR(100), IN `p_title_name` VARCHAR(100), IN `p_keyword_name` VARCHAR(100), IN `p_description` TEXT)   BEGIN
     UPDATE businesscategory
     SET 
         CategoryName = p_category_name,
@@ -110,7 +110,7 @@ CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCategory` (IN `p_category_id` INT, 
     WHERE BusinessCategoryID = p_category_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCity` (IN `p_state_id` INT, IN `p_city_name` VARCHAR(100), IN `p_country_code` VARCHAR(10), IN `p_state_code` VARCHAR(10))   BEGIN
+CREATE PROCEDURE `UpdateCity` (IN `p_state_id` INT, IN `p_city_name` VARCHAR(100), IN `p_country_code` VARCHAR(10), IN `p_state_code` VARCHAR(10))   BEGIN
     UPDATE cities
     SET 
         City = p_city_name,
@@ -119,7 +119,7 @@ CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCity` (IN `p_state_id` INT, IN `p_c
     WHERE StateID = p_state_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateClient` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
+CREATE PROCEDURE `UpdateClient` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
     SET 
         first_name = p_first_name,
@@ -131,7 +131,7 @@ CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateClient` (IN `emp_id` INT, IN `p_fir
     WHERE id = emp_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCMS` (IN `p_cms_id` INT, IN `p_page` VARCHAR(255), IN `p_content` TEXT)   BEGIN
+CREATE PROCEDURE `UpdateCMS` (IN `p_cms_id` INT, IN `p_page` VARCHAR(255), IN `p_content` TEXT)   BEGIN
     UPDATE cms
     SET 
         PageID = p_page,
@@ -139,7 +139,7 @@ CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateCMS` (IN `p_cms_id` INT, IN `p_page
     WHERE CMSID = p_cms_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateEmployee` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
+CREATE PROCEDURE `UpdateEmployee` (IN `emp_id` INT, IN `p_first_name` VARCHAR(50), IN `p_last_name` VARCHAR(50), IN `p_email` VARCHAR(100), IN `p_phone_number` VARCHAR(15), IN `p_hire_date` DATE, IN `p_salary` DECIMAL(10,2))   BEGIN
     UPDATE users
     SET 
         first_name = p_first_name,
@@ -151,7 +151,7 @@ CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateEmployee` (IN `emp_id` INT, IN `p_f
     WHERE id = emp_id;
 END$$
 
-CREATE DEFINER=`pdfgen`@`%` PROCEDURE `UpdateState` (IN `p_state_id` INT, IN `p_state_name` VARCHAR(100), IN `p_country_code` VARCHAR(10))   BEGIN
+CREATE PROCEDURE `UpdateState` (IN `p_state_id` INT, IN `p_state_name` VARCHAR(100), IN `p_country_code` VARCHAR(10))   BEGIN
     UPDATE states
     SET 
         StateName = p_state_name,
@@ -6056,7 +6056,7 @@ CREATE TABLE `configuration_table` (
   `Status` tinyint NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `configuration_table`
@@ -6794,7 +6794,7 @@ CREATE TABLE `user_devices` (
   `user_id` int DEFAULT NULL,
   `device_token` varchar(255) DEFAULT NULL,
   `login_token` varchar(255) DEFAULT NULL,
-  `device_type` enum('Android','IOS') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Android',
+  `device_type` enum('Android','IOS') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Android',
   `api_version` varchar(100) DEFAULT NULL,
   `app_version` varchar(20) DEFAULT NULL,
   `os_version` varchar(20) DEFAULT NULL,
@@ -6803,7 +6803,7 @@ CREATE TABLE `user_devices` (
   `status` tinyint NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user_devices`

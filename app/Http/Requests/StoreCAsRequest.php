@@ -25,23 +25,17 @@ class StoreCAsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:2|max:200',
-            'lname' => 'required|string|min:2|max:200',
-            'address' => 'required',
+            'Address' => 'required',
+            'ClientCode' => 'required|max:4|unique:company',
             'CountryID' => 'required',
             'StateID' => 'required',
             'CityID' => 'required',
-            'pincode' => 'required|max:6',
-            'aadhar' => 'required',
-            'gst' => 'required',
-            'pan' => 'required',
-            'user_type' => 'required',
-            'firm_type' => 'required',
-            'mobile_no' => 'required|regex:/^[0-9]{10}$/',
-            'email' => 'required|email|max:200|unique:users',
-            'password' => 'required|confirmed|min:6|max:20',
-            'role_id' => 'required|exists:roles,id',
-            'firm_name' => 'required',
+            'PinCode' => 'required|max:6',
+            'AadharNumber' => 'required',
+            'GSTNumber' => 'required',
+            'PANNumber' => 'required',
+            'FirmType' => 'required',
+            'FirmName' => 'required',
         ];
     }
 }

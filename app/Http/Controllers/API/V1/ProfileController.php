@@ -53,11 +53,11 @@ class ProfileController extends Controller
         $userData = [
             'id' => (string)$user->id,
             'user_id' => (string)$user->id,
-            'user_type' => (string)$user->user_type,
+            'UserType' => (string)$user->UserType,
             'name' => (string)$user->name,
             'lname' => (string)$user->lname,
             'storename' => (string)$user->storename,
-            'email' => (string)$user->email,
+            'Email' => (string)$user->email,
             'date_of_birth' => (string)$user->date_of_birth,
             'phone_number' => (string)$user->phone_number,
             'otp' => (string)$user->otp,
@@ -99,7 +99,7 @@ class ProfileController extends Controller
         $user = User::where('id', $user_id)->first();
         $company = Company::where('CompanyID', $company_id)->first();
         // Define validation rules
-        if ($request->user_type == 4) {
+        if ($request->UserType == 4) {
             $validator = Validator::make($request->all(), [
                 'fname' => 'string|max:255',
                 'lname' => 'string|max:255',
@@ -112,7 +112,7 @@ class ProfileController extends Controller
                 'GST' => '',
                 'PAN' => '',
             ]);
-        } else if ($request->user_type == 3) {
+        } else if ($request->UserType == 3) {
             $validator = Validator::make($request->all(), [
                 'fname' => 'string|max:255',
                 'lname' => 'string|max:255',

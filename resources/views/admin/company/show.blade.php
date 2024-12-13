@@ -78,7 +78,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">E-mail</label><br>
-                                                            <label>{{ $user->email }}</label>
+                                                            <label>{{ $user->Email }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -171,8 +171,8 @@
                                     </div>
                                     @endif
                                     <div class="box">
-                                        <form id="update-password-form" class="form" action="{{ route('admin.cas.update-password', $user->id) }}"
-                                            method="POST">
+                                        <form id="update-password-form" class="form"
+                                            action="{{ route('admin.cas.update-password', $user->id) }}" method="POST">
                                             @csrf
                                             <div class="box-body">
                                                 <h4 class="box-title text-info mb-0"><i class="ti-user me-15"></i>
@@ -270,7 +270,7 @@
                                                                                 href="{{ route('admin.users.show', $employee['id']) }}"><strong>{{$employee['name']}}
                                                                                     {{$employee['lname']}}</strong></a>
                                                                         </td>
-                                                                        <td>{{$employee['email']}}</td>
+                                                                        <td>{{$employee['Email']}}</td>
                                                                         <td>{{$employee['mobile_no']}}</td>
                                                                         <td>{{$employee['address']}}</td>
                                                                         <td>{{$employee['registration_type']}}</td>

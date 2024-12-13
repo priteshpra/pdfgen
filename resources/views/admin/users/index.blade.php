@@ -67,13 +67,13 @@
 
                                     <tr>
                                         <td class="text-center"><a
-                                                href="{{ route('admin.users.show',$user->id) }}">{{$user->name}}
-                                                {{$user->lname}}</a>
+                                                href="{{ route('admin.users.show',$user->id) }}">{{$user->FirstName}}
+                                                {{$user->LastName}}</a>
                                         </td>
-                                        <td>{{$user->email}}</td>
-                                        <td>{{$user->mobile_no}}</td>
-                                        <td>{{$user->address}}</td>
-                                        <td>{{$user->registration_type}}</td>
+                                        <td>{{$user->Email}}</td>
+                                        <td>{{$user->MobileNo}}</td>
+                                        <td>{{$user->Address}}</td>
+                                        <td>{{$user->RegistrationType}}</td>
                                         <td>
                                             <div class="col-xl-2 col-6 text-center align-self-center mb-20">
                                                 <button id="toggleChang_{{$user->id}}"

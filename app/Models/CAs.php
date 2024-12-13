@@ -19,26 +19,26 @@ class CAs extends Authenticatable
      *
      * @var array
      */
-    public $table = "users";
-    protected $primaryKey = 'id';
+    public $table = "comapny";
+    protected $primaryKey = 'CompanyID';
     protected $fillable = [
-        'name',
-        'lname',
-        'email',
+        'FirstName',
+        'LastName',
+        'Email',
         'role_id',
-        'mobile_no',
-        'address',
+        'MobileNo',
+        'Address',
         'password',
         'CountryID',
         'StateID',
         'CityID',
-        'pincode',
-        'aadhar',
-        'gst',
-        'pan',
-        'firm_type',
-        'user_type',
-        'firm_name',
+        'PinCode',
+        'AadharNumber',
+        'GSTNumber',
+        'PANNumber',
+        'FirmType',
+        'UserType',
+        'FirmName',
     ];
 
     /**

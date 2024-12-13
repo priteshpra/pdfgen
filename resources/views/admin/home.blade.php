@@ -602,7 +602,7 @@
                                                 href="{{ route('admin.client.show',$user->id) }}">{{$user->firm_name}}</a>
                                         </td>
                                         <td>{{$user->mobile_no}}</td>
-                                        <td>{{$user->email}}</td>
+                                        <td>{{$user->Email}}</td>
                                         <td>{{$user->address}}</td>
                                         <td>{{$user->aadhar}}</td>
                                         <td>{{$user->gst}}</td>
@@ -647,7 +647,6 @@
                                         <th>Firm Name</th>
                                         <th>Email</th>
                                         <th>MobileNo</th>
-                                        <th>Email</th>
                                         <th>Address</th>
                                         <th>Aadhar Number</th>
                                         <th>GST Number</th>
@@ -660,9 +659,8 @@
                                     <td>{{$user->name}} {{$user->lname}}</td>
                                     <td><a href="{{ route('admin.cas.show',$user->id) }}">{{$user->firm_name}}</a>
                                     </td>
-                                    <td>{{$user->email}}</td>
+                                    <td>{{$user->Email}}</td>
                                     <td>{{$user->mobile_no}}</td>
-                                    <td>{{$user->email}}</td>
                                     <td>{{$user->address}}</td>
                                     <td>{{$user->aadhar}}</td>
                                     <td>{{$user->gst}}</td>

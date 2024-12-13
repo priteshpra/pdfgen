@@ -21,7 +21,7 @@ class FcmNotificationService
         }
         // dd($user);
         $fcm = [];
-        if ($body['fcmtoken']) {
+        if (isset($body['fcmtoken'])) {
             $fcm[] = $body['fcmtoken'];
         } else {
             foreach ($user as $tokens) {

@@ -26,27 +26,27 @@ class UpdateClientRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:2|max:200',
-            'email' => [
+            'FirstName' => 'required|string|min:2|max:200',
+            'Email' => [
                 'required',
-                'email',
+                'Email',
                 'max:200',
                 // Rule::unique('users')->ignore($this->user),
             ],
             // 'password' => 'nullable|min:6|max:20',
             'role_id' => 'required|exists:roles,id',
             // 'lname' => 'required|string|min:2|max:200',
-            'mobile_no' => 'required|regex:/^[0-9]{10}$/',
-            'address' => 'required',
+            'MobileNo' => 'required|regex:/^[0-9]{10}$/',
+            'Address' => 'required',
             'CountryID' => 'required',
             'StateID' => 'required',
             'CityID' => 'required',
-            'pincode' => 'required|max:6',
-            'aadhar' => 'required',
-            'gst' => 'required',
-            'pan' => 'required',
-            'firm_type' => 'required',
-            'firm_name' => 'required',
+            'PinCode' => 'required|max:6',
+            'AadharNumber' => 'required',
+            'GSTNumber' => 'required',
+            'PANNumber' => 'required',
+            'FirmType' => 'required',
+            'FirmName' => 'required',
         ];
     }
 }

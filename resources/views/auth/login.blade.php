@@ -30,11 +30,15 @@
 
                                 <div class="input-group mb-3">
 
-                                    <span class="input-group-text bg-transparent"><img src="{{ asset('admin_assets/images_new/icons/user.gif') }}" alt="user" width="32" height="32"></span>
+                                    <span class="input-group-text bg-transparent"><img
+                                            src="{{ asset('admin_assets/images_new/icons/user.gif') }}" alt="user"
+                                            width="32" height="32"></span>
 
-                                    <input id="email" placeholder="Email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                    <input id="Email" placeholder="Email" type="email"
+                                        class="form-control @error('Email') is-invalid @enderror" name="Email"
+                                        value="{{ old('Email') }}" required autocomplete="email" autofocus>
 
-                                    @error('email')
+                                    @error('Email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -48,9 +52,13 @@
 
                                 <div class="input-group mb-3">
 
-                                    <span class="input-group-text  bg-transparent"><img src="{{ asset('admin_assets/images_new/icons/password.gif') }}" alt="password" width="32" height="32"></span>
+                                    <span class="input-group-text  bg-transparent"><img
+                                            src="{{ asset('admin_assets/images_new/icons/password.gif') }}"
+                                            alt="password" width="32" height="32"></span>
 
-                                    <input id="password" placeholder="Password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <input id="password" placeholder="Password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror" name="password"
+                                        required autocomplete="current-password">
 
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -68,7 +76,8 @@
 
                                     <div class="checkbox">
 
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{
+                                            old('remember') ? 'checked' : '' }}>
 
                                         <label for="basic_checkbox_1">Remember Me</label>
 
@@ -82,7 +91,8 @@
 
                                     <div class="fog-pwd text-end">
                                         @if (Route::has('password.request'))
-                                        <a href="{{ route('password.request') }}" class="hover-warning"><i class="ion ion-locked"></i> Forgot Password?</a><br>
+                                        <a href="{{ route('password.request') }}" class="hover-warning"><i
+                                                class="ion ion-locked"></i> Forgot Password?</a><br>
                                         @endif
                                     </div>
 
@@ -92,7 +102,9 @@
 
                                 <div class="col-12 text-center">
 
-                                    <button type="submit" class="waves-effect waves-light btn btn-rounded btn-primary mb-5">SIGN IN</button>
+                                    <button type="submit"
+                                        class="waves-effect waves-light btn btn-rounded btn-primary mb-5">SIGN
+                                        IN</button>
 
                                 </div>
                                 <!-- /.col -->

@@ -10,16 +10,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserPhotoRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\City;
+use App\Models\Company;
 use App\Models\Country;
 use App\Models\Notification;
 use App\Models\OtherDocument;
 use App\Models\Scandocument;
 use App\Models\State;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -36,8 +40,8 @@ class CasController extends Controller
         $country = Country::all();
         $city = City::all();
         $state = State::all();
-        // $users = User::where('user_type', '4')->paginate(25)->appends($request->query());
-        $users = CAs::where('user_type', '4')->orderBy('id', 'desc')->get();
+        // $users = User::where('UserType', '4')->paginate(25)->appends($request->query());
+        $users = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.UserType', '4')->orderBy('users.id', 'desc')->get();
         return view('admin.cas.index', compact('users'));
     }
 
@@ -62,10 +66,23 @@ class CasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCAsRequest $request)
+    public function store(StoreUserRequest $userRequest, StoreCAsRequest $casRequest)
     {
-        // dd($request);
-        CAs::create($request->validated());
+        // Store the user information
+        $user = User::create($userRequest->validated());
+        $lastID = $user->id;
+        // Attach the user ID (if needed) to the CAS data
+        $casData = $casRequest->validated();
+
+        // Store the CAS information
+        $cas = CAs::create($casData);
+        $lastCompanyID = $cas->CompanyID;
+
+        $user = User::find($lastID);
+        if ($user) {
+            $user->CompanyID = $lastCompanyID;
+            $user->save();
+        }
         return redirect()->route('admin.cas.index')->with(['status-success' => "New CAS Created"]);
     }
 
@@ -82,12 +99,12 @@ class CasController extends Controller
         $country = Country::all();
         $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
-        $user = CAs::find($id);
-        $employee = CAs::where('client_id', $id)->where('Status', '1')->get()->toArray();
-        $employeesNameData = array_column($employee, 'name', 'id');
+        $user = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.id', $id)->first();
+        $employee = User::where('CompanyID', $user->CompanyID)->where('UserType ', '2')->get()->toArray();
+        $employeesNameData = array_column($employee, 'FirstName', 'id');
         $employeesId = array_column($employee, 'id');
-        $scanDocuments = Scandocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
-        $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->where('Status', '1')->get();
+        $scanDocuments = Scandocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
+        $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
         $notificationList = Notification::where('UserID', $id)->get();
         // dd($scanDocuments);
         return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id'));
@@ -102,7 +119,7 @@ class CasController extends Controller
     public function edit(CAs $user, $id = null)
     {
         abort_if(Gate::denies('cas_edit'), Response::HTTP_FORBIDDEN, 'Forbidden');
-        $user = CAs::find($id);
+        $user = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.id', $id)->first();
         $country = Country::all();
         $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
@@ -118,10 +135,21 @@ class CasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCAsRequest $request, $id)
+    public function update(UpdateUserRequest $userRequest, UpdateCAsRequest $casRequest, $id)
     {
-        $cas = CAs::find($id);
-        $updated = $cas->update(array_filter($request->validated()));
+        // Find the existing user
+        $user = User::findOrFail($id);
+
+        // Update the user information
+        $user->update($userRequest->validated());
+
+        // Find the existing CAS record (assuming CAS has a foreign key reference to User)
+        $cas = CAs::where('CompanyID', $user->CompanyID)->first();
+        // If CAS exists, update it
+        if ($cas) {
+            $casData = $casRequest->validated(); // Get validated data for CAS
+            $cas->update($casData); // Update the CAS record
+        }
         return redirect()->route('admin.cas.index')->with(['status-success' => "CAS Updated"]);
     }
 
@@ -142,10 +170,16 @@ class CasController extends Controller
 
     public function toggleStatus(Request $request)
     {
-        $user = CAs::find($request->id); // Get the user by ID
+        $user = User::find($request->id);
+        $companyId = $user->CompanyID;
+
+        $cas = CAs::find($companyId);
         if ($user) {
             $user->Status = $request->Status; // Toggle status
-            $user->save(); // Save the updated status
+            $user->save();
+
+            $cas->Status = $request->Status; // Toggle status
+            $cas->save();
 
             return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
         }
@@ -166,7 +200,7 @@ class CasController extends Controller
         }
         // Find the user by ID
 
-        $user = CAs::findOrFail($id);
+        $user = User::findOrFail($id);
         // Check if the old password matches
         if (!Hash::check($request->old_password, $user->password)) {
             return back()->with(['status-danger' => 'The old password is incorrect.']);
