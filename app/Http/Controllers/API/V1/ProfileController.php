@@ -97,10 +97,9 @@ class ProfileController extends Controller
 
         // Get the currently authenticated user
         $user = User::where('id', $user_id)->first();
-
         $company = Company::where('CompanyID', $company_id)->first();
         // Define validation rules
-        if ($request->UserType == 4) {
+        if ($request->user_type == 4) {
             $validator = Validator::make($request->all(), [
                 'user_id' => 'required',
                 'company_id' => 'required',
@@ -115,7 +114,7 @@ class ProfileController extends Controller
                 'GST' => '',
                 'PAN' => '',
             ]);
-        } else if ($request->UserType == 3) {
+        } else if ($request->user_type == 3) {
             $validator = Validator::make($request->all(), [
                 'user_id' => 'required',
                 'company_id' => 'required',
@@ -140,7 +139,7 @@ class ProfileController extends Controller
                 'mobile' => 'string'
             ]);
         }
-
+        // dd($user->UserType);
         // Check if the validation fails
         if ($validator->fails()) {
             $result['status'] = false;
@@ -148,27 +147,41 @@ class ProfileController extends Controller
             $result['data'] = (object)[];
             return response()->json($result, 200);
         }
-
         // Update user details
         $user->FirstName = $request->input('fname');
         $user->LastName = $request->input('lname');
         $user->Email = $request->input('email');
         $user->MobileNo = $request->input('mobile_no');
+        // $user->role_id = $user->role_id;
+        if ($request->user_type == 2) {
+            $user->Address = $request->input('address');
+        }
         $user->save();
 
         $company->FirmName = $request->input('firm_name');
         $company->PANNumber = $request->input('PAN');
         $company->GSTNumber = $request->input('GST');
         $company->PinCode = $request->input('pinCode');
+        // $company->FirmType = $company->FirmType;
+        if ($request->user_type == 3 || $request->user_type == 4) {
+            $company->Address = $request->input('address');
+        }
         if ($request->input('aadharNumber')) {
             $company->AadharNumber = $request->input('aadharNumber');
         }
         $company->save();
 
-        $users = User::where('id', $user_id)->first();
-
+        // $users = User::where('id', $user_id)->first();
+        $users = User::select('users.id', 'users.FirstName', 'users.FirstName', 'users.LastName', 'users.MobileNo', 'users.RegistrationType', 'users.CompanyID', 'users.Email', 'users.Address', 'users.UserType', 'company.ClientCode', 'company.FirmName', 'company.CountryID', 'company.StateID', 'company.CityID', 'company.PinCode', 'company.AadharNumber', 'company.GSTNumber', 'company.PANNumber', 'company.FirmType', 'company.Address AS cAddess')
+            ->leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.id', $user_id)->where('users.Status', 1)->first();
+        $userData = $users->toArray();
+        if ($request->UserType == 3 || $request->UserType == 4) {
+            $userData['Address'] = $userData['Address'];
+        } else {
+            $userData['Address'] = $userData['cAddess'];
+        }
         // Return a response
-        return response()->json(['status' => true, 'message' => 'Profile updated successfully', 'data' => $users], 200);
+        return response()->json(['status' => true, 'message' => 'Profile updated successfully', 'data' => $userData], 200);
     }
 
     public function uploadProfileImage(Request $request)
