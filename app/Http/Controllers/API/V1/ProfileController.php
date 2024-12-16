@@ -97,10 +97,13 @@ class ProfileController extends Controller
 
         // Get the currently authenticated user
         $user = User::where('id', $user_id)->first();
+
         $company = Company::where('CompanyID', $company_id)->first();
         // Define validation rules
         if ($request->UserType == 4) {
             $validator = Validator::make($request->all(), [
+                'user_id' => 'required',
+                'company_id' => 'required',
                 'fname' => 'string|max:255',
                 'lname' => 'string|max:255',
                 'firm_name' => 'string|max:255',
@@ -114,6 +117,8 @@ class ProfileController extends Controller
             ]);
         } else if ($request->UserType == 3) {
             $validator = Validator::make($request->all(), [
+                'user_id' => 'required',
+                'company_id' => 'required',
                 'fname' => 'string|max:255',
                 'lname' => 'string|max:255',
                 'firm_name' => 'string|max:255',
@@ -127,6 +132,8 @@ class ProfileController extends Controller
             ]);
         } else {
             $validator = Validator::make($request->all(), [
+                'user_id' => 'required',
+                'company_id' => 'required',
                 'fname' => 'string|max:255',
                 'email' => 'email',
                 'lname' => 'string',

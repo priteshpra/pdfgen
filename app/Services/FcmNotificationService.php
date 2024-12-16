@@ -105,7 +105,8 @@ class FcmNotificationService
                     'status' => true,
                     'message' => 'Notification has been sent',
                     // 'response' => json_decode($response, true)
-                ]);
+                    'data' => []
+                ], 200);
             }
         }
     }
