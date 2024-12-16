@@ -68,72 +68,91 @@ class ApiController extends Controller
             return response()->json($result, 200);
         }
 
-        try {
-            $email = $request->email;
-            $password = $request->password;
-            $device_token = isset($request->device_token) ? $request->device_token : '';
-            $device_type =
-                isset($request->device_type) ? $request->device_type : 'Android';
-            $api_version = isset($request->api_version) ? $request->api_version : '';
-            $app_version = isset($request->app_version) ? $request->app_version : '';
-            $os_version = isset($request->os_version) ? $request->os_version : '';
-            $device_model_name = isset($request->device_model_name) ? $request->device_model_name : '';
-            $app_language = isset($request->app_language) ? $request->app_language : '';
-            $base_url = $this->base_url;
-            DB::enableQueryLog();
+        // try {
+        $email = $request->email;
+        $password = $request->password;
+        $device_token = isset($request->device_token) ? $request->device_token : '';
+        $device_type =
+            isset($request->device_type) ? $request->device_type : 'Android';
+        $api_version = isset($request->api_version) ? $request->api_version : '';
+        $app_version = isset($request->app_version) ? $request->app_version : '';
+        $os_version = isset($request->os_version) ? $request->os_version : '';
+        $device_model_name = isset($request->device_model_name) ? $request->device_model_name : '';
+        $app_language = isset($request->app_language) ? $request->app_language : '';
+        $base_url = $this->base_url;
+        DB::enableQueryLog();
 
-            $chkUser = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Email', $email)->where('users.Status', 1)->first();
+        $chkUser = User::select(
+            'users.id',
+            'users.FirstName',
+            'users.FirstName',
+            'users.LastName',
+            'users.MobileNo',
+            'users.RegistrationType',
+            'users.CompanyID',
+            'users.Email',
+            'users.UserType',
+            'company.ClientCode',
+            'company.FirmName',
+            'company.CountryID',
+            'company.StateID',
+            'company.CityID',
+            'company.PinCode',
+            'company.AadharNumber',
+            'company.GSTNumber',
+            'company.PANNumber',
+            'company.FirmType',
+            'users.password',
+            DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address'),
+        )
+            ->leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Email', $email)->where('users.Status', 1)->first();
 
-            if ($chkUser) {
-                if (!Hash::check($password, $chkUser->password)) {
-                    $result['status'] = false;
-                    $result['message'] = "Invalid email or password";
-                    $result['data'] = (object) [];
-                    return response()->json($result, 200);
-                }
-            }
-
-            if ($chkUser) {
-                $chkUser->CompanyID = $chkUser['CompanyID'];
-                $token = $chkUser->createToken('authToken')->plainTextToken;
-                $result['status'] = false;
-                $result['message'] = "Login Succssfully!";
-                $result['data'] = (object) [];
-
-                $chkUser->user_id = $chkUser->id;
-                $chkUser->token = $token;
-                // add token devices login
-                $arr = [
-                    'status' => 1,
-                    'device_token' => $device_token,
-                    'login_token' => $token,
-                    'device_type' => $device_type,
-                    'api_version' => $api_version,
-                    'app_version' => $app_version,
-                    'os_version' => $os_version,
-                    'device_model_name' => $device_model_name,
-                    'app_language' => $app_language,
-                    'user_id' => $chkUser->id,
-                ];
-                DB::table('user_devices')->insertGetId($arr);
-
-                $userData = $chkUser->toArray();
-                unset($userData['role_id']);
-                unset($userData['email_verified_at']);
-                // unset($userData['Address']);
-                unset($userData['created_at']);
-                unset($userData['updated_at']);
-
-                return response()->json(['status' => true, 'message' => 'Login successfully.', 'data' => $userData]);
-            } else {
+        if ($chkUser) {
+            if (!Hash::check($password, $chkUser->password)) {
                 $result['status'] = false;
                 $result['message'] = "Invalid email or password";
                 $result['data'] = (object) [];
                 return response()->json($result, 200);
             }
-        } catch (\Throwable $th) {
-            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
+
+        if ($chkUser) {
+            $chkUser->CompanyID = $chkUser['CompanyID'];
+            $token = $chkUser->createToken('authToken')->plainTextToken;
+            $result['status'] = false;
+            $result['message'] = "Login Succssfully!";
+            $result['data'] = (object) [];
+
+            $chkUser->user_id = $chkUser->id;
+            $chkUser->token = $token;
+            // add token devices login
+            $arr = [
+                'status' => 1,
+                'device_token' => $device_token,
+                'login_token' => $token,
+                'device_type' => $device_type,
+                'api_version' => $api_version,
+                'app_version' => $app_version,
+                'os_version' => $os_version,
+                'device_model_name' => $device_model_name,
+                'app_language' => $app_language,
+                'user_id' => $chkUser->id,
+            ];
+            DB::table('user_devices')->insertGetId($arr);
+            $userData = $chkUser->toArray();
+            unset($userData['password']);
+
+            // dd($userData);
+            return response()->json(['status' => true, 'message' => 'Login successfully.', 'data' => $userData]);
+        } else {
+            $result['status'] = false;
+            $result['message'] = "Invalid email or password";
+            $result['data'] = (object) [];
+            return response()->json($result, 200);
+        }
+        // } catch (\Throwable $th) {
+        //     return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
+        // }
     }
 
     /**

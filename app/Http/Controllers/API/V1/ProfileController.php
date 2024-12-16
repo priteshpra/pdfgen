@@ -161,7 +161,7 @@ class ProfileController extends Controller
         $company->FirmName = $request->input('firm_name');
         $company->PANNumber = $request->input('PAN');
         $company->GSTNumber = $request->input('GST');
-        $company->PinCode = $request->input('pinCode');
+        $company->PinCode = $request->input('pincode');
         // $company->FirmType = $company->FirmType;
         if ($request->user_type == 3 || $request->user_type == 4) {
             $company->Address = $request->input('address');
@@ -172,14 +172,11 @@ class ProfileController extends Controller
         $company->save();
 
         // $users = User::where('id', $user_id)->first();
-        $users = User::select('users.id', 'users.FirstName', 'users.FirstName', 'users.LastName', 'users.MobileNo', 'users.RegistrationType', 'users.CompanyID', 'users.Email', 'users.Address', 'users.UserType', 'company.ClientCode', 'company.FirmName', 'company.CountryID', 'company.StateID', 'company.CityID', 'company.PinCode', 'company.AadharNumber', 'company.GSTNumber', 'company.PANNumber', 'company.FirmType', 'company.Address AS cAddess')
+        $users = User::select('users.id', 'users.FirstName', 'users.FirstName', 'users.LastName', 'users.MobileNo', 'users.RegistrationType', 'users.CompanyID', 'users.Email', 'users.UserType', 'company.ClientCode', 'company.FirmName', 'company.CountryID', 'company.StateID', 'company.CityID', 'company.PinCode', 'company.AadharNumber', 'company.GSTNumber', 'company.PANNumber', 'company.FirmType',
+         DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address'))
             ->leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.id', $user_id)->where('users.Status', 1)->first();
         $userData = $users->toArray();
-        if ($request->UserType == 3 || $request->UserType == 4) {
-            $userData['Address'] = $userData['Address'];
-        } else {
-            $userData['Address'] = $userData['cAddess'];
-        }
+
         // Return a response
         return response()->json(['status' => true, 'message' => 'Profile updated successfully', 'data' => $userData], 200);
     }
