@@ -1181,7 +1181,9 @@ class ApiController extends Controller
             $documets = Scandocument::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserID', $user_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
             // Update the documentname with the full URL
             $documets->getCollection()->transform(function ($documet) use ($user_id) {
-                $documet->documentname = route('download.file', ['user_id' => $user_id, 'filename' => $documet->DocumentURL]);
+                $originalDocumentURL = $documet->DocumentURL;
+                $documet->DocumentURL = $documet->documentname ?? route('download.file', ['user_id' => $user_id, 'filename' => $originalDocumentURL]);
+                $documet->documentname = $originalDocumentURL;
                 return $documet;
             });
             $pagination = [
@@ -1377,21 +1379,12 @@ class ApiController extends Controller
         $token = $request->header('token');
         $base_url = $this->base_url;
         try {
-            $documets = OtherDocument::select([
-                'OtherdocumentsID',
-                'Title',
-                'CompanyID',
-                'BatchNo',
-                'UserID',
-                'Remarks',
-                'DocumentURL',
-                'DocumentStatus',
-                'ImageCount'
-                // DB::raw("(SELECT SUM(ImageCount) FROM otherdocuments WHERE Status = 1 AND UserID = $user_id) as totalImageCount")
-            ])->where('Status', 1)->where('UserID', $user_id)->where('CompanyID', $company_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $documets = OtherDocument::select('*')->where('Status', 1)->where('UserID', $user_id)->where('CompanyID', $company_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $documets->getCollection()->transform(function ($documet) use ($user_id) {
-                $documet->documentname = route('download.file', ['user_id' => $user_id, 'filename' => $documet->DocumentURL]);
+                $originalDocumentURL = $documet->DocumentURL;
+                $documet->DocumentURL = $documet->documentname ?? route('download.file', ['user_id' => $user_id, 'filename' => $originalDocumentURL]);
+                $documet->documentname = $originalDocumentURL;
                 return $documet;
             });
 
