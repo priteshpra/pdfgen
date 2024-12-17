@@ -172,8 +172,29 @@ class ProfileController extends Controller
         $company->save();
 
         // $users = User::where('id', $user_id)->first();
-        $users = User::select('users.id', 'users.FirstName', 'users.FirstName', 'users.LastName', 'users.MobileNo', 'users.RegistrationType', 'users.CompanyID', 'users.Email', 'users.UserType', 'company.ClientCode', 'company.FirmName', 'company.CountryID', 'company.StateID', 'company.CityID', 'company.PinCode', 'company.AadharNumber', 'company.GSTNumber', 'company.PANNumber', 'company.FirmType',
-         DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address'))
+        $users = User::select(
+            'users.id',
+            'users.id AS user_id',
+            'users.FirstName',
+            'users.FirstName',
+            'users.LastName',
+            'users.MobileNo',
+            'users.RegistrationType',
+            'users.CompanyID',
+            'users.Email',
+            'users.UserType',
+            'company.ClientCode',
+            'company.FirmName',
+            'company.CountryID',
+            'company.StateID',
+            'company.CityID',
+            'company.PinCode',
+            'company.AadharNumber',
+            'company.GSTNumber',
+            'company.PANNumber',
+            'company.FirmType',
+            DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address')
+        )
             ->leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.id', $user_id)->where('users.Status', 1)->first();
         $userData = $users->toArray();
 

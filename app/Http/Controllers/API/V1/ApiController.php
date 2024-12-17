@@ -720,11 +720,11 @@ class ApiController extends Controller
                 ->where('CompanyID', $company_id)
                 ->select(
                     DB::raw('SUM(ImageCount) as totalImageCount'),
-                    DB::raw('SUM(CASE WHEN DATE(created_at) = CURDATE() THEN ImageCount ELSE 0 END) as todayImageCount')
+                    DB::raw('count(CASE WHEN DATE(created_at) = CURDATE() THEN ImageCount ELSE 0 END) as todayImageCount')
                 )
                 ->first();
             $totalImageCount = $result->totalImageCount;
-            $todayImageCount = $result->todayImageCount;
+            $todayImageCount = (string)$result->todayImageCount;
 
             return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => $totalImageCount, 'todayDocumentCount' => $todayImageCount]], 200);
         } catch (\Throwable $th) {
