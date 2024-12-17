@@ -47,6 +47,8 @@ class ConfigurationController extends Controller
         $user->SupportEmail = $request->SupportEmail;
         $user->SMTPPORT = $request->SMTPPORT;
         $user->SMTPPASS = $request->SMTPPASS;
+        $user->AndroidAppUrl = $request->AndroidAppUrl;
+        $user->IOSAppUrl = $request->IOSAppUrl;
         $user->save();
 
         // Return response

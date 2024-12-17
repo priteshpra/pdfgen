@@ -26,6 +26,8 @@ class Configuration extends Authenticatable
         'SupportEmail',
         'SMTPPASS',
         'SMTPPORT',
+        'AndroidAppUrl',
+        'IOSAppUrl'
     ];
 
     public function country()

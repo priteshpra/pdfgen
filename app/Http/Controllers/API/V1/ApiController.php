@@ -140,6 +140,12 @@ class ApiController extends Controller
             ];
             DB::table('user_devices')->insertGetId($arr);
             $userData = $chkUser->toArray();
+
+            $configurationData = DB::table('configuration_table')->select('AndroidAppUrl', 'IOSAppUrl', 'IosAppVersion', 'AndroidAppVersion')->first();
+            $userData['AndroidAppUrl'] = $configurationData->AndroidAppUrl;
+            $userData['IOSAppUrl'] = $configurationData->IOSAppUrl;
+            $userData['IosAppVersion'] = $configurationData->IosAppVersion;
+            $userData['AndroidAppVersion'] = $configurationData->AndroidAppVersion;
             unset($userData['password']);
 
             // dd($userData);
@@ -705,12 +711,22 @@ class ApiController extends Controller
                 return $checkToken->getContent();
             }
 
-            $totalImageCount = Scandocument::where('Status', 1)
+            // $totalImageCount = Scandocument::where('Status', 1)
+            //     ->where('UserID', $user_id)
+            //     ->where('CompanyID', $company_id)
+            //     ->sum('ImageCount');
+            $result = Scandocument::where('Status', 1)
                 ->where('UserID', $user_id)
                 ->where('CompanyID', $company_id)
-                ->sum('ImageCount');
+                ->select(
+                    DB::raw('SUM(ImageCount) as totalImageCount'),
+                    DB::raw('SUM(CASE WHEN DATE(created_at) = CURDATE() THEN ImageCount ELSE 0 END) as todayImageCount')
+                )
+                ->first();
+            $totalImageCount = $result->totalImageCount;
+            $todayImageCount = $result->todayImageCount;
 
-            return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => $totalImageCount]], 200);
+            return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => $totalImageCount, 'todayDocumentCount' => $todayImageCount]], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
@@ -840,9 +856,18 @@ class ApiController extends Controller
         $notifData = json_decode($sendNotification->getContent(), true);
 
         if (isset($notifData['status']) && $notifData['status'] == true) {
-            return $sendNotification->getContent();
+            // return $sendNotification->getContent();
+            return response()->json([
+                'status' => true,
+                'message' => 'Notification has been sent',
+                'data' => []
+            ], 200);
         } else {
-            return $sendNotification->getContent();
+            // return $sendNotification->getContent();
+            return response()->json([
+                'status' => false,
+                'message' => 'Curl Error: ' . $notifData['message']
+            ], 500);
         }
     }
 
