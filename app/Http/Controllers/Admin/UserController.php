@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserPhotoRequest;
+use App\Models\UserDevices;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -68,8 +69,9 @@ class UserController extends Controller
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $roles = Role::pluck('title', 'id');
         $user = User::find($id);
+        $deviceList = UserDevices::where('user_id', $id)->get();
 
-        return view('admin.users.show', compact('user', 'roles'));
+        return view('admin.users.show', compact('user', 'roles', 'deviceList'));
     }
 
     /**

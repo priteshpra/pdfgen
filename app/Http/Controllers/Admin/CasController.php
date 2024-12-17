@@ -24,6 +24,7 @@ use App\Models\OtherDocument;
 use App\Models\Scandocument;
 use App\Models\State;
 use App\Models\User;
+use App\Models\UserDevices;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -107,7 +108,8 @@ class CasController extends Controller
         $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
         $notificationList = Notification::where('UserID', $id)->get();
         // dd($scanDocuments);
-        return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id'));
+        $deviceList = UserDevices::where('user_id', $id)->get();
+        return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id', 'deviceList'));
     }
 
     /**

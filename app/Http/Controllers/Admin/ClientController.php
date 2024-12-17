@@ -22,6 +22,7 @@ use App\Models\Notification;
 use App\Models\OtherDocument;
 use App\Models\Scandocument;
 use App\Models\State;
+use App\Models\UserDevices;
 
 class ClientController extends Controller
 {
@@ -102,9 +103,11 @@ class ClientController extends Controller
         $employeesId = array_column($employee, 'id');
         $scanDocuments = Scandocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
         $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
-        $notificationList = Notification::where('UserID', $id)->get();
+        $notificationList =
+            Notification::where('UserID', $id)->get();
+        $deviceList = UserDevices::where('user_id', $id)->get();
 
-        return view('admin.clients.show', compact('user', 'city', 'state', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id'));
+        return view('admin.clients.show', compact('user', 'city', 'state', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id', 'deviceList'));
     }
 
     /**

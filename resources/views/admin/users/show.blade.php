@@ -26,6 +26,9 @@
                             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#profile2"
                                     role="tab"><span class="hidden-sm-up"><i class="ion-person"></i></span> <span
                                         class="hidden-xs-down">Change Password</span></a> </li>
+                            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#devices"
+                                    role="tab"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span
+                                        class="hidden-xs-down">Devices</span></a>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">
@@ -181,6 +184,56 @@
                                                 </button>
                                             </div>
                                         </form>
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="devices" role="tabpanel">
+                                <div class="col-lg-12 col-12">
+                                    <div class="box">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="box">
+                                                    <div class="box-body">
+                                                        <div id="alert-noti-container"></div>
+                                                        <div class="table-responsive">
+                                                            <table id="notificationtableexample"
+                                                                class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Device Type</th>
+                                                                        <th>Device Model Name</th>
+                                                                        <th>Device Version</th>
+                                                                        <th>Login Date</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @if ($deviceList)
+                                                                    @foreach ($deviceList as $deviceList)
+                                                                    <tr>
+                                                                        <td>{{ $deviceList->device_type }}</td>
+                                                                        <td>{{ $deviceList->device_model_name }}</td>
+                                                                        <td>{{ $deviceList->os_version }}</td>
+                                                                        <td>{{ date('d/m/Y',
+                                                                            strtotime($deviceList->created_at))
+                                                                            }}</td>
+
+                                                                    </tr>
+                                                                    @endforeach
+
+                                                                    @endif
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.box-body -->
+                                                </div>
+                                                <!-- /.box -->
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                        <!-- /.row -->
                                     </div>
                                     <!-- /.box -->
                                 </div>
