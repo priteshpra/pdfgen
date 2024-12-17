@@ -18,29 +18,29 @@ $(function () {
 
     $('#example2').DataTable({
 
-      'paging'      : true,
+        'paging': true,
 
-      'lengthChange': false,
+        'lengthChange': false,
 
-      'searching'   : false,
+        'searching': false,
 
-      'ordering'    : true,
+        'ordering': true,
 
-      'info'        : true,
+        'info': true,
 
-      'autoWidth'   : false
+        'autoWidth': false
 
     });
 
 
-var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
+    var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
     $('#countryTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -73,11 +73,11 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     $('#stateTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -110,11 +110,11 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     $('#cityTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -148,11 +148,11 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     $('#bussinessTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -183,13 +183,13 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
         ]
     });
 
-    $('#pageTable').DataTable( {
+    $('#pageTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -222,11 +222,11 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     $('#cmsTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -259,11 +259,11 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     $('#employeeTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -296,11 +296,11 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     $('#clientTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -333,11 +333,11 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     $('#casTable').DataTable({
         pageLength: 25,
-		dom: 'Bfrtip',
-		// buttons: [
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
         // ],
-         buttons: [
+        buttons: [
             {
                 extend: 'copy',
                 text: 'copy',
@@ -366,53 +366,123 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
                 title: 'CAS_Data_' + currentDate // Set dynamic title for Print
             }
         ]
-	});
+    });
 
-	$('#example').DataTable( {
+    $('#example').DataTable({
 
-		dom: 'Bfrtip',
+        dom: 'Bfrtip',
 
-		buttons: [
+        buttons: [
 
-			'copy', 'csv', 'excel', 'pdf', 'print'
+            'copy', 'csv', 'excel', 'pdf', 'print'
 
-		]
+        ]
 
     });
 
-    $('#scandoctableexample').DataTable( {
+    $('#scandoctableexample').DataTable({
 
-		// dom: 'Bfrtip',
+        // dom: 'Bfrtip',
 
-		// buttons: [
+        // buttons: [
 
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
 
-		// ]
+        // ]
+
+    });
+    $('#scandoctableexample1').DataTable({
+
+        // dom: 'Bfrtip',
+
+        // buttons: [
+
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
+
+        // ]
 
     });
 
-    $('#otherdoctableexample').DataTable( {
+    $('#otherdoctableexample').DataTable({
 
-		// dom: 'Bfrtip',
+        // dom: 'Bfrtip',
 
-		// buttons: [
+        // buttons: [
 
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
 
-		// ]
+        // ]
+
+    });
+    $('#otherdoctableexample1').DataTable({
+
+        // dom: 'Bfrtip',
+
+        // buttons: [
+
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
+
+        // ]
 
     });
 
-    $('#notificationtableexample').DataTable( {
+    $('#notificationtableexample').DataTable({
 
-		// dom: 'Bfrtip',
+        // dom: 'Bfrtip',
 
-		// buttons: [
+        // buttons: [
 
-		// 	'copy', 'csv', 'excel', 'pdf', 'print'
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
 
-		// ]
+        // ]
+
+    });
+    $('#notificationtableexample1').DataTable({
+
+        // dom: 'Bfrtip',
+
+        // buttons: [
+
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
+
+        // ]
+
+    });
+
+
+
+
+    $('#tickets').DataTable({
+
+        'paging': true,
+
+        'lengthChange': true,
+
+        'searching': true,
+
+        'ordering': true,
+
+        'info': true,
+
+        'autoWidth': false,
+
+    });
+
+
+
+    $('#productorder').DataTable({
+
+        'paging': true,
+
+        'lengthChange': true,
+
+        'searching': true,
+
+        'ordering': true,
+
+        'info': true,
+
+        'autoWidth': false,
 
     });
 
@@ -420,61 +490,23 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
 
 
-	$('#tickets').DataTable({
-
-	  'paging'      : true,
-
-	  'lengthChange': true,
-
-	  'searching'   : true,
-
-	  'ordering'    : true,
-
-	  'info'        : true,
-
-	  'autoWidth'   : false,
-
-	});
+    $('#complex_header').DataTable();
 
 
 
-	$('#productorder').DataTable({
-
-	  'paging'      : true,
-
-	  'lengthChange': true,
-
-	  'searching'   : true,
-
-	  'ordering'    : true,
-
-	  'info'        : true,
-
-	  'autoWidth'   : false,
-
-	});
-
-
-
-
-
-	$('#complex_header').DataTable();
-
-
-
-	//--------Individual column searching
+    //--------Individual column searching
 
 
 
     // Setup - add a text input to each footer cell
 
-    $('#example5 tfoot th').each( function () {
+    $('#example5 tfoot th').each(function () {
 
         var title = $(this).text();
 
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
 
-    } );
+    });
 
 
 
@@ -482,7 +514,7 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     var table = $('#example5').DataTable({
 
-    	pageLength : 5,
+        pageLength: 5,
 
     });
 
@@ -490,39 +522,39 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
     // Apply the search
 
-    table.columns().every( function () {
+    table.columns().every(function () {
 
         var that = this;
 
 
 
-        $( 'input', this.footer() ).on( 'keyup change', function () {
+        $('input', this.footer()).on('keyup change', function () {
 
-            if ( that.search() !== this.value ) {
+            if (that.search() !== this.value) {
 
                 that
 
-                    .search( this.value )
+                    .search(this.value)
 
                     .draw();
 
             }
 
-        } );
+        });
 
-    } );
-
-
+    });
 
 
 
-	//---------------Form inputs
-
-	var table = $('#example6').DataTable();
 
 
+    //---------------Form inputs
 
-    $('button').click( function() {
+    var table = $('#example6').DataTable();
+
+
+
+    $('button').click(function () {
 
         var data = table.$('input, select').serialize();
 
@@ -536,7 +568,7 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
         return false;
 
-    } );
+    });
 
 
 
@@ -546,4 +578,4 @@ var currentDate = new Date().toLocaleDateString().replace(/\//g, '-');
 
 
 
-  }); // End of use strict
+}); // End of use strict

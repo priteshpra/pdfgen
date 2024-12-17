@@ -380,7 +380,7 @@
                                                                             strtotime($scanDocuments->created_at))
                                                                             }}</td>
                                                                         <td>{{
-                                                                            ($employeesNameData)?$employeesNameData[$scanDocuments->UserID]:'-'
+                                                                            isset($employeesNameDatas[$scanDocuments->UserID])?$employeesNameDatas[$scanDocuments->UserID]:'-'
                                                                             }}</td>
                                                                         <td>{{ $scanDocuments->ImageCount }}</td>
                                                                         <td>{{ $scanDocuments->Remarks }}</td>
@@ -400,10 +400,10 @@
                                                                             </div>
                                                                         </td>
                                                                         <td>
-                                                                            <button type="button"
-                                                                                class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                                                    class="fa fa-file-pdf-o"
-                                                                                    aria-hidden="true"></i></button>
+                                                                            <a href="{{$scanDocuments->DocumentURL}}"><button type="button"
+                                                                                    class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                                                        class="fa fa-file-pdf-o"
+                                                                                        aria-hidden="true"></i></button></a>
                                                                         </td>
                                                                     </tr>
                                                                     @endforeach
@@ -484,7 +484,7 @@
                                                                             strtotime($otherDocument->created_at))
                                                                             }}</td>
                                                                         <td>{{
-                                                                            ($employeesNameData)?$employeesNameData[$otherDocument->UserID]:'-'
+                                                                            isset($employeesNameDatas[$otherDocument->UserID])?$employeesNameDatas[$otherDocument->UserID]:'-'
                                                                             }}</td>
                                                                         <td>{{ $otherDocument->Remarks }}</td>
                                                                         <td>
@@ -503,10 +503,10 @@
                                                                             </div>
                                                                         </td>
                                                                         <td>
-                                                                            <button type="button"
-                                                                                class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                                                    class="fa fa-file-pdf-o"
-                                                                                    aria-hidden="true"></i></button>
+                                                                            <a href="{{$otherDocument->DocumentURL}}"><button type="button"
+                                                                                    class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                                                        class="fa fa-file-pdf-o"
+                                                                                        aria-hidden="true"></i></button></a>
                                                                         </td>
                                                                     </tr>
                                                                     @endforeach

@@ -98,16 +98,18 @@ class ClientController extends Controller
         $state = State::all();
         $roles = Role::pluck('title', 'id');
         $user = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.id', $id)->first();
-        $employee = User::where('CompanyID', $user->CompanyID)->where('UserType ', '2')->get()->toArray();
+        $employee = User::where('CompanyID', $user->CompanyID)->where('UserType', '2')->get()->toArray();
         $employeesNameData = array_column($employee, 'FirstName', 'id');
         $employeesId = array_column($employee, 'id');
-        $scanDocuments = Scandocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
-        $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
+        $scanDocuments = Scandocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->get();
+        $otherDocuments = OtherDocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->get();
+        $employees = User::where('CompanyID', $user->CompanyID)->where('UserType', '3')->get()->toArray();
+        $employeesNameDatas = array_column($employees, 'FirstName', 'id');
         $notificationList =
             Notification::where('UserID', $id)->get();
         $deviceList = UserDevices::where('user_id', $id)->get();
 
-        return view('admin.clients.show', compact('user', 'city', 'state', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id', 'deviceList'));
+        return view('admin.clients.show', compact('user', 'city', 'state', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id', 'deviceList', 'employeesNameDatas'));
     }
 
     /**

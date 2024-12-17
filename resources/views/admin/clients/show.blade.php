@@ -354,7 +354,7 @@
                                                         </div>
                                                         @endif
                                                         <div class="table-responsive">
-                                                            <table id="scandoctableexample"
+                                                            <table id="scandoctableexample1"
                                                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                                                 <thead>
                                                                     <tr>
@@ -379,7 +379,7 @@
                                                                             strtotime($scanDocuments->created_at))
                                                                             }}</td>
                                                                         <td>{{
-                                                                            ($employeesNameData)?$employeesNameData[$scanDocuments->UserID]
+                                                                            isset($employeesNameDatas[$scanDocuments->UserID])?$employeesNameDatas[$scanDocuments->UserID]
                                                                             : '-'
                                                                             }}</td>
                                                                         <td>{{ $scanDocuments->ImageCount }}</td>
@@ -400,10 +400,10 @@
                                                                             </div>
                                                                         </td>
                                                                         <td>
-                                                                            <button type="button"
-                                                                                class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                                                    class="fa fa-file-pdf-o"
-                                                                                    aria-hidden="true"></i></button>
+                                                                            <a href="{{$scanDocuments->DocumentURL}}"><button type="button"
+                                                                                    class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                                                        class="fa fa-file-pdf-o"
+                                                                                        aria-hidden="true"></i></button></a>
                                                                         </td>
                                                                     </tr>
                                                                     @endforeach
@@ -463,7 +463,7 @@
                                                         </div>
                                                         @endif
                                                         <div class="table-responsive">
-                                                            <table id="otherdoctableexample"
+                                                            <table id="otherdoctableexample1"
                                                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                                                 <thead>
                                                                     <tr>
@@ -484,7 +484,7 @@
                                                                             strtotime($otherDocument->created_at))
                                                                             }}</td>
                                                                         <td>{{
-                                                                            ($employeesNameData)?$employeesNameData[$otherDocument->UserID]:'-'
+                                                                            isset($employeesNameDatas[$otherDocument->UserID])?$employeesNameDatas[$otherDocument->UserID]:'-'
                                                                             }}</td>
                                                                         <td>{{ $otherDocument->Remarks }}</td>
                                                                         <td>
@@ -503,10 +503,10 @@
                                                                             </div>
                                                                         </td>
                                                                         <td>
-                                                                            <button type="button"
-                                                                                class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                                                    class="fa fa-file-pdf-o"
-                                                                                    aria-hidden="true"></i></button>
+                                                                            <a href="{{$otherDocument->DocumentURL}}"><button type="button"
+                                                                                    class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                                                        class="fa fa-file-pdf-o"
+                                                                                        aria-hidden="true"></i></button></a>
                                                                         </td>
                                                                     </tr>
                                                                     @endforeach
@@ -536,7 +536,7 @@
                                                     <div class="box-body">
                                                         <div id="alert-noti-container"></div>
                                                         <div class="table-responsive">
-                                                            <table id="notificationtableexample"
+                                                            <table id="notificationtableexample1"
                                                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                                                 <thead>
                                                                     <tr>
@@ -658,25 +658,26 @@
     <!-- /.content -->
 </div>
 <script>
-    document.getElementById('submitLink').addEventListener('click', function (e) {
+    document.getElementById('submitLink').addEventListener('click', function(e) {
         e.preventDefault(); // Prevent default link behavior
         document.getElementById('myForm').submit(); // Trigger form submission
     });
-    function toggleStatus(ID,  status) {
-        if(status == 0) {
+
+    function toggleStatus(ID, status) {
+        if (status == 0) {
             statuss = 0;
             console.log('off');
-            $('#toggleChang_'+ID).addClass('btn-success');
-            $('#toggleChang_'+ID).removeClass('btn-error');
+            $('#toggleChang_' + ID).addClass('btn-success');
+            $('#toggleChang_' + ID).removeClass('btn-error');
         } else {
             statuss = 1;
-            $('#toggleChang_'+ID).removeClass('btn-success');
-                $('#toggleChang_'+ID).addClass('btn-error');
+            $('#toggleChang_' + ID).removeClass('btn-success');
+            $('#toggleChang_' + ID).addClass('btn-error');
         }
-        $("#toggleChang_"+ID). attr("onclick","toggleStatus("+ID+", "+statuss+")");
+        $("#toggleChang_" + ID).attr("onclick", "toggleStatus(" + ID + ", " + statuss + ")");
 
         $('#loader').show();
-        $('#loader').css('opacity',1);
+        $('#loader').css('opacity', 1);
         $.ajax({
             url: "{{ route('admin.notificationtoggle.status') }}", // URL to your route
             type: "POST",
@@ -687,7 +688,7 @@
             },
             success: function(response) {
                 $('#loader').hide();
-                $('#loader').css('opacity',0);
+                $('#loader').css('opacity', 0);
                 $('#alert-noti-container').html(`
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${response.message}
@@ -697,7 +698,7 @@
             },
             error: function(xhr) {
                 $('#loader').hide();
-                $('#loader').css('opacity',0);
+                $('#loader').css('opacity', 0);
                 $('#alert-noti-container').html(`
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     ${xhr.responseJSON.message}
@@ -709,20 +710,20 @@
     }
 
     function toggleOtherDocStatus(ID, status) {
-        if(status == 0) {
+        if (status == 0) {
             statuss = 0;
             console.log('off');
-            $('#toggleOtherDocChang_'+ID).addClass('btn-success');
-            $('#toggleOtherDocChang_'+ID).removeClass('btn-error');
+            $('#toggleOtherDocChang_' + ID).addClass('btn-success');
+            $('#toggleOtherDocChang_' + ID).removeClass('btn-error');
         } else {
             statuss = 1;
-            $('#toggleOtherDocChang_'+ID).removeClass('btn-success');
-            $('#toggleOtherDocChang_'+ID).addClass('btn-error');
+            $('#toggleOtherDocChang_' + ID).removeClass('btn-success');
+            $('#toggleOtherDocChang_' + ID).addClass('btn-error');
         }
-        $("#toggleOtherDocChang_"+ID). attr("onclick","toggleOtherDocStatus("+ID+", "+statuss+")");
+        $("#toggleOtherDocChang_" + ID).attr("onclick", "toggleOtherDocStatus(" + ID + ", " + statuss + ")");
 
         $('#loader').show();
-        $('#loader').css('opacity',1);
+        $('#loader').css('opacity', 1);
         $.ajax({
             url: "{{ route('admin.otherdoctoggle.status') }}", // URL to your route
             type: "POST",
@@ -733,7 +734,7 @@
             },
             success: function(response) {
                 $('#loader').hide();
-                $('#loader').css('opacity',0);
+                $('#loader').css('opacity', 0);
                 $('#alert-other-container').html(`
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${response.message}
@@ -743,7 +744,7 @@
             },
             error: function(xhr) {
                 $('#loader').hide();
-                $('#loader').css('opacity',0);
+                $('#loader').css('opacity', 0);
                 $('#alert-other-container').html(`
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     ${xhr.responseJSON.message}
@@ -755,20 +756,20 @@
     }
 
     function toggleScanDocStatus(ID, status) {
-        if(status == 0) {
+        if (status == 0) {
             statuss = 0;
             console.log('off');
-            $('#toggleScanDocChang_'+ID).addClass('btn-success');
-            $('#toggleScanDocChang_'+ID).removeClass('btn-error');
+            $('#toggleScanDocChang_' + ID).addClass('btn-success');
+            $('#toggleScanDocChang_' + ID).removeClass('btn-error');
         } else {
             statuss = 1;
-            $('#toggleScanDocChang_'+ID).removeClass('btn-success');
-            $('#toggleScanDocChang_'+ID).addClass('btn-error');
+            $('#toggleScanDocChang_' + ID).removeClass('btn-success');
+            $('#toggleScanDocChang_' + ID).addClass('btn-error');
         }
-        $("#toggleScanDocChang_"+ID). attr("onclick","toggleScanDocStatus("+ID+", "+statuss+")");
+        $("#toggleScanDocChang_" + ID).attr("onclick", "toggleScanDocStatus(" + ID + ", " + statuss + ")");
 
         $('#loader').show();
-        $('#loader').css('opacity',1);
+        $('#loader').css('opacity', 1);
         $.ajax({
             url: "{{ route('admin.scandoctoggle.status') }}", // URL to your route
             type: "POST",
@@ -779,7 +780,7 @@
             },
             success: function(response) {
                 $('#loader').hide();
-                $('#loader').css('opacity',0);
+                $('#loader').css('opacity', 0);
                 $('#alert-scan-container').html(`
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${response.message}
@@ -789,7 +790,7 @@
             },
             error: function(xhr) {
                 $('#loader').hide();
-                $('#loader').css('opacity',0);
+                $('#loader').css('opacity', 0);
                 $('#alert-scan-container').html(`
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     ${xhr.responseJSON.message}

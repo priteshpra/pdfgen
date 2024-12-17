@@ -851,7 +851,7 @@ class ApiController extends Controller
             'user_id' => 'required',
         ]);
         $newData  = json_encode(array());
-        $body = array('receiver_id' => $request->user_id, 'fcmtoken' => $request->fcmtoken, 'title' => 'Testing test', 'message' => "Demo Test", 'data' => $newData, 'content_available' => true);
+        $body = array('receiver_id' => $request->user_id, 'fcmtoken' => $request->fcmtoken, 'title' => 'Testing test test', 'message' => "Demo Test test", 'data' => $newData, 'content_available' => true);
         $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
         $notifData = json_decode($sendNotification->getContent(), true);
 

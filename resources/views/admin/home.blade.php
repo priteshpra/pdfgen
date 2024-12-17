@@ -509,67 +509,6 @@
     </div>
 
 
-
-    {{-- <div class="row">
-
-        <div class="col-xxl-12 col-12">
-
-            <div class="box">
-
-                <div class="box-header d-flex justify-content-between align-items-center">
-                    <h4 class="box-title">Employee List</h4>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
-
-                        <div class="table-responsive">
-                            <table id="employeeTables"
-                                class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
-                                <thead class="bg-primary">
-                                    <tr class="">
-                                        <th>Employee Name</th>
-                                        <th>Email</th>
-                                        <th>MobileNo</th>
-                                        <th>Address</th>
-                                        <th>Registration Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($employeeLists as $user)
-
-                                    <tr>
-                                        <td class="text-center"><a
-                                                href="{{ route('admin.users.show',$user->id) }}">{{$user->name}}
-                                                {{$user->lname}}</a>
-                                        </td>
-                                        <td>{{$user->email}}</td>
-                                        <td>{{$user->mobile_no}}</td>
-                                        <td>{{$user->address}}</td>
-                                        <td>{{$user->registration_type}}</td>
-
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="100%" class="text-center text-muted py-3">No Users Found
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div> --}}
-
     <div class="row">
         <div class="col-xxl-12 col-12">
             <div class="box">
@@ -583,31 +522,33 @@
                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                 <thead class="bg-primary">
                                     <tr class="">
-                                        <th>Client Name</th>
-                                        <th>Firm Name</th>
+                                        <th>Name</th>
                                         <th>MobileNo</th>
+                                        <th>Company Name</th>
+                                        <th>User Type</th>
                                         <th>Email</th>
-                                        <th>Address</th>
-                                        <th>Aadhar Number</th>
-                                        <th>GST Number</th>
-                                        <th>PAN Number</th>
-                                        <th>Firm Type</th>
+                                        <th>date</th>
+                                        <th>Image Count</th>
+                                        <th>File Download</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($clientLists as $user)
                                     <tr>
-                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->FirstName}} {{ $user->LastName}}</td>
+                                        <td>{{$user->MobileNo}}</td>
                                         <td><a
-                                                href="{{ route('admin.client.show',$user->id) }}">{{$user->firm_name}}</a>
+                                                href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a>
                                         </td>
-                                        <td>{{$user->mobile_no}}</td>
+                                        <td>{{$user->UserType}}</td>
                                         <td>{{$user->Email}}</td>
-                                        <td>{{$user->address}}</td>
-                                        <td>{{$user->aadhar}}</td>
-                                        <td>{{$user->gst}}</td>
-                                        <td>{{$user->pan}}</td>
-                                        <td>{{$user->firm_type}}</td>
+                                        <td>{{$user->created_at}}</td>
+                                        <td>{{$user->ImageCount}}</td>
+
+                                        <td><a href="{{ route('download.file', ['user_id' => $user->id, 'filename' => $user->DocumentURL]) }}"><button type="button"
+                                                    class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                        class="fa fa-file-pdf-o"
+                                                        aria-hidden="true"></i></button>{{$user->DocumentURL}}</a></td>
 
                                     </tr>
                                     @empty
@@ -643,29 +584,31 @@
                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                 <thead class="bg-primary">
                                     <tr class="">
-                                        <th>CA Name</th>
-                                        <th>Firm Name</th>
-                                        <th>Email</th>
+                                        <th>Name</th>
                                         <th>MobileNo</th>
-                                        <th>Address</th>
-                                        <th>Aadhar Number</th>
-                                        <th>GST Number</th>
-                                        <th>PAN Number</th>
-                                        <th>Firm Type</th>
+                                        <th>Company Name</th>
+                                        <th>User Type</th>
+                                        <th>Email</th>
+                                        <th>date</th>
+                                        <th>Image Count</th>
+                                        <th>File Download</th>
                                     </tr>
                                 </thead>
                                 @forelse ($casList as $user)
                                 <tr>
-                                    <td>{{$user->name}} {{$user->lname}}</td>
-                                    <td><a href="{{ route('admin.cas.show',$user->id) }}">{{$user->firm_name}}</a>
+                                    <td>{{$user->FirstName}} {{ $user->LastName}}</td>
+                                    <td>{{$user->MobileNo}}</td>
+                                    <td><a
+                                            href="{{ route('admin.cas.show',$user->id) }}">{{$user->FirmName}}</a>
                                     </td>
+                                    <td>{{$user->UserType}}</td>
                                     <td>{{$user->Email}}</td>
-                                    <td>{{$user->mobile_no}}</td>
-                                    <td>{{$user->address}}</td>
-                                    <td>{{$user->aadhar}}</td>
-                                    <td>{{$user->gst}}</td>
-                                    <td>{{$user->pan}}</td>
-                                    <td>{{$user->firm_type}}</td>
+                                    <td>{{$user->created_at}}</td>
+                                    <td>{{$user->ImageCount}}</td>
+                                    <td><a href="{{route('download.file', ['user_id' => $user->id, 'filename' => $user->DocumentURL])}}"><button type="button"
+                                                class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                    class="fa fa-file-pdf-o"
+                                                    aria-hidden="true"></i></button></a></td>
 
 
                                 </tr>

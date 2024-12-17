@@ -133,20 +133,18 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <h5>iOS App Url <span class="text-danger">*</span></h5>
-                                        <div class="controls">
-                                            <input type="text" value="{{ $conf->AndroidAppUrl }}" name="AndroidAppUrl"
-                                                class="form-control" required
-                                                data-validation-required-message="This field is required"
-                                                placeholder="iOS App Version" maxlength="3" tabindex="5">
-                                            @error('AndroidAppUrl')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
+                                <div class="form-group">
+                                    <h5>iOS App Url <span class="text-danger">*</span></h5>
+                                    <div class="controls">
+                                        <input type="text" value="{{ $conf->AndroidAppUrl }}" name="AndroidAppUrl"
+                                            class="form-control" required
+                                            data-validation-required-message="This field is required"
+                                            placeholder="iOS App Version" maxlength="3" tabindex="5">
+                                        @error('AndroidAppUrl')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -155,20 +153,18 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <h5>iOS App Url <span class="text-danger">*</span></h5>
-                                        <div class="controls">
-                                            <input type="text" value="{{ $conf->IOSAppUrl }}" name="IOSAppUrl"
-                                                class="form-control" required
-                                                data-validation-required-message="This field is required"
-                                                placeholder="iOS App Version" maxlength="3" tabindex="5">
-                                            @error('IOSAppUrl')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
+                                <div class="form-group">
+                                    <h5>iOS App Url <span class="text-danger">*</span></h5>
+                                    <div class="controls">
+                                        <input type="text" value="{{ $conf->IOSAppUrl }}" name="IOSAppUrl"
+                                            class="form-control" required
+                                            data-validation-required-message="This field is required"
+                                            placeholder="iOS App Version" maxlength="3" tabindex="5">
+                                        @error('IOSAppUrl')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
                                 </div>
 

@@ -86,4 +86,12 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     // Route::get('/admin/company/create/{userId}', [CompanyController::class, 'create'])->name('admin.company.create');
 
     // Route::post('/search', 'CityController');
+
+    Route::get('api/download/{user_id}/{filename}', function ($user_id, $filename) {
+        $path = storage_path("app/public/pdfs/{$user_id}/{$filename}");
+        if (!file_exists($path)) {
+            abort(404, "File not found");
+        }
+        return response()->download($path);
+    })->name('download.file');
 });

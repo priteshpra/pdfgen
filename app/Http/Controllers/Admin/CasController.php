@@ -101,15 +101,17 @@ class CasController extends Controller
         $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
         $user = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.id', $id)->first();
-        $employee = User::where('CompanyID', $user->CompanyID)->where('UserType ', '2')->get()->toArray();
+        $employee = User::where('CompanyID', $user->CompanyID)->where('UserType', '2')->get()->toArray();
         $employeesNameData = array_column($employee, 'FirstName', 'id');
         $employeesId = array_column($employee, 'id');
-        $scanDocuments = Scandocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
-        $otherDocuments = OtherDocument::whereIn('UserID', $employeesId)->orWhere('CompanyID', $user->CompanyID)->get();
+        $scanDocuments = Scandocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->get();
+        $otherDocuments = OtherDocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->get();
+        $employees = User::where('CompanyID', $user->CompanyID)->where('UserType', '4')->get()->toArray();
+        $employeesNameDatas = array_column($employees, 'FirstName', 'id');
         $notificationList = Notification::where('UserID', $id)->get();
         // dd($scanDocuments);
         $deviceList = UserDevices::where('user_id', $id)->get();
-        return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id', 'deviceList'));
+        return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id', 'deviceList', 'employeesNameDatas'));
     }
 
     /**
