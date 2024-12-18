@@ -36,7 +36,7 @@ class ClientController extends Controller
         abort_if(Gate::denies('client_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         // $users = User::with('role')->where('UserType', '3')->paginate(25)->appends($request->query());
-        $users = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->with('role')->where('users.UserType', '3')->orderBy('users.id', 'desc')->get();
+        $users = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->with('role')->where('users.UserType', '3')->whereNotNull('users.CompanyID')->orderBy('users.id', 'desc')->get();
         $country = Country::all();
         $city = City::all();
         $state = State::all();

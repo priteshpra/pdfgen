@@ -42,7 +42,7 @@ class CasController extends Controller
         $city = City::all();
         $state = State::all();
         // $users = User::where('UserType', '4')->paginate(25)->appends($request->query());
-        $users = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.UserType', '4')->orderBy('users.id', 'desc')->get();
+        $users = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.UserType', '4')->whereNotNull('users.CompanyID')->orderBy('users.id', 'desc')->get();
         return view('admin.cas.index', compact('users'));
     }
 

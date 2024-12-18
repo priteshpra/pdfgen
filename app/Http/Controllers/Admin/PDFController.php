@@ -49,4 +49,18 @@ class PDFController extends Controller
         // Download the PDF
         return $pdf->download('images.pdf');
     }
+
+    public function downloadFile($user_id, $filename)
+    {
+        $path = storage_path("app/public/pdfs/{$user_id}/{$filename}");
+
+        // Check if the file exists
+        if (file_exists($path)) {
+            // Return the file as a download response
+            return response()->download($path);
+        } else {
+            // If the file doesn't exist, return a 404 response
+            abort(404, 'File not found.');
+        }
+    }
 }

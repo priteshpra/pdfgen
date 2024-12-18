@@ -537,18 +537,24 @@
                                     <tr>
                                         <td>{{$user->FirstName}} {{ $user->LastName}}</td>
                                         <td>{{$user->MobileNo}}</td>
-                                        <td><a
-                                                href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a>
+                                        <td><a href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a>
                                         </td>
                                         <td>{{$user->UserType}}</td>
                                         <td>{{$user->Email}}</td>
                                         <td>{{$user->created_at}}</td>
                                         <td>{{$user->ImageCount}}</td>
 
-                                        <td><a href="{{ route('download.file', ['user_id' => $user->id, 'filename' => $user->DocumentURL]) }}"><button type="button"
+                                        <td>
+                                            @if ($user->DocumentURL !='')
+                                            <a
+                                                href="{{ route('download.file', ['user_id' => $user->id, 'filename' => $user->DocumentURL]) }}"><button
+                                                    type="button"
                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                        class="fa fa-file-pdf-o"
-                                                        aria-hidden="true"></i></button>{{$user->DocumentURL}}</a></td>
+                                                        class="fa fa-file-pdf-o" aria-hidden="true"></i></button></a>
+                                            @else
+                                            -
+                                            @endif
+                                        </td>
 
                                     </tr>
                                     @empty
@@ -598,17 +604,23 @@
                                 <tr>
                                     <td>{{$user->FirstName}} {{ $user->LastName}}</td>
                                     <td>{{$user->MobileNo}}</td>
-                                    <td><a
-                                            href="{{ route('admin.cas.show',$user->id) }}">{{$user->FirmName}}</a>
+                                    <td><a href="{{ route('admin.cas.show',$user->id) }}">{{$user->FirmName}}</a>
                                     </td>
                                     <td>{{$user->UserType}}</td>
                                     <td>{{$user->Email}}</td>
                                     <td>{{$user->created_at}}</td>
                                     <td>{{$user->ImageCount}}</td>
-                                    <td><a href="{{route('download.file', ['user_id' => $user->id, 'filename' => $user->DocumentURL])}}"><button type="button"
+                                    <td>
+                                        @if ($user->DocumentURL !='')
+                                        <a
+                                            href="{{route('download.file', ['user_id' => $user->id, 'filename' => $user->DocumentURL])}}"><button
+                                                type="button"
                                                 class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                    class="fa fa-file-pdf-o"
-                                                    aria-hidden="true"></i></button></a></td>
+                                                    class="fa fa-file-pdf-o" aria-hidden="true"></i></button></a>
+                                        @else
+                                        -
+                                        @endif
+                                    </td>
 
 
                                 </tr>

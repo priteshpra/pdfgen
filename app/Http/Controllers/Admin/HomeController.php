@@ -30,8 +30,8 @@ class HomeController extends Controller
         $cas = User::where(['users.Status' => '1', 'UserType' => '4'])->count();
         $documents = Scandocument::where(['Status' => '1'])->count();
         $employeeLists = User::with('role')->where('UserType', '2')->orderBy('id', 'desc')->limit('5')->get();
-        $clientLists = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->leftJoin('scanned_documents', 'users.id', '=', 'scanned_documents.UserID')->with('role')->where('users.UserType', '3')->orderBy('users.id', 'desc')->limit('5')->get();
-        $casList = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->leftJoin('scanned_documents', 'users.id', '=', 'scanned_documents.UserID')->where('users.UserType', '4')->orderBy('users.id', 'desc')->limit('5')->get();
+        $clientLists = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->leftJoin('scanned_documents', 'users.id', '=', 'scanned_documents.UserID')->with('role')->where('users.UserType', '3')->whereNotNull('users.CompanyID')->orderBy('users.id', 'desc')->limit('5')->get();
+        $casList = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->leftJoin('scanned_documents', 'users.id', '=', 'scanned_documents.UserID')->where('users.UserType', '4')->whereNotNull('users.CompanyID')->orderBy('users.id', 'desc')->limit('5')->get();
         return view('admin.home', compact('employee', 'clients', 'cas', 'documents', 'employeeLists', 'clientLists', 'casList'));
     }
 }

@@ -43,7 +43,7 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::resource('/users', 'UserController');
     Route::resource('/client', 'ClientController');
     Route::resource('/cas', 'CasController');
-    Route::resource('/company', 'CompanyController');
+    // Route::resource('/company', 'CompanyController');
     Route::resource('/bussinesscategory', 'BussinessCategoryController');
     Route::resource('/roles', 'RoleController');
     Route::resource('/permissions', 'PermissionController')->except(['show']);
@@ -87,11 +87,13 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
 
     // Route::post('/search', 'CityController');
 
-    Route::get('api/download/{user_id}/{filename}', function ($user_id, $filename) {
+    Route::get('download/{user_id}/{filename}', function ($user_id, $filename) {
         $path = storage_path("app/public/pdfs/{$user_id}/{$filename}");
         if (!file_exists($path)) {
             abort(404, "File not found");
         }
         return response()->download($path);
     })->name('download.file');
+
+    // Route::get('pdf/{user_id}/{filename}', [PDFController::class, 'downloadFile'])->name('pdf.file');
 });

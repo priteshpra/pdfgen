@@ -147,6 +147,7 @@ $(function () {
     });
 
     $('#bussinessTable').DataTable({
+        order: [[9, 'desc']],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -258,6 +259,7 @@ $(function () {
     });
 
     $('#employeeTable').DataTable({
+        order: [[9, 'desc']],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -295,6 +297,7 @@ $(function () {
     });
 
     $('#clientTable').DataTable({
+        order: [[9, 'desc']],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -332,6 +335,7 @@ $(function () {
     });
 
     $('#casTable').DataTable({
+        order: [[9, 'desc']],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -369,7 +373,7 @@ $(function () {
     });
 
     $('#example').DataTable({
-
+        order: [[9, 'desc']],
         dom: 'Bfrtip',
 
         buttons: [
@@ -381,7 +385,7 @@ $(function () {
     });
 
     $('#scandoctableexample').DataTable({
-
+        order: [[7, 'desc']],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -392,7 +396,7 @@ $(function () {
 
     });
     $('#scandoctableexample1').DataTable({
-
+        order: [[7, 'desc']],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -404,7 +408,7 @@ $(function () {
     });
 
     $('#otherdoctableexample').DataTable({
-
+        order: [[7, 'desc']],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -415,7 +419,7 @@ $(function () {
 
     });
     $('#otherdoctableexample1').DataTable({
-
+        order: [[7, 'desc']],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -427,7 +431,7 @@ $(function () {
     });
 
     $('#notificationtableexample').DataTable({
-
+        order: [[7, 'desc']],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -438,7 +442,7 @@ $(function () {
 
     });
     $('#notificationtableexample1').DataTable({
-
+        order: [[7, 'desc']],
         // dom: 'Bfrtip',
 
         // buttons: [
