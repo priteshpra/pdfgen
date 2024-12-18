@@ -6,6 +6,15 @@
     <div class="card-header">{{ __('Add New Client') }}</div>
 
     <div class="card-body">
+        <!-- @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif -->
         <form id="submit-form" method="POST" action="{{ route('admin.client.store') }}">
             @csrf
             <div class="row">
@@ -126,7 +135,8 @@
 
                             @foreach ($country as $id => $role)
                             <option value="{{$role->CountryID}}" {{ (old('CountryID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->Country}}</option>
+                                {{$role->Country}}
+                            </option>
                             @endforeach
                         </select>
 
@@ -148,7 +158,8 @@
 
                             @foreach ($state as $id => $role)
                             <option value="{{$role->StateID}}" {{ (old('StateID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->State}}</option>
+                                {{$role->State}}
+                            </option>
                             @endforeach
                         </select>
 
@@ -171,7 +182,8 @@
 
                             @foreach ($city as $id => $role)
                             <option value="{{$role->CityID}}" {{ (old('CityID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->City}}</option>
+                                {{$role->City}}
+                            </option>
                             @endforeach
                         </select>
 
@@ -298,6 +310,23 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="ClientCode" class="required col-md-4 col-form-label text-md-right">{{ __('Client Code')
+                        }}</label>
+
+                    <div class="controls">
+                        <input id="ClientCode" type="text" class="form-control @error('ClientCode') is-invalid @enderror"
+                            name="ClientCode" value="{{ old('ClientCode') }}" required autocomplete="ClientCode">
+
+                        @error('ClientCode')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
             </div>
             <div class="box-footer">
                 <button id="submitButton" type="submit" class="btn btn-primary" tabindex="5">

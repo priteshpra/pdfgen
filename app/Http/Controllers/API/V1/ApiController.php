@@ -919,7 +919,7 @@ class ApiController extends Controller
         $base_url = $this->base_url;
         try {
 
-            $roles = City::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+            $roles = City::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('City', 'ASC')->get();
 
             $dataCAS = [
                 'data' => $roles,
@@ -964,7 +964,7 @@ class ApiController extends Controller
             $token = $request->header('token');
             $base_url = $this->base_url;
 
-            $roles = State::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+            $roles = State::select('*')->where('Status', 1)->orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('State', 'ASC')->get();
             $dataCAS = [
                 'data' => $roles,
             ];
@@ -1098,7 +1098,7 @@ class ApiController extends Controller
             if (!Storage::exists($directory)) {
                 Storage::makeDirectory($directory);
             }
-            $pdfPath = 'pdfs/' . $user_id . '/images_' . date('Y-m-d-h-i-s') . '.pdf';
+            $pdfPath = 'pdfs/' . $user_id . '/' . $request->batch_no . '.pdf';
             Storage::disk('public')->put($pdfPath, $pdf->output());
 
             $localPath = storage_path("app/public/{$pdfPath}");
@@ -1354,7 +1354,7 @@ class ApiController extends Controller
             if (!Storage::exists($directory)) {
                 Storage::makeDirectory($directory);
             }
-            $pdfPath = 'pdfs/' . $user_id . '/images_' . date('Y-m-d-h-i-s') . '.pdf';
+            $pdfPath = 'pdfs/' . $user_id . '/' . $request->batch_no . '.pdf';
             Storage::disk('public')->put($pdfPath, $pdf->output());
 
             $localPath = storage_path("app/public/{$pdfPath}");

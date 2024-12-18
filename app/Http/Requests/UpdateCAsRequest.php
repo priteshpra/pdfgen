@@ -26,25 +26,15 @@ class UpdateCAsRequest extends FormRequest
     public function rules()
     {
         return [
-            'FirstName' => 'required|string|min:2|max:200',
-            'LastName' => 'required|string|min:2|max:200',
-            'Email' => [
-                'required',
-                'Email',
-                'max:200',
-                // Rule::unique('users')->ignore($this->user),
-            ],
-            // 'password' => 'nullable|min:6|max:20',
-            'role_id' => 'required|exists:roles,id',
-            'MobileNo' => 'required|regex:/^[0-9]{10}$/',
+
             'Address' => 'required',
             'CountryID' => 'required',
             'StateID' => 'required',
             'CityID' => 'required',
             'PinCode' => 'required|max:6',
-            'AadharNumber' => 'required',
-            'GSTNumber' => 'required',
-            'PANNumber' => 'required',
+            'AadharNumber' => 'required|digits:12',
+            'GSTNumber' => 'required|alpha_num|size:15',
+            'PANNumber' => 'required|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
             'FirmType' => 'required',
             'FirmName' => 'required',
         ];

@@ -119,7 +119,8 @@
 
                             @foreach ($country as $id => $role)
                             <option value="{{$role->CountryID}}" {{ (old('CountryID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->Country}}</option>
+                                {{$role->Country}}
+                            </option>
                             @endforeach
                         </select>
 
@@ -141,7 +142,8 @@
 
                             @foreach ($state as $id => $role)
                             <option value="{{$role->StateID}}" {{ (old('StateID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->State}}</option>
+                                {{$role->State}}
+                            </option>
                             @endforeach
                         </select>
 
@@ -164,7 +166,8 @@
 
                             @foreach ($city as $id => $role)
                             <option value="{{$role->CityID}}" {{ (old('CityID', '' )==$id ) ? 'selected' : '' }}>
-                                {{$role->City}}</option>
+                                {{$role->City}}
+                            </option>
                             @endforeach
                         </select>
 

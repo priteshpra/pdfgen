@@ -19,16 +19,11 @@ class CAs extends Authenticatable
      *
      * @var array
      */
-    public $table = "comapny";
+    public $table = "company";
     protected $primaryKey = 'CompanyID';
     protected $fillable = [
-        'FirstName',
-        'LastName',
-        'Email',
-        'role_id',
-        'MobileNo',
         'Address',
-        'password',
+        'ClientCode',
         'CountryID',
         'StateID',
         'CityID',
@@ -37,7 +32,6 @@ class CAs extends Authenticatable
         'GSTNumber',
         'PANNumber',
         'FirmType',
-        'UserType',
         'FirmName',
     ];
 
@@ -73,16 +67,16 @@ class CAs extends Authenticatable
     }
 
 
-    static function boot()
-    {
-        parent::boot();
+    // static function boot()
+    // {
+    //     parent::boot();
 
-        static::created(function (Model $model) {
-            if ($model->role_id == "") {
-                $model->update([
-                    'role_id' => Role::where('title', 'user')->first()->id,
-                ]);
-            }
-        });
-    }
+    //     static::created(function (Model $model) {
+    //         if ($model->role_id == "") {
+    //             $model->update([
+    //                 'role_id' => Role::where('title', 'user')->first()->id,
+    //             ]);
+    //         }
+    //     });
+    // }
 }

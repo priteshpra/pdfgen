@@ -890,6 +890,12 @@
         $(".btn-warning.me-1").click(function() {
             history.back();
         });
+        $('input[type="text"]').on('input', function() {
+            var value = $(this).val();
+            $(this).val(value.replace(/\b\w/g, function(match) {
+                return match.toUpperCase();
+            }));
+        });
     </script>
 
 </body>

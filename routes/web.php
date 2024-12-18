@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PDFController;
 use App\Http\Controllers\Admin\BussinessCategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ReportClientWiseController;
 use App\Http\Controllers\Admin\CasController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\CityController;
@@ -42,6 +43,7 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
 
     Route::resource('/users', 'UserController');
     Route::resource('/client', 'ClientController');
+    Route::resource('/reportclientwise', 'ReportClientWiseController');
     Route::resource('/cas', 'CasController');
     // Route::resource('/company', 'CompanyController');
     Route::resource('/bussinesscategory', 'BussinessCategoryController');
@@ -63,6 +65,7 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::resource('/configuration', 'ConfigurationController');
 
     Route::get('/generate-pdf', [App\Http\Controllers\Admin\PDFController::class, 'generatePDF']);
+    Route::get('/reports/monthly', [ReportClientWiseController::class, 'monthly'])->name('reportclientwise.monthly');
     Route::get('/upload-images', [PDFController::class, 'showUploadForm']);
     Route::post('/upload-images', [PDFController::class, 'handleImageUpload']);
     Route::post('/toggle-status', [BussinessCategoryController::class, 'toggleStatus'])->name('toggle.status');

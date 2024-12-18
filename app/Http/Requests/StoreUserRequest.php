@@ -25,13 +25,14 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'FirstName' => 'required|string|min:2|max:200',
+            'FirstName' => 'required|string|min:2|max:50',
+            'LastName' => 'string|min:2|max:50',
             'Email' => 'required|Email|max:200|unique:users',
             'password' => 'required|confirmed|min:6|max:20',
             'role_id' => 'required|exists:roles,id',
-            'LastName' => 'required|string|min:2|max:200',
             'MobileNo' => 'required|regex:/^[0-9]{10}$/',
             'Address' => 'required',
+            'UserType' => 'required',
         ];
     }
 }

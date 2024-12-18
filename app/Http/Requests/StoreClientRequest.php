@@ -25,8 +25,6 @@ class StoreClientRequest extends FormRequest
     public function rules()
     {
         return [
-            'FirstName' => 'required|string|min:2|max:200',
-            'LastName' => 'required|string|min:2|max:200',
             'FirmName' => 'required',
             'ClientCode' => 'required|max:4|unique:company',
             'Address' => 'required',
@@ -34,15 +32,10 @@ class StoreClientRequest extends FormRequest
             'StateID' => 'required',
             'CityID' => 'required',
             'PinCode' => 'required|max:6',
-            'AadharNumber' => 'required',
-            'GSTNumber' => 'required',
-            'PANNumber' => 'required',
+            'AadharNumber' => 'required|digits:12',
+            'GSTNumber' => 'required|alpha_num|size:15',
+            'PANNumber' => 'required|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
             'FirmType' => 'required',
-            'MobileNo' => 'required|regex:/^[0-9]{10}$/',
-            'Email' => 'required|email|max:200|unique:users',
-            'password' => 'required|confirmed|min:6|max:20',
-            'role_id' => 'required|exists:roles,id',
-            'UserType' => 'required',
         ];
     }
 }

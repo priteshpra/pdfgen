@@ -165,22 +165,22 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Client
+                        <li class=" @if(request()->is('admin/reportclientwise') || request()->is('admin/reportclientwise/*')) active @endif">
+                            <a class="sidebar-link waves-effect waves-dark" href="{{ route('admin.reportclientwise.index') }}">
+                                <i class="icon-Commit" aria-hidden="true"></i>Client
                                 Wise Data
-                                <span class="pull-right-container">
+                                <!-- <span class="pull-right-container">
                                     <i class="fa fa-angle-right pull-right"></i>
-                                </span>
+                                </span> -->
                             </a>
                         </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Monthly
+                        <li class=" @if(request()->is('admin/reportclientwise/monthly') || request()->is('admin/reportclientwise/monthly/')) active @endif">
+                            <a class="sidebar-link waves-effect waves-dark" href="{{ route('admin.reportclientwise.monthly') }}">
+                                <i class="icon-Commit" aria-hidden="true"></i>Monthly
                                 PDFs
-                                <span class="pull-right-container">
+                                <!-- <span class="pull-right-container">
                                     <i class="fa fa-angle-right pull-right"></i>
-                                </span>
+                                </span> -->
                             </a>
                         </li>
                     </ul>
