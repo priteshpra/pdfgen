@@ -208,8 +208,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @if ($deviceList)
-                                                                    @foreach ($deviceList as $deviceList)
+                                                                    @forelse ($deviceList as $deviceList)
                                                                     <tr>
                                                                         <td>{{ $deviceList->device_type }}</td>
                                                                         <td>{{ $deviceList->device_model_name }}</td>
@@ -219,9 +218,13 @@
                                                                             }}</td>
 
                                                                     </tr>
-                                                                    @endforeach
-
-                                                                    @endif
+                                                                    @empty
+                                                                    <tr>
+                                                                        <td colspan="100%"
+                                                                            class="text-center text-muted py-3">No Data
+                                                                            Found</td>
+                                                                    </tr>
+                                                                    @endforelse
 
                                                                 </tbody>
                                                             </table>

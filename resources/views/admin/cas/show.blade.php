@@ -268,8 +268,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @if ($employee)
-                                                                    @foreach ($employee as $employee)
+                                                                    @forelse ($employee as $employee)
                                                                     <tr>
                                                                         <td><a
                                                                                 href="{{ route('admin.users.show', $employee['id']) }}"><strong>{{$employee['FirstName']}}
@@ -299,8 +298,13 @@
                                                                                         aria-hidden="true"></i></button></a>
                                                                         </td>
                                                                     </tr>
-                                                                    @endforeach
-                                                                    @endif
+                                                                    @empty
+                                                                    <tr>
+                                                                        <td colspan="100%"
+                                                                            class="text-center text-muted py-3">No Data
+                                                                            Found</td>
+                                                                    </tr>
+                                                                    @endforelse
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -370,8 +374,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @if ($scanDocuments)
-                                                                    @foreach ($scanDocuments as $scanDocuments)
+                                                                    @forelse ($scanDocuments as $scanDocuments)
 
                                                                     <tr>
                                                                         <td>{{ $scanDocuments->Title }}</td>
@@ -412,8 +415,13 @@
                                                                             @endif
                                                                         </td>
                                                                     </tr>
-                                                                    @endforeach
-                                                                    @endif
+                                                                    @empty
+                                                                    <tr>
+                                                                        <td colspan="100%"
+                                                                            class="text-center text-muted py-3">No Data
+                                                                            Found</td>
+                                                                    </tr>
+                                                                    @endforelse
 
                                                                 </tbody>
                                                             </table>
@@ -482,8 +490,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @if ($otherDocuments)
-                                                                    @foreach ($otherDocuments as $otherDocument)
+                                                                    @forelse ($otherDocuments as $otherDocument)
                                                                     <tr>
                                                                         <td>{{ $otherDocument->Title }}</td>
                                                                         <td>{{ date('d/m/Y',
@@ -521,9 +528,13 @@
                                                                             @endif
                                                                         </td>
                                                                     </tr>
-                                                                    @endforeach
-
-                                                                    @endif
+                                                                    @empty
+                                                                    <tr>
+                                                                        <td colspan="100%"
+                                                                            class="text-center text-muted py-3">No Data
+                                                                            Found</td>
+                                                                    </tr>
+                                                                    @endforelse
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -559,8 +570,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @if ($notificationList)
-                                                                    @foreach ($notificationList as $notificationList)
+                                                                    @forelse ($notificationList as $notificationList)
                                                                     <tr>
                                                                         <td>{{ $notificationList->Description }}</td>
                                                                         <td>{{ date('d/m/Y',
@@ -588,9 +598,13 @@
                                                                                     aria-hidden="true"></i></button>
                                                                         </td>
                                                                     </tr>
-                                                                    @endforeach
-
-                                                                    @endif
+                                                                    @empty
+                                                                    <tr>
+                                                                        <td colspan="100%"
+                                                                            class="text-center text-muted py-3">No Data
+                                                                            Found</td>
+                                                                    </tr>
+                                                                    @endforelse
 
                                                                 </tbody>
                                                             </table>
@@ -627,8 +641,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @if ($deviceList)
-                                                                    @foreach ($deviceList as $deviceList)
+                                                                    @forelse ($deviceList as $deviceList)
                                                                     <tr>
                                                                         <td>{{ $deviceList->device_type }}</td>
                                                                         <td>{{ $deviceList->device_model_name }}</td>
@@ -638,9 +651,13 @@
                                                                             }}</td>
 
                                                                     </tr>
-                                                                    @endforeach
-
-                                                                    @endif
+                                                                    @empty
+                                                                    <tr>
+                                                                        <td colspan="100%"
+                                                                            class="text-center text-muted py-3">No Data
+                                                                            Found</td>
+                                                                    </tr>
+                                                                    @endforelse
 
                                                                 </tbody>
                                                             </table>
