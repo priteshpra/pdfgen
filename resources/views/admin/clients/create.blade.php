@@ -6,7 +6,7 @@
     <div class="card-header">{{ __('Add New Client') }}</div>
 
     <div class="card-body">
-        <!-- @if ($errors->any())
+        {{-- @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -14,44 +14,39 @@
                 @endforeach
             </ul>
         </div>
-        @endif -->
+        @endif --}}
         <form id="submit-form" method="POST" action="{{ route('admin.client.store') }}">
             @csrf
             <div class="row">
                 <div class="col-md-6">
+                    <label for="FirmName" class="required col-md-4 col-form-label text-md-right">{{ __('Firm Name')
+                        }}</label>
+
                     <div class="form-group">
-                        <label for="role_id" class="required col-md-4 col-form-label text-md-right">{{ __('Role')
-                            }}</label>
+                        <input id="FirmName" type="text" class="form-control @error('FirmName') is-invalid @enderror"
+                            name="FirmName" maxlength="50" value="{{ old('FirmName') }}" required
+                            autocomplete="FirmName">
 
-                        <select id="role_id" type="text" class="form-control @error('role_id') is-invalid @enderror"
-                            name="role_id" required autocomplete="role_id" autofocus>
-                            <option value="" selected hidden>Please Select</option>
-
-                            @foreach ($roles as $id => $role)
-                            <option value="{{$id}}" {{ (old('role_id', '' )==$id ) ? 'selected' : '' }}>{{$role}}
-                            </option>
-                            @endforeach
-                        </select>
-
-                        @error('role_id')
+                        @error('FirmName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                     </div>
                 </div>
-                <input id="UserType" type="hidden" class="form-control @error('UserType') is-invalid @enderror"
-                    name="UserType" value="3" required autocomplete="name">
 
+                <input id="UserType" type="hidden" class="form-control @error('UserType') is-invalid @enderror"
+                    name="UserType" value="4" required autocomplete="name">
                 <div class="col-md-6">
-                    <label for="FirmName" class="required col-md-4 col-form-label text-md-right">{{ __('Firm Name')
+                    <label for="FirstName" class="required col-md-4 col-form-label text-md-right">{{ __('First Name')
                         }}</label>
 
                     <div class="controls">
-                        <input id="FirmName" type="text" class="form-control @error('FirmName') is-invalid @enderror"
-                            name="FirmName" value="{{ old('FirmName') }}" required autocomplete="FirmName">
+                        <input id="FirstName" maxlength="50" type="text"
+                            class="form-control @error('FirstName') is-invalid @enderror" name="FirstName"
+                            value="{{ old('FirstName') }}" required autocomplete="FirstName">
 
-                        @error('name')
+                        @error('FirstName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -61,14 +56,15 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label for="FirstName" class="required col-md-4 col-form-label text-md-right">{{ __('Client Name')
+                    <label for="LastName" class="required col-md-4 col-form-label text-md-right">{{ __('Last Name')
                         }}</label>
 
                     <div class="controls">
-                        <input id="FirstName" type="text" class="form-control @error('FirstName') is-invalid @enderror"
-                            name="FirstName" value="{{ old('FirstName') }}" required autocomplete="FirstName">
+                        <input id="LastName" maxlength="50" type="text"
+                            class="form-control @error('LastName') is-invalid @enderror" name="LastName"
+                            value="{{ old('LastName') }}" required autocomplete="LastName">
 
-                        @error('FirstName')
+                        @error('LastName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -80,8 +76,9 @@
                         }}</label>
 
                     <div class="controls">
-                        <input id="Email" type="email" class="form-control @error('Email') is-invalid @enderror"
-                            name="Email" value="{{ old('Email') }}" required autocomplete="Email">
+                        <input id="Email" maxlength="250" type="email"
+                            class="form-control @error('Email') is-invalid @enderror" name="Email"
+                            value="{{ old('Email') }}" required autocomplete="Email">
 
                         @error('Email')
                         <span class="invalid-feedback" role="alert">
@@ -97,8 +94,9 @@
                         }}</label>
 
                     <div class="controls">
-                        <input id="MobileNo" type="text" class="form-control @error('MobileNo') is-invalid @enderror"
-                            name="MobileNo" value="{{ old('MobileNo') }}" required autocomplete="MobileNo">
+                        <input id="MobileNo" maxlength="15" type="text"
+                            class="form-control @error('MobileNo') is-invalid @enderror" name="MobileNo"
+                            value="{{ old('MobileNo') }}" required autocomplete="MobileNo">
 
                         @error('MobileNo')
                         <span class="invalid-feedback" role="alert">
@@ -112,8 +110,9 @@
                         }}</label>
 
                     <div class="controls">
-                        <input id="Address" type="text" class="form-control @error('Address') is-invalid @enderror"
-                            name="Address" value="{{ old('Address') }}" required autocomplete="Address">
+                        <input id="Address" maxlength="100" type="text"
+                            class="form-control @error('Address') is-invalid @enderror" name="Address"
+                            value="{{ old('Address') }}" required autocomplete="Address">
 
                         @error('Address')
                         <span class="invalid-feedback" role="alert">
@@ -199,8 +198,9 @@
                         }}</label>
 
                     <div class="controls">
-                        <input id="PinCode" type="text" class="form-control @error('PinCode') is-invalid @enderror"
-                            name="PinCode" value="{{ old('PinCode') }}" required autocomplete="PinCode">
+                        <input id="PinCode" maxlength="6" type="text"
+                            class="form-control @error('PinCode') is-invalid @enderror" name="PinCode"
+                            value="{{ old('PinCode') }}" required autocomplete="PinCode">
 
                         @error('PinCode')
                         <span class="invalid-feedback" role="alert">
@@ -218,7 +218,7 @@
                         }}</label>
 
                     <div class="controls">
-                        <input id="AadharNumber" type="text"
+                        <input id="AadharNumber" maxlength="16" type="text"
                             class="form-control @error('AadharNumber') is-invalid @enderror" name="AadharNumber"
                             value="{{ old('AadharNumber') }}" required autocomplete="AadharNumber">
 
@@ -234,8 +234,9 @@
                         }}</label>
 
                     <div class="controls">
-                        <input id="GSTNumber" type="text" class="form-control @error('GSTNumber') is-invalid @enderror"
-                            name="GSTNumber" value="{{ old('GSTNumber') }}" required autocomplete="GSTNumber">
+                        <input id="GSTNumber" maxlength="16" type="text"
+                            class="form-control @error('GSTNumber') is-invalid @enderror" name="GSTNumber"
+                            value="{{ old('GSTNumber') }}" required autocomplete="GSTNumber">
 
                         @error('GSTNumber')
                         <span class="invalid-feedback" role="alert">
@@ -252,8 +253,9 @@
                         }}</label>
 
                     <div class="controls">
-                        <input id="PANNumber" type="text" class="form-control @error('PANNumber') is-invalid @enderror"
-                            name="PANNumber" value="{{ old('PANNumber') }}" required autocomplete="PANNumber">
+                        <input id="PANNumber" maxlength="10" type="text"
+                            class="form-control @error('PANNumber') is-invalid @enderror" name="PANNumber"
+                            value="{{ old('PANNumber') }}" required autocomplete="PANNumber">
 
                         @error('PANNumber')
                         <span class="invalid-feedback" role="alert">
@@ -300,25 +302,47 @@
                         @enderror
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <label for="password-confirm" class="required col-md-4 col-form-label text-md-right">{{ __('Confirm
                         Password') }}</label>
+
                     <div class="controls">
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
                             required autocomplete="new-password">
                     </div>
                 </div>
-
             </div>
             <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="role_id" class="required col-md-4 col-form-label text-md-right">{{ __('Role')
+                            }}</label>
+
+                        <select id="role_id" type="text" class="form-control @error('role_id') is-invalid @enderror"
+                            name="role_id" required autocomplete="role_id" autofocus>
+                            <option value="" selected hidden>Please Select</option>
+
+                            @foreach ($roles as $id => $role)
+                            <option value="{{$id}}" {{ (old('role_id', '' )==$id ) ? 'selected' : '' }}>{{$role}}
+                            </option>
+                            @endforeach
+                        </select>
+
+                        @error('role_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <label for="ClientCode" class="required col-md-4 col-form-label text-md-right">{{ __('Client Code')
                         }}</label>
 
                     <div class="controls">
-                        <input id="ClientCode" type="text" class="form-control @error('ClientCode') is-invalid @enderror"
-                            name="ClientCode" value="{{ old('ClientCode') }}" required autocomplete="ClientCode">
+                        <input id="ClientCode" maxlength="4" type="text"
+                            class="form-control @error('ClientCode') is-invalid @enderror" name="ClientCode"
+                            value="{{ old('ClientCode') }}" required autocomplete="ClientCode">
 
                         @error('ClientCode')
                         <span class="invalid-feedback" role="alert">
@@ -329,7 +353,7 @@
                 </div>
             </div>
             <div class="box-footer">
-                <button id="submitButton" type="submit" class="btn btn-primary" tabindex="5">
+                <button type="submit" id="submitButton" class="btn btn-primary" tabindex="5">
                     <i class="ti-save-alt"></i> SUBMIT
                 </button>
                 <button type="button" class="btn btn-warning me-1" tabindex="6">

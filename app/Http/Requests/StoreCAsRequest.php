@@ -25,8 +25,9 @@ class StoreCAsRequest extends FormRequest
     public function rules()
     {
         return [
-            'Address' => 'required',
+            'FirmName' => 'required',
             'ClientCode' => 'required|max:4|unique:company',
+            'Address' => 'required',
             'CountryID' => 'required',
             'StateID' => 'required',
             'CityID' => 'required',
@@ -35,7 +36,6 @@ class StoreCAsRequest extends FormRequest
             'GSTNumber' => 'required|alpha_num|size:15',
             'PANNumber' => 'required|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
             'FirmType' => 'required',
-            'FirmName' => 'required'
         ];
     }
 }

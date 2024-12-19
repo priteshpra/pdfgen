@@ -36,8 +36,9 @@
                     <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('State') }}</label>
 
                     <div class="form-group">
-                        <input id="State" type="text" class="form-control @error('State') is-invalid @enderror"
-                            name="State" value="{{ old('State') }}" required autocomplete="State">
+                        <input id="State" maxlength="50" type="text"
+                            class="form-control @error('State') is-invalid @enderror" name="State"
+                            value="{{ old('State') }}" required autocomplete="State">
 
                         @error('State')
                         <span class="invalid-feedback" role="alert">

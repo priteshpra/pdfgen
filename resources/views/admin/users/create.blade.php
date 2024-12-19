@@ -35,8 +35,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="FirstName" type="text" class="form-control @error('FirstName') is-invalid @enderror"
-                            name="FirstName" value="{{ old('FirstName') }}" required autocomplete="FirstName">
+                        <input id="FirstName" maxlength="50" type="text"
+                            class="form-control @error('FirstName') is-invalid @enderror" name="FirstName"
+                            value="{{ old('FirstName') }}" required autocomplete="FirstName">
 
                         @error('FirstName')
                         <span class="invalid-feedback" role="alert">
@@ -53,8 +54,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="LastName" type="text" class="form-control @error('LastName') is-invalid @enderror"
-                            name="LastName" value="{{ old('LastName') }}" required autocomplete="LastName">
+                        <input id="LastName" maxlength="50" type="text"
+                            class="form-control @error('LastName') is-invalid @enderror" name="LastName"
+                            value="{{ old('LastName') }}" required autocomplete="LastName">
 
                         @error('LastName')
                         <span class="invalid-feedback" role="alert">
@@ -68,8 +70,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="Email" type="email" class="form-control @error('Email') is-invalid @enderror"
-                            name="Email" value="{{ old('Email') }}" required autocomplete="Email">
+                        <input id="Email" maxlength="250" type="email"
+                            class="form-control @error('Email') is-invalid @enderror" name="Email"
+                            value="{{ old('Email') }}" required autocomplete="Email">
 
                         @error('Email')
                         <span class="invalid-feedback" role="alert">
@@ -86,7 +89,7 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="MobileNo" type="MobileNo"
+                        <input id="MobileNo" maxlength="15" type="MobileNo"
                             class="form-control @error('MobileNo') is-invalid @enderror" name="MobileNo"
                             value="{{ old('MobileNo') }}" required autocomplete="MobileNo">
 
@@ -102,8 +105,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="Address" type="Address" class="form-control @error('Address') is-invalid @enderror"
-                            name="Address" value="{{ old('Address') }}" required autocomplete="Address">
+                        <input id="Address" maxlength="100" type="Address"
+                            class="form-control @error('Address') is-invalid @enderror" name="Address"
+                            value="{{ old('Address') }}" required autocomplete="Address">
 
                         @error('Address')
                         <span class="invalid-feedback" role="alert">

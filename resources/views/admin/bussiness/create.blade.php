@@ -14,7 +14,7 @@
                         Category') }}</label>
 
                     <div class="form-group">
-                        <input id="CategoryName" type="text"
+                        <input id="CategoryName" maxlength="50" type="text"
                             class="form-control @error('CategoryName') is-invalid @enderror" name="CategoryName"
                             value="{{ old('CategoryName') }}" required autocomplete="CategoryName">
 
@@ -30,8 +30,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="MetaTitle" type="text" class="form-control @error('MetaTitle') is-invalid @enderror"
-                            name="MetaTitle" value="{{ old('MetaTitle') }}" required autocomplete="MetaTitle">
+                        <input id="MetaTitle" maxlength="50" type="text"
+                            class="form-control @error('MetaTitle') is-invalid @enderror" name="MetaTitle"
+                            value="{{ old('MetaTitle') }}" required autocomplete="MetaTitle">
 
                         @error('MetaTitle')
                         <span class="invalid-feedback" role="alert">
@@ -47,7 +48,7 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="MetaKeywords" type="text"
+                        <input id="MetaKeywords" maxlength="50" type="text"
                             class="form-control @error('MetaKeywords') is-invalid @enderror" name="MetaKeywords"
                             value="{{ old('MetaKeywords') }}" required autocomplete="MetaKeywords">
 
@@ -63,7 +64,7 @@
                         Description') }}</label>
 
                     <div class="form-group">
-                        <input id="MetaDescription" type="text"
+                        <input id="MetaDescription" maxlength="250" type="text"
                             class="form-control @error('MetaDescription') is-invalid @enderror" name="MetaDescription"
                             value="{{ old('MetaDescription') }}" required autocomplete="MetaDescription">
 

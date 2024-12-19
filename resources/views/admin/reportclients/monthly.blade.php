@@ -41,7 +41,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($users as $user)
-                                    <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); 
+                                    <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count();
                                     ?>
                                     <tr>
                                         <td>{{$user->FirstName}}</td>
@@ -51,10 +51,10 @@
                                         <td>{{$user->Email}}</td>
                                         <td>{{$user->FirmType}}</td>
                                         <td>
-
+                                            {{ $user->document_count }}
                                         </td>
                                         <td>
-
+                                            {{ date('Y-m-d h:i A', strtotime($user->created_at)) }}
                                         </td>
                                     </tr>
                                     @empty

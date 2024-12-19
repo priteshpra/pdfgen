@@ -13,8 +13,9 @@
                     <label for="name" class="required col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
 
                     <div class="form-group">
-                        <input id="City" type="text" class="form-control @error('City') is-invalid @enderror"
-                            name="City" value="{{ old('City') }}" required autocomplete="City">
+                        <input id="City" maxlength="50" type="text"
+                            class="form-control @error('City') is-invalid @enderror" name="City"
+                            value="{{ old('City') }}" required autocomplete="City">
 
                         @error('City')
                         <span class="invalid-feedback" role="alert">

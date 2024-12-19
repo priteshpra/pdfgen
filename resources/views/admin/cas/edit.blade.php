@@ -15,9 +15,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="FirmName" type="text" class="form-control @error('FirmName') is-invalid @enderror"
-                            name="FirmName" value="{{ old('FirmName', $user->FirmName) }}" required
-                            autocomplete="FirmName">
+                        <input id="FirmName" maxlength="50" type="text"
+                            class="form-control @error('FirmName') is-invalid @enderror" name="FirmName"
+                            value="{{ old('FirmName', $user->FirmName) }}" required autocomplete="FirmName">
 
                         @error('FirmName')
                         <span class="invalid-feedback" role="alert">
@@ -34,9 +34,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="FirstName" type="text" class="form-control @error('FirstName') is-invalid @enderror"
-                            name="FirstName" value="{{ old('FirstName', $user->FirstName) }}" required
-                            autocomplete="FirstName">
+                        <input id="FirstName" maxlength="50" type="text"
+                            class="form-control @error('FirstName') is-invalid @enderror" name="FirstName"
+                            value="{{ old('FirstName', $user->FirstName) }}" required autocomplete="FirstName">
 
                         @error('FirstName')
                         <span class="invalid-feedback" role="alert">
@@ -52,9 +52,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="LastName" type="text" class="form-control @error('LastName') is-invalid @enderror"
-                            name="LastName" value="{{ old('LastName', $user->LastName) }}" required
-                            autocomplete="LastName">
+                        <input id="LastName" maxlength="50" type="text"
+                            class="form-control @error('LastName') is-invalid @enderror" name="LastName"
+                            value="{{ old('LastName', $user->LastName) }}" required autocomplete="LastName">
 
                         @error('LastName')
                         <span class="invalid-feedback" role="alert">
@@ -68,8 +68,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="Email" type="email" class="form-control @error('Email') is-invalid @enderror"
-                            name="Email" value="{{ old('Email', $user->Email) }}" required autocomplete="Email">
+                        <input id="Email" maxlength="250" type="email"
+                            class="form-control @error('Email') is-invalid @enderror" name="Email"
+                            value="{{ old('Email', $user->Email) }}" required autocomplete="Email">
 
                         @error('Email')
                         <span class="invalid-feedback" role="alert">
@@ -85,9 +86,9 @@
                     <label for="email" class="required col-md-4 col-form-label text-md-right">{{ __('Mobile') }}</label>
 
                     <div class="form-group">
-                        <input id="MobileNo" type="text" class="form-control @error('MobileNo') is-invalid @enderror"
-                            name="MobileNo" value="{{ old('MobileNo', $user->MobileNo) }}" required
-                            autocomplete="MobileNo">
+                        <input id="MobileNo" maxlength="15" type="text"
+                            class="form-control @error('MobileNo') is-invalid @enderror" name="MobileNo"
+                            value="{{ old('MobileNo', $user->MobileNo) }}" required autocomplete="MobileNo">
 
                         @error('MobileNo')
                         <span class="invalid-feedback" role="alert">
@@ -101,8 +102,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="Address" type="text" class="form-control @error('Address') is-invalid @enderror"
-                            name="Address" value="{{ old('Address', $user->Address) }}" required autocomplete="Address">
+                        <input id="Address" maxlength="100" type="text"
+                            class="form-control @error('Address') is-invalid @enderror" name="Address"
+                            value="{{ old('Address', $user->Address) }}" required autocomplete="Address">
 
                         @error('Address')
                         <span class="invalid-feedback" role="alert">
@@ -188,8 +190,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="PinCode" type="text" class="form-control @error('PinCode') is-invalid @enderror"
-                            name="PinCode" value="{{ old('PinCode', $user->PinCode) }}" required autocomplete="PinCode">
+                        <input id="PinCode" maxlength="6" type="text"
+                            class="form-control @error('PinCode') is-invalid @enderror" name="PinCode"
+                            value="{{ old('PinCode', $user->PinCode) }}" required autocomplete="PinCode">
 
                         @error('PinCode')
                         <span class="invalid-feedback" role="alert">
@@ -208,7 +211,7 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="AadharNumber" type="text"
+                        <input id="AadharNumber" maxlength="16" type="text"
                             class="form-control @error('AadharNumber') is-invalid @enderror" name="AadharNumber"
                             value="{{ old('AadharNumber', $user->AadharNumber) }}" required autocomplete="AadharNumber">
 
@@ -224,9 +227,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="GSTNumber" type="text" class="form-control @error('GSTNumber') is-invalid @enderror"
-                            name="GSTNumber" value="{{ old('GSTNumber', $user->GSTNumber) }}" required
-                            autocomplete="GSTNumber">
+                        <input id="GSTNumber" maxlength="16" type="text"
+                            class="form-control @error('GSTNumber') is-invalid @enderror" name="GSTNumber"
+                            value="{{ old('GSTNumber', $user->GSTNumber) }}" required autocomplete="GSTNumber">
 
                         @error('GSTNumber')
                         <span class="invalid-feedback" role="alert">
@@ -244,9 +247,9 @@
                         }}</label>
 
                     <div class="form-group">
-                        <input id="PANNumber" type="text" class="form-control @error('PANNumber') is-invalid @enderror"
-                            name="PANNumber" value="{{ old('PANNumber', $user->PANNumber) }}" required
-                            autocomplete="pan">
+                        <input id="PANNumber" maxlength="10" type="text"
+                            class="form-control @error('PANNumber') is-invalid @enderror" name="PANNumber"
+                            value="{{ old('PANNumber', $user->PANNumber) }}" required autocomplete="pan">
 
                         @error('PANNumber')
                         <span class="invalid-feedback" role="alert">
@@ -297,6 +300,22 @@
                         </select>
 
                         @error('role_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="ClientCode" class="required col-md-4 col-form-label text-md-right">{{ __('Client Code')
+                        }}</label>
+
+                    <div class="controls">
+                        <input id="ClientCode" type="text" readonly
+                            class="form-control @error('ClientCode') is-invalid @enderror" name="ClientCode"
+                            value="{{ $user->ClientCode }}" required autocomplete="ClientCode">
+
+                        @error('ClientCode')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

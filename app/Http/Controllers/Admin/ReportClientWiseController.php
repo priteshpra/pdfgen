@@ -24,6 +24,7 @@ use App\Models\Scandocument;
 use App\Models\State;
 use App\Models\UserDevices;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ReportClientWiseController extends Controller
 {
@@ -36,7 +37,19 @@ class ReportClientWiseController extends Controller
     {
         abort_if(Gate::denies('client_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $currentDate = Carbon::now()->toDateString();
-        $users = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->with('role')->where('users.UserType', '3')->whereNotNull('users.CompanyID')->whereDate('users.created_at', '=', $currentDate)->orderBy('users.id', 'desc')->get();
+        $users = User::select(
+            'users.*',
+            'company.*',
+            DB::raw('(SELECT COUNT(scanned_documents.ScanneddocumentID)
+                    FROM scanned_documents
+                    WHERE scanned_documents.CompanyID = users.CompanyID) as document_count')
+        )
+            ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
+            ->with('role')
+            ->where('users.UserType', '3')
+            ->whereNotNull('users.CompanyID')
+            ->whereDate('users.created_at', '=', $currentDate)
+            ->orderBy('users.id', 'desc')->get();
         $country = Country::all();
         $city = City::all();
         $state = State::all();
@@ -50,7 +63,14 @@ class ReportClientWiseController extends Controller
         $monthEndDate = Carbon::now()->endOfMonth()->toDateString();
 
 
-        $users = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->with('role')->where('users.UserType', '3')->whereNotNull('users.CompanyID')->whereBetween('users.created_at', [$currentDate, $monthEndDate])->orderBy('users.id', 'desc')->get();
+        $users = User::select(
+            'users.*',
+            'company.*',
+            DB::raw('(SELECT COUNT(scanned_documents.ScanneddocumentID)
+                    FROM scanned_documents
+                    WHERE scanned_documents.CompanyID = users.CompanyID) as document_count')
+        )
+            ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->with('role')->where('users.UserType', '3')->whereNotNull('users.CompanyID')->whereBetween('users.created_at', [$currentDate, $monthEndDate])->orderBy('users.id', 'desc')->get();
         $country = Country::all();
         $city = City::all();
         $state = State::all();

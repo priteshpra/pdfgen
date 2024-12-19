@@ -12,8 +12,9 @@
                 <label for="Country" class="required col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
 
                 <div class="col-md-6">
-                    <input id="Country" type="text" class="form-control @error('Country') is-invalid @enderror"
-                        name="Country" value="{{ old('Country') }}" required autocomplete="Country">
+                    <input id="Country" maxlength="50" type="text"
+                        class="form-control @error('Country') is-invalid @enderror" name="Country"
+                        value="{{ old('Country') }}" required autocomplete="Country">
 
                     @error('Country')
                     <span class="invalid-feedback" role="alert">

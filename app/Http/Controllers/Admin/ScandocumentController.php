@@ -16,6 +16,7 @@ use App\Http\Requests\UpdateUserPhotoRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\City;
+use App\Models\Company;
 use App\Models\Country;
 use App\Models\Notification;
 use App\Models\OtherDocument;
@@ -36,6 +37,7 @@ class ScandocumentController extends Controller
         $userId = $request->query('userId');
         $company = User::where('id', $userId)->first();
         $CompanyID = $company->CompanyID;
+        $BatchNo = Company::where('COmpanyID', $CompanyID)->first()->BatchNo;
         $referer = $request->headers->get('referer');
         $lastSegment = $referer;
         abort_if(Gate::denies('cas_create'), Response::HTTP_FORBIDDEN, 'Forbidden');
@@ -43,7 +45,7 @@ class ScandocumentController extends Controller
         $city = City::all();
         $state = State::all();
         $roles = Role::pluck('title', 'id');
-        return view('admin.scandoc.create', compact('roles', 'city', 'state', 'country', 'lastSegment', 'userId', 'CompanyID'));
+        return view('admin.scandoc.create', compact('roles', 'city', 'state', 'country', 'lastSegment', 'userId', 'CompanyID', 'BatchNo'));
     }
 
     /**
@@ -79,7 +81,7 @@ class ScandocumentController extends Controller
         if (!Storage::exists($directory)) {
             Storage::makeDirectory($directory);
         }
-        $pdfPath = 'pdfs/' . $request->UserID . '/images_' . date('Y-m-d-h-i-s') . '.pdf';
+        $pdfPath = 'pdfs/' . $request->UserID . '/' . date('dmYHis') . '_' . $request->BatchNo . '.pdf';
         Storage::disk('public')->put($pdfPath, $pdf->output());
 
         $localPath = storage_path("app/public/{$pdfPath}");

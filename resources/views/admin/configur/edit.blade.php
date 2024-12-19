@@ -52,8 +52,8 @@
                                 <div class="form-group">
                                     <h5>Support Email <span class="text-danger">*</span></h5>
                                     <div class="controls">
-                                        <input type="email" value="{{ $conf->SupportEmail }}" name="SupportEmail"
-                                            id="SupportEmail" class="form-control" required
+                                        <input maxlength="250" type="email" value="{{ $conf->SupportEmail }}"
+                                            name="SupportEmail" id="SupportEmail" class="form-control" required
                                             data-validation-required-message="This field is required"
                                             placeholder="Support Email" maxlength="50" autofocus tabindex="1">
                                         @error('SupportEmail')
