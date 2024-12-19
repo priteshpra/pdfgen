@@ -55,8 +55,8 @@ class CasController extends Controller
     {
         abort_if(Gate::denies('cas_create'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $country = Country::all();
-        $city = City::all();
-        $state = State::all();
+        $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('City', 'ASC')->get();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('State', 'ASC')->get();
         $roles = Role::pluck('title', 'id');
         return view('admin.cas.create', compact('roles', 'city', 'state', 'country'));
     }
@@ -125,8 +125,8 @@ class CasController extends Controller
         abort_if(Gate::denies('cas_edit'), Response::HTTP_FORBIDDEN, 'Forbidden');
         $user = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.id', $id)->first();
         $country = Country::all();
-        $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
-        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->get();
+        $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('City', 'ASC')->get();
+        $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('State', 'ASC')->get();
         $roles = Role::pluck('title', 'id');
         return view('admin.cas.edit', compact('user', 'roles', 'city', 'state', 'country'));
     }

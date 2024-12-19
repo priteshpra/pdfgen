@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\BannerController;
+use App\Services\FcmNotificationService;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,10 +83,21 @@ Route::get('/download/{user_id}/{filename}', function ($user_id, $filename) {
     return response()->download($path);
 });
 
-Route::get('/download/{user_id}/{filename}', function ($user_id, $filename) {
+Route::get('/download/{user_id}/{filename}', function ($user_id, $filename, FcmNotificationService $fcmNotificationService) {
     $path = storage_path("app/public/pdfs/{$user_id}/{$filename}");
     if (!file_exists($path)) {
         abort(404, "File not found");
     }
+
+    $newData  = json_encode(array());
+    $body = array(
+        'receiver_id' => $user_id,
+        'title' => 'Your document has been downloaded successfully!',
+        'message' => 'Your document ' . basename($path) . ' downloaded successfully!',
+        'data' => $newData,
+        'content_available' => true
+    );
+    $sendNotification = $fcmNotificationService->sendFcmNotification($body);
+
     return response()->download($path);
 })->name('download.file');

@@ -76,12 +76,14 @@ class ScandocumentController extends Controller
         $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
         // dd($pdf);
         // Download the PDF
+        $CompanyData = Company::find($request->CompanyID);
+        $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
         // return $pdf->download('images.pdf');
-        $directory = 'public/pdfs/' . $request->UserID;
+        $directory = 'public/' . $pdfsPath . '/' . $request->UserID;
         if (!Storage::exists($directory)) {
             Storage::makeDirectory($directory);
         }
-        $pdfPath = 'pdfs/' . $request->UserID . '/' . date('dmYHis') . '_' . $request->BatchNo . '.pdf';
+        $pdfPath = $pdfsPath . '/' . $request->UserID . '/' . date('dmYHis') . '_' . $request->BatchNo . '.pdf';
         Storage::disk('public')->put($pdfPath, $pdf->output());
 
         $localPath = storage_path("app/public/{$pdfPath}");

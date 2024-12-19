@@ -1090,15 +1090,17 @@ class ApiController extends Controller
                     $imagePaths[] = $path;
                 }
             }
-
+            $CompanyData = Company::find($company_id);
+            $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
+            // dd($pdfsPath);
             // Generate PDF
             $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
             // Download the PDF
-            $directory = 'public/pdfs/' . $user_id;
+            $directory = 'public/' . $pdfsPath . '/' . $user_id;
             if (!Storage::exists($directory)) {
                 Storage::makeDirectory($directory);
             }
-            $pdfPath = 'pdfs/' . $user_id . '/' . $request->batch_no . '.pdf';
+            $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
             Storage::disk('public')->put($pdfPath, $pdf->output());
 
             $localPath = storage_path("app/public/{$pdfPath}");
@@ -1349,12 +1351,15 @@ class ApiController extends Controller
 
             // Generate PDF
             $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
+
+            $CompanyData = Company::find($company_id);
+            $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
             // Download the PDF
-            $directory = 'public/pdfs/' . $user_id;
+            $directory = 'public/' . $pdfsPath . '/' . $user_id;
             if (!Storage::exists($directory)) {
                 Storage::makeDirectory($directory);
             }
-            $pdfPath = 'pdfs/' . $user_id . '/' . $request->batch_no . '.pdf';
+            $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
             Storage::disk('public')->put($pdfPath, $pdf->output());
 
             $localPath = storage_path("app/public/{$pdfPath}");
