@@ -106,7 +106,8 @@ class ProfileController extends Controller
                 'fname' => 'string|max:255',
                 'lname' => 'string|max:255',
                 'firm_name' => 'string|max:255',
-                'email' => 'email',
+                'email' =>
+                'required|email|unique:users,email,' . $user_id,
                 'mobile_no' => 'min:10|digits:10',
                 'address' => '',
                 'pinCode' => '',
@@ -121,7 +122,8 @@ class ProfileController extends Controller
                 'fname' => 'string|max:255',
                 'lname' => 'string|max:255',
                 'firm_name' => 'string|max:255',
-                'email' => 'email',
+                'email' =>
+                'required|email|unique:users,email,' . $user_id,
                 'mobile_no' => 'min:10|digits:10',
                 'address' => '',
                 'pinCode' => '',
@@ -134,7 +136,8 @@ class ProfileController extends Controller
                 'user_id' => 'required',
                 'company_id' => 'required',
                 'fname' => 'string|max:255',
-                'email' => 'email',
+                'email' =>
+                'required|email|unique:users,email,' . $user_id,
                 'lname' => 'string',
                 'mobile' => 'string'
             ]);

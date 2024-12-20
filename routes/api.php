@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\BannerController;
+use App\Models\Company;
+use App\Models\User;
 use App\Services\FcmNotificationService;
 
 /*
@@ -84,7 +86,10 @@ Route::get('/download/{user_id}/{filename}', function ($user_id, $filename) {
 });
 
 Route::get('/download/{user_id}/{filename}', function ($user_id, $filename, FcmNotificationService $fcmNotificationService) {
-    $path = storage_path("app/public/pdfs/{$user_id}/{$filename}");
+    $UserData = User::find($user_id)->CompanyID;
+    $CompanyData = Company::find($UserData);
+    $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
+    $path = storage_path("app/public/{$pdfsPath}/{$user_id}/{$filename}");
     if (!file_exists($path)) {
         abort(404, "File not found");
     }
