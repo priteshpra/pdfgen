@@ -18,6 +18,9 @@ use App\Http\Controllers\Admin\ScandocumentController;
 use App\Http\Controllers\Admin\OtherdocumentController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ConfigurationController;
+use App\Models\Company;
+use App\Models\User;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -71,6 +74,7 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::post('/toggle-status', [BussinessCategoryController::class, 'toggleStatus'])->name('toggle.status');
     Route::post('/cas-toggle-status', [CasController::class, 'toggleStatus'])->name('castoggle.status');
     Route::post('/client-toggle-status', [ClientController::class, 'toggleStatus'])->name('clienttoggle.status');
+    Route::post('/client-approve-status', [ClientController::class, 'toggleApproveStatus'])->name('clientapprovetoggle.status');
     Route::post('/user-toggle-status', [UserController::class, 'toggleStatus'])->name('usertoggle.status');
     Route::post('/state-toggle-status', [StateController::class, 'toggleStatus'])->name('statetoggle.status');
     Route::post('/country-toggle-status', [CountryController::class, 'toggleStatus'])->name('countrytoggle.status');
@@ -91,7 +95,10 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     // Route::post('/search', 'CityController');
 
     Route::get('download/{user_id}/{filename}', function ($user_id, $filename) {
-        $path = storage_path("app/public/pdfs/{$user_id}/{$filename}");
+        $UserData = User::find($user_id)->CompanyID;
+        $CompanyData = Company::find($UserData);
+        $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
+        $path = storage_path("app/public/{$pdfsPath}/{$user_id}/{$filename}");
         if (!file_exists($path)) {
             abort(404, "File not found");
         }

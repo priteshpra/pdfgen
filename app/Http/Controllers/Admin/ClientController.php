@@ -22,6 +22,7 @@ use App\Models\Notification;
 use App\Models\OtherDocument;
 use App\Models\Scandocument;
 use App\Models\State;
+use Illuminate\Support\Facades\Mail;
 use App\Models\UserDevices;
 
 class ClientController extends Controller
@@ -184,6 +185,57 @@ class ClientController extends Controller
             $cas->save();
 
             return response()->json(['success' => 'success', 'message' => 'Status updated successfully!', 'status' => $user->status]);
+        }
+
+        return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);
+    }
+
+    public function toggleApproveStatus(Request $request)
+    {
+        $user = User::find($request->id); // Get the user by ID
+        if ($user) {
+            $user->IsApproved = $request->Status; // Toggle status
+            $user->save(); // Save the updated status
+            $email = $user->Email;
+            $emailContent = "<html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                        }
+                        h1 {
+                            color: #007bff;
+                        }
+                        .footer {
+                            margin-top: 20px;
+                            font-size: 12px;
+                            color: #999;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Registration Approved!</h1>
+                    <p>Hello,</p>
+                    <p>Congratulations! Your registration has been successfully approved. You can now log in to your account and start using the services.</p>
+                    <p>If you need assistance or have any questions, feel free to contact our support team.</p>
+                    <div class='footer'>
+                        <p>This email was automatically generated. Do not reply.</p>
+                        <p>If you need further assistance, please reach out to our <a href='mailto:support@postsdoc.com'>support team</a>.</p>
+                    </div>
+                </body>
+            </html>";
+
+            // Send the email
+            Mail::html($emailContent, function ($message) use ($email) {
+                $message->to($email)
+                    ->subject('Your Registration is Approved!')
+                    ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            });
+
+
+            return response()->json(['success' => 'success', 'message' => 'Client Approved successfully!', 'status' => $user->status]);
         }
 
         return response()->json(['success' => 'error', 'message' => 'Status updated failed.']);

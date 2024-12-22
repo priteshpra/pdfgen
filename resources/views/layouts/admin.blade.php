@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="{{ asset('admin_assets/images_new/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('admin_assets/images_new/favicon.ico.png') }}">
     <title>PostsDoc - Dashboard</title>
     <!-- Vendors Style-->
     <link rel=" stylesheet" href="{{ asset('admin_assets/css_new/vendors_css.css') }}">

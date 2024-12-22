@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserDevices;
 use Carbon\Carbon;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -33,6 +33,8 @@ use Illuminate\Support\Facades\Password;
 use PDF;
 use PhpParser\Node\Stmt\TryCatch;
 use setasign\Fpdi\Fpdi;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
@@ -483,7 +485,7 @@ class ApiController extends Controller
                 ], 200);
             }
             $validatedData = $validator->validated();
-
+            $email = $validatedData['userData']['email'];
             // Create the User
             $user = User::create([
                 'FirstName' => $validatedData['userData']['fname'],
@@ -521,9 +523,43 @@ class ApiController extends Controller
                 'client' => $client,
             ];
 
-            //add the notification table
-            // $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the client ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
-            // $this->addNotificationData($notifiArray);
+            $emailContent = "<html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                        }
+                        h1 {
+                            color: #007bff;
+                        }
+                        .footer {
+                            margin-top: 20px;
+                            font-size: 12px;
+                            color: #999;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Registration Confirmation</h1>
+                    <p>Hello,</p>
+                    <p>Thank you for registering with us. We have successfully received your registration details.</p>
+                    <p>Currently, your account is under review and awaiting approval by our administrator. Please expect an update soon once your account is approved.</p>
+                    <p>If you did not register for this account or believe there has been a mistake, please contact our support team immediately.</p>
+                    <div class='footer'>
+                        <p>This email was automatically generated. Do not reply.</p>
+                        <p>If you need further assistance, please reach out to our <a href='mailto:support@postsdoc.com'>support team</a>.</p>
+                    </div>
+                </body>
+            </html>";
+
+            // Send the email
+            Mail::html($emailContent, function ($message) use ($email) {
+                $message->to($email)
+                    ->subject('Registration Confirmation and Approval Status')
+                    ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            });
 
             // Return a response
             return response()->json(['status' => true, 'message' => 'Clients created successfully', 'data' => $clientData], 200);
@@ -633,7 +669,7 @@ class ApiController extends Controller
                 ], 200);
             }
             $validatedData = $validator->validated();
-
+            $email = $validatedData['userData']['email'];
             // Create the User
             $user = User::create([
                 'FirstName' => $validatedData['userData']['fname'],
@@ -671,9 +707,43 @@ class ApiController extends Controller
                 'client' => $client,
             ];
 
-            //add the notification table
-            // $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Added the CAs ' . $user->name . ' ' . $user->lname . '.', 'TypeID' => 0];
-            // $this->addNotificationData($notifiArray);
+            $emailContent = "<html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                        }
+                        h1 {
+                            color: #007bff;
+                        }
+                        .footer {
+                            margin-top: 20px;
+                            font-size: 12px;
+                            color: #999;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Registration Confirmation</h1>
+                    <p>Hello,</p>
+                    <p>Thank you for registering with us. We have successfully received your registration details.</p>
+                    <p>Currently, your account is under review and awaiting approval by our administrator. Please expect an update soon once your account is approved.</p>
+                    <p>If you did not register for this account or believe there has been a mistake, please contact our support team immediately.</p>
+                    <div class='footer'>
+                        <p>This email was automatically generated. Do not reply.</p>
+                        <p>If you need further assistance, please reach out to our <a href='mailto:support@postsdoc.com'>support team</a>.</p>
+                    </div>
+                </body>
+            </html>";
+
+            // Send the email
+            Mail::html($emailContent, function ($message) use ($email) {
+                $message->to($email)
+                    ->subject('Registration Confirmation and Approval Status')
+                    ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            });
 
             // Return a response
             return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => $clientData], 200);
@@ -989,23 +1059,54 @@ class ApiController extends Controller
                 $result['data'] = (object) [];
                 return response()->json($result, 200);
             }
+            $password = Str::random(10);
+            $email = $request->email;
+            $user = User::where('email', $request->input('email'))->first();
+            if (!$user) {
+                // Return a response if the user is not found (even though validation checks for existence)
+                return response()->json(['error' => 'User not found'], 404);
+            }
+            $user->password = Hash::make($password);
 
+
+            $emailContent = "<html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                        }
+                        h1 {
+                            color: #007bff;
+                        }
+                        .footer {
+                            margin-top: 20px;
+                            font-size: 12px;
+                            color: #999;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Password Reset Notification</h1>
+                    <p>Hello,</p>
+                    <p>We've generated a new password for your account. Your new password is: <strong>{{ $password }}</strong></p>
+                    <p>Please log in to your account.</p>
+                    <p>If you didn't request a password change, please contact our support team immediately.</p>
+                    <div class='footer'>
+                        <p>This email was automatically generated. Do not reply.</p>
+                        <p>If you need further assistance, please reach out to our <a href='mailto:support@postsdoc.com'>support team</a>.</p>
+                    </div>
+                </body>
+            </html>";
+
+            // Send the email
+            Mail::html($emailContent, function ($message) use ($email) {
+                $message->to($email)
+                    ->subject('Your New Password')
+                    ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            });
             return response()->json(['status' => true, 'message' => 'Mail send successfully', 'data' => []], 200);
-            // $status = Password::sendResetLink($request->only('email'));
-
-            // if ($status === Password::RESET_LINK_SENT) {
-            //     return response()->json([
-            //         'status' => true,
-            //         'message' => trans($status), // Use trans() for localized messages
-            //         'data' => (object) []
-            //     ], 200);
-            // } else {
-            //     return response()->json([
-            //         'status' => false,
-            //         'message' => trans($status),
-            //         'data' => (object) []
-            //     ], 400); // Use 400 for bad requests
-            // }
         } catch (\Throwable $th) {
             // Log the exception for debugging
             Log::error('Password reset error', ['exception' => $th]);

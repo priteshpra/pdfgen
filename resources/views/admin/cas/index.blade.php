@@ -63,13 +63,15 @@
                                         <th>PAN Number</th>
                                         <th>Firm Type</th>
                                         <th>Status</th>
+                                        <th>Is Approved</th>
                                         <th>
                                             Action
                                         </th>
                                     </tr>
                                 </thead>
                                 @forelse ($users as $user)
-                                <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); ?>
+                                <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); 
+                                ?>
                                 <tr>
                                     <td>{{$user->FirstName}} {{$user->LastName}}</td>
                                     <td><a href="{{ route('admin.cas.show',$user->id) }}">{{$user->FirmName}}</a>
@@ -93,6 +95,17 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div class="col-xl-2 col-6 text-center align-self-center mb-20">
+                                            <button id="toggleApproveChang_{{$user->id}}"
+                                                onclick="toggleApproveStatus({{$user->id}},{{ ($user->IsApproved == 0) ? '1' : '0' }})"
+                                                type="button"
+                                                class="btn btn-sm btn-toggle toggleApproveChang {{($user->IsApproved == 1) ? 'btn-success active' : 'btn-error'}}"
+                                                data-bs-toggle="button" aria-pressed="true" autocomplete="off">
+                                                <div class="handle"></div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <!-- @can('user_show')
                                                 <a href="{{ route('admin.cas.show', $user->id) }}" class="btn btn-sm btn-success">Show</a>
                                                 @endcan -->
@@ -100,16 +113,6 @@
                                         <a href="{{ route('admin.cas.edit', $user->id) }}"
                                             class="btn btn-sm btn-warning">Edit</a>
                                         @endcan
-
-                                        {{-- @if ($isCompanyCreate > 0)
-                                        <a href="{{ route('admin.company.edit', $user->id) }}"
-                                            class="btn btn-sm btn-success">
-                                            Edit Company
-                                        </a>
-                                        @else
-                                        <a href="{{ route('admin.company.create', ['clientId' => $user->id]) }}"
-                                            class="btn btn-sm btn-success"> Create Company</a>
-                                        @endif --}}
                                         <!-- @can('user_delete')
                                             <form action="{{ route('admin.cas.destroy', $user->id) }}" class="d-inline-block" method="post">
                                                 @csrf
@@ -160,6 +163,7 @@
             success: function(response) {
                 $('#loader').hide();
                 $('#loader').css('opacity', 0);
+                $("#alert-container").show();
                 $('#alert-container').html(`
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             ${response.message}
@@ -176,6 +180,54 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         `);
+            }
+        });
+    }
+
+    function toggleApproveStatus(ID, status) {
+        if (status == 1) {
+            statuss = 0;
+            console.log('off');
+            $('#toggleApproveChang_' + ID).removeClass('btn-success');
+            $('#toggleApproveChang_' + ID).addClass('btn-error');
+        } else {
+            statuss = 1;
+            $('#toggleApproveChang_' + ID).addClass('btn-success');
+            $('#toggleApproveChang_' + ID).removeClass('btn-error');
+
+        }
+        $("#toggleApproveChang_" + ID).attr("onclick", "toggleApproveStatus(" + ID + ", " + statuss + ")");
+
+        $('#loader').show();
+        $('#loader').css('opacity', 1);
+        $.ajax({
+            url: "{{ route('admin.clientapprovetoggle.status') }}", // URL to your route
+            type: "POST",
+            data: {
+                id: ID, // Pass the user ID
+                Status: status, // Pass the user ID
+                _token: '{{ csrf_token() }}' // CSRF token for Laravel
+            },
+            success: function(response) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $("#alert-container").show();
+                $('#alert-container').html(`
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${response.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `);
+            },
+            error: function(xhr) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $('#alert-container').html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${xhr.responseJSON.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `);
             }
         });
     }
