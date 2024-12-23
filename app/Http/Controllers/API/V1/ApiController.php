@@ -70,97 +70,113 @@ class ApiController extends Controller
             return response()->json($result, 200);
         }
 
-        // try {
-        $email = $request->email;
-        $password = $request->password;
-        $device_token = isset($request->device_token) ? $request->device_token : '';
-        $device_type =
-            isset($request->device_type) ? $request->device_type : 'Android';
-        $api_version = isset($request->api_version) ? $request->api_version : '';
-        $app_version = isset($request->app_version) ? $request->app_version : '';
-        $os_version = isset($request->os_version) ? $request->os_version : '';
-        $device_model_name = isset($request->device_model_name) ? $request->device_model_name : '';
-        $app_language = isset($request->app_language) ? $request->app_language : '';
-        $base_url = $this->base_url;
-        DB::enableQueryLog();
+        try {
+            $email = $request->email;
+            $user = User::where('email', $email)->first()->Status;
+            if ($user == 0) {
+                // Return a response if the user is not found (even though validation checks for existence)
+                return response()->json(['status' => false, 'message' => 'We have observed that your account has been marked as inactive. For assistance or to reactivate your account, please contact our support team.'], 200);
+            }
 
-        $chkUser = User::select(
-            'users.id',
-            'users.FirstName',
-            'users.FirstName',
-            'users.LastName',
-            'users.MobileNo',
-            'users.RegistrationType',
-            'users.CompanyID',
-            'users.Email',
-            'users.UserType',
-            'company.ClientCode',
-            'company.FirmName',
-            'company.CountryID',
-            'company.StateID',
-            'company.CityID',
-            'company.PinCode',
-            'company.AadharNumber',
-            'company.GSTNumber',
-            'company.PANNumber',
-            'company.FirmType',
-            'users.password',
-            DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address'),
-        )
-            ->leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Email', $email)->where('users.Status', 1)->first();
+            $password = $request->password;
+            $device_token = isset($request->device_token) ? $request->device_token : '';
+            $device_type =
+                isset($request->device_type) ? $request->device_type : 'Android';
+            $api_version = isset($request->api_version) ? $request->api_version : '';
+            $app_version = isset($request->app_version) ? $request->app_version : '';
+            $os_version = isset($request->os_version) ? $request->os_version : '';
+            $device_model_name = isset($request->device_model_name) ? $request->device_model_name : '';
+            $app_language = isset($request->app_language) ? $request->app_language : '';
+            $base_url = $this->base_url;
+            DB::enableQueryLog();
 
-        if ($chkUser) {
-            if (!Hash::check($password, $chkUser->password)) {
+            $chkUser = User::select(
+                'users.id',
+                'users.FirstName',
+                'users.FirstName',
+                'users.LastName',
+                'users.MobileNo',
+                'users.RegistrationType',
+                'users.CompanyID',
+                'users.Email',
+                'users.UserType',
+                'company.ClientCode',
+                'company.FirmName',
+                'company.CountryID',
+                'company.StateID',
+                'company.CityID',
+                'company.PinCode',
+                'company.AadharNumber',
+                'company.GSTNumber',
+                'company.PANNumber',
+                'company.FirmType',
+                'users.password',
+                'businesscategory.CategoryName',
+                'businesscategory.BusinessCategoryID',
+                DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address'),
+            )
+                ->leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')
+                ->leftJoin('businesscategory', 'businesscategory.BusinessCategoryID', '=', 'company.BusinnessCatID')
+                ->where('users.Email', $email)->where('users.Status', 1)->first();
+
+            if ($chkUser) {
+                if (!Hash::check($password, $chkUser->password)) {
+                    $result['status'] = false;
+                    $result['message'] = "Invalid email or password";
+                    $result['data'] = (object) [];
+                    return response()->json($result, 200);
+                }
+            }
+
+            if ($chkUser) {
+                if ($chkUser->IsApproved == 0) {
+                    $result['status'] = false;
+                    $result['message'] = "Your account under verification, please contact to your administrator.";
+                    $result['data'] = (object) [];
+                    return response()->json($result, 200);
+                }
+                $chkUser->CompanyID = $chkUser['CompanyID'];
+                $token = $chkUser->createToken('authToken')->plainTextToken;
+                $result['status'] = false;
+                $result['message'] = "Login Succssfully!";
+                $result['data'] = (object) [];
+
+                $chkUser->user_id = $chkUser->id;
+                $chkUser->token = $token;
+                // add token devices login
+                $arr = [
+                    'status' => 1,
+                    'device_token' => $device_token,
+                    'login_token' => $token,
+                    'device_type' => $device_type,
+                    'api_version' => $api_version,
+                    'app_version' => $app_version,
+                    'os_version' => $os_version,
+                    'device_model_name' => $device_model_name,
+                    'app_language' => $app_language,
+                    'user_id' => $chkUser->id,
+                ];
+                DB::table('user_devices')->insertGetId($arr);
+                $userData = $chkUser->toArray();
+
+                $configurationData = DB::table('configuration_table')->select('AndroidAppUrl', 'IOSAppUrl', 'IosAppVersion', 'AndroidAppVersion')->first();
+                $userData['AndroidAppUrl'] = $configurationData->AndroidAppUrl;
+                $userData['IOSAppUrl'] = $configurationData->IOSAppUrl;
+                $userData['IosAppVersion'] = $configurationData->IosAppVersion;
+                $userData['AndroidAppVersion'] = $configurationData->AndroidAppVersion;
+                unset($userData['password']);
+
+                // dd($userData);
+                return response()->json(['status' => true, 'message' => 'Login successfully.', 'data' => $userData]);
+            } else {
                 $result['status'] = false;
                 $result['message'] = "Invalid email or password";
                 $result['data'] = (object) [];
                 return response()->json($result, 200);
             }
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
-
-        if ($chkUser) {
-            $chkUser->CompanyID = $chkUser['CompanyID'];
-            $token = $chkUser->createToken('authToken')->plainTextToken;
-            $result['status'] = false;
-            $result['message'] = "Login Succssfully!";
-            $result['data'] = (object) [];
-
-            $chkUser->user_id = $chkUser->id;
-            $chkUser->token = $token;
-            // add token devices login
-            $arr = [
-                'status' => 1,
-                'device_token' => $device_token,
-                'login_token' => $token,
-                'device_type' => $device_type,
-                'api_version' => $api_version,
-                'app_version' => $app_version,
-                'os_version' => $os_version,
-                'device_model_name' => $device_model_name,
-                'app_language' => $app_language,
-                'user_id' => $chkUser->id,
-            ];
-            DB::table('user_devices')->insertGetId($arr);
-            $userData = $chkUser->toArray();
-
-            $configurationData = DB::table('configuration_table')->select('AndroidAppUrl', 'IOSAppUrl', 'IosAppVersion', 'AndroidAppVersion')->first();
-            $userData['AndroidAppUrl'] = $configurationData->AndroidAppUrl;
-            $userData['IOSAppUrl'] = $configurationData->IOSAppUrl;
-            $userData['IosAppVersion'] = $configurationData->IosAppVersion;
-            $userData['AndroidAppVersion'] = $configurationData->AndroidAppVersion;
-            unset($userData['password']);
-
-            // dd($userData);
-            return response()->json(['status' => true, 'message' => 'Login successfully.', 'data' => $userData]);
-        } else {
-            $result['status'] = false;
-            $result['message'] = "Invalid email or password";
-            $result['data'] = (object) [];
-            return response()->json($result, 200);
-        }
-        // } catch (\Throwable $th) {
-        //     return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
-        // }
     }
 
     /**
@@ -465,6 +481,7 @@ class ApiController extends Controller
                 'userData.password' => 'required|string|min:6',
                 'userData.user_type' => 'required|integer',
                 'clientData.firm_name' => 'required|string|max:255',
+                'clientData.bussinessCategoryID' => 'required|numeric',
                 'clientData.client_code' => 'required|string|max:4|unique:company,ClientCode',
                 'clientData.PAN' => 'required|string|max:50',
                 'clientData.GST' => 'required|string|max:50',
@@ -501,6 +518,7 @@ class ApiController extends Controller
             // Create the Client
             $client = Company::create([
                 'FirmName' => $validatedData['clientData']['firm_name'],
+                'BusinnessCatID' => $validatedData['clientData']['bussinessCategoryID'],
                 'PANNumber' => $validatedData['clientData']['PAN'],
                 'ClientCode' => $validatedData['clientData']['client_code'],
                 'GSTNumber' => $validatedData['clientData']['GST'],
@@ -531,8 +549,13 @@ class ApiController extends Controller
                             line-height: 1.6;
                             color: #333;
                         }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
                         h1 {
                             color: #007bff;
+                            margin-top: 10px;
                         }
                         .footer {
                             margin-top: 20px;
@@ -542,6 +565,9 @@ class ApiController extends Controller
                     </style>
                 </head>
                 <body>
+                    <div class='header'>
+                        <img src='https://www.postsdoc.com/public/admin_assets/images_new/logo-dark-text.png' alt='Company Logo' style='max-width: 150px;'>
+                    </div>
                     <h1>Registration Confirmation</h1>
                     <p>Hello,</p>
                     <p>Thank you for registering with us. We have successfully received your registration details.</p>
@@ -653,6 +679,7 @@ class ApiController extends Controller
                 'clientData.PAN' => 'required|string|max:50',
                 'clientData.GST' => 'required|string|max:50',
                 'clientData.aadharNumber' => 'required|numeric',
+                'clientData.bussinessCategoryID' => 'required|numeric',
                 'clientData.address' => 'required|string',
                 'clientData.countryID' => 'required|integer',
                 'clientData.cityID' => 'required|integer',
@@ -685,6 +712,7 @@ class ApiController extends Controller
             // Create the Client
             $client = Company::create([
                 'FirmName' => $validatedData['clientData']['firm_name'],
+                'BusinnessCatID' => $validatedData['clientData']['bussinessCategoryID'],
                 'PANNumber' => $validatedData['clientData']['PAN'],
                 'ClientCode' => $validatedData['clientData']['client_code'],
                 'GSTNumber' => $validatedData['clientData']['GST'],
@@ -715,8 +743,13 @@ class ApiController extends Controller
                             line-height: 1.6;
                             color: #333;
                         }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
                         h1 {
                             color: #007bff;
+                            margin-top: 10px;
                         }
                         .footer {
                             margin-top: 20px;
@@ -726,6 +759,9 @@ class ApiController extends Controller
                     </style>
                 </head>
                 <body>
+                    <div class='header'>
+                        <img src='https://www.postsdoc.com/public/admin_assets/images_new/logo-dark-text.png' alt='Company Logo' style='max-width: 150px;'>
+                    </div>
                     <h1>Registration Confirmation</h1>
                     <p>Hello,</p>
                     <p>Thank you for registering with us. We have successfully received your registration details.</p>
@@ -819,6 +855,7 @@ class ApiController extends Controller
         }
         try {
             $user_id = $request->user_id;
+            $email = User::find($user_id)->Email;
             $token = $request->header('token');
             $base_url = $this->base_url;
             $checkToken = $this->tokenVerify($token);
@@ -830,13 +867,60 @@ class ApiController extends Controller
 
             DB::table('user_devices')
                 ->join("users", "user_devices.user_id", "=", "users.id")
+                ->join("company", "users.CompanyID", "=", "company.CompanyID")
                 ->where("users.id", "=", $user_id)
                 ->where("user_devices.user_id", "=", $user_id)
-                ->update(["user_devices.status" => '0', "users.Status" => '0', "user_devices.updated_at" => date("Y-m-d H:i:s"), "users.updated_at" => date("Y-m-d H:i:s"), 'user_devices.device_token' => '']);
+                ->update(["user_devices.status" => '0', "users.Status" => '0', "company.Status" => '0', "user_devices.updated_at" => date("Y-m-d H:i:s"), "users.updated_at" => date("Y-m-d H:i:s"), 'user_devices.device_token' => '']);
 
             //add the notification table
-            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Deleted the account ' . $request->account_id . '.', 'TypeID' => 0];
+            $notifiArray = ['UserID' => $request->user_id, 'Description' => 'Deleted the account ' . $request->user_id . '.', 'TypeID' => 0];
             $this->addNotificationData($notifiArray);
+
+            $emailContent = "<html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                    }
+                    .header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    h1 {
+                        color: #007bff;
+                        margin-top: 10px;
+                    }
+                    .footer {
+                        margin-top: 20px;
+                        font-size: 12px;
+                        color: #999;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='header'>
+                    <img src='https://www.postsdoc.com/public/admin_assets/images_new/logo-dark-text.png' alt='Company Logo' style='max-width: 150px;'>
+                </div>
+                <h1>Account Deletion Confirmation</h1>
+                <p>Hello,</p>
+                <p>Your account has been successfully deleted as requested. All associated data has been removed from our platform in compliance with your request and our privacy policy.</p>
+                <p>If you did not request this deletion or believe this is an error, please contact our support team immediately for assistance.</p>
+                <p>We’re sorry to see you go and hope to serve you again in the future!</p>
+                <div class='footer'>
+                    <p>This email was automatically generated. Please do not reply directly to this message.</p>
+                    <p>If you need further assistance, please contact our <a href='mailto:support@postsdoc.com'>support team</a>.</p>
+                </div>
+            </body>
+        </html>";
+
+            // Send the email
+            Mail::html($emailContent, function ($message) use ($email) {
+                $message->to($email)
+                    ->subject('Account Deleted Successfully')
+                    ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            });
 
             // Return a response
             return response()->json(['status' => true, 'message' => 'Account deleted successfully', 'data' => []], 200);
@@ -1067,27 +1151,35 @@ class ApiController extends Controller
                 return response()->json(['error' => 'User not found'], 404);
             }
             $user->password = Hash::make($password);
-
+            $user->save();
 
             $emailContent = "<html>
                 <head>
                     <style>
                         body {
-                            font-family: Arial, sans-serif;
-                            line-height: 1.6;
-                            color: #333;
-                        }
-                        h1 {
-                            color: #007bff;
-                        }
-                        .footer {
-                            margin-top: 20px;
-                            font-size: 12px;
-                            color: #999;
-                        }
+                        font-family: Arial, sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                    }
+                    .header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    h1 {
+                        color: #007bff;
+                        margin-top: 10px;
+                    }
+                    .footer {
+                        margin-top: 20px;
+                        font-size: 12px;
+                        color: #999;
+                    }
                     </style>
                 </head>
                 <body>
+                    <div class='header'>
+                        <img src='https://www.postsdoc.com/public/admin_assets/images_new/logo-dark-text.png' alt='Company Logo' style='max-width: 150px;'>
+                    </div>
                     <h1>Password Reset Notification</h1>
                     <p>Hello,</p>
                     <p>We've generated a new password for your account. Your new password is: <strong>{{ $password }}</strong></p>

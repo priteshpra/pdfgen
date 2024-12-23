@@ -106,10 +106,13 @@
                                         class="waves-effect waves-light btn btn-rounded btn-primary mb-5">SIGN
                                         IN</button>
 
+
                                 </div>
                                 <!-- /.col -->
                             </div>
                         </form>
+                        <a href="about"><button type="button"
+                                class="waves-effect waves-light btn btn-rounded btn-primary mb-5">About Us</button></a>
                     </div>
                 </div>
             </div>

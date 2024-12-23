@@ -22,6 +22,7 @@ class Company extends Authenticatable
     protected $primaryKey = 'CompanyID';
     protected $fillable = [
         'FirmName',
+        'BusinnessCatID',
         'ClientCode',
         'CountryID',
         'Address',

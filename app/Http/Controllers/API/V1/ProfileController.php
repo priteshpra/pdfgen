@@ -106,6 +106,7 @@ class ProfileController extends Controller
                 'fname' => 'string|max:255',
                 'lname' => 'string|max:255',
                 'firm_name' => 'string|max:255',
+                'bussiness_category_id' => '',
                 'email' =>
                 'required|email|unique:users,email,' . $user_id,
                 'mobile_no' => 'min:10|digits:10',
@@ -122,6 +123,7 @@ class ProfileController extends Controller
                 'fname' => 'string|max:255',
                 'lname' => 'string|max:255',
                 'firm_name' => 'string|max:255',
+                'bussiness_category_id' => '',
                 'email' =>
                 'required|email|unique:users,email,' . $user_id,
                 'mobile_no' => 'min:10|digits:10',
@@ -165,6 +167,7 @@ class ProfileController extends Controller
         $company->PANNumber = $request->input('PAN');
         $company->GSTNumber = $request->input('GST');
         $company->PinCode = $request->input('pincode');
+        $company->BusinnessCatID = $request->input('bussiness_category_id');
         // $company->FirmType = $company->FirmType;
         if ($request->user_type == 3 || $request->user_type == 4) {
             $company->Address = $request->input('address');
@@ -196,9 +199,13 @@ class ProfileController extends Controller
             'company.GSTNumber',
             'company.PANNumber',
             'company.FirmType',
+            'businesscategory.CategoryName',
+            'businesscategory.BusinessCategoryID',
             DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address')
         )
-            ->leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.id', $user_id)->where('users.Status', 1)->first();
+            ->leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')
+            ->leftJoin('businesscategory', 'businesscategory.BusinessCategoryID', '=', 'company.BusinnessCatID')
+            ->where('users.id', $user_id)->where('users.Status', 1)->first();
         $userData = $users->toArray();
 
         // Return a response
