@@ -1301,7 +1301,7 @@ class ApiController extends Controller
             $pageCount = $fpdi->setSourceFile($localPath);
             // Provide download link
             $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
-            // $downloadUrl = asset("storage/{$pdfPath}");
+            $documentLink = asset("storage/{$pdfPath}");
 
             $documents = new Scandocument();
             $documents->Title = $request->title;
@@ -1319,7 +1319,7 @@ class ApiController extends Controller
             $this->addNotificationData($notifiArray);
 
             // Notification firebase
-            $newData  = json_encode(array());
+            $newData  = json_encode(array('documentLink' => $documentLink));
             $body = array('receiver_id' => $user_id, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
             $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
             // $notifData = json_decode($sendNotification->getContent(), true);
@@ -1560,7 +1560,7 @@ class ApiController extends Controller
             $pageCount = $fpdi->setSourceFile($localPath);
 
             // Provide download link
-            // $downloadUrl = asset("storage/{$pdfPath}");
+            $documentLink = asset("storage/{$pdfPath}");
             $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
 
             $documents = new OtherDocument();
@@ -1579,7 +1579,7 @@ class ApiController extends Controller
             $this->addNotificationData($notifiArray);
 
             // Notification firebase
-            $newData  = json_encode(array());
+            $newData  = json_encode(array('documentLink' => $documentLink));
             $body = array('receiver_id' => $user_id, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
             $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
             // $notifData = json_decode($sendNotification->getContent(), true);
