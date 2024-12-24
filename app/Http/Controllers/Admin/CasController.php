@@ -42,7 +42,32 @@ class CasController extends Controller
         $city = City::all();
         $state = State::all();
         // $users = User::where('UserType', '4')->paginate(25)->appends($request->query());
-        $users = User::leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->where('users.UserType', '4')->whereNotNull('users.CompanyID')->orderBy('users.id', 'desc')->get();
+        $users = User::select(
+            'users.id',
+            'users.FirstName',
+            'users.FirstName',
+            'users.LastName',
+            'users.MobileNo',
+            'users.RegistrationType',
+            'users.CompanyID',
+            'users.Email',
+            'users.UserType',
+            'users.Status',
+            'company.ClientCode',
+            'company.FirmName',
+            'company.CountryID',
+            'company.StateID',
+            'company.CityID',
+            'company.PinCode',
+            'company.AadharNumber',
+            'company.GSTNumber',
+            'company.PANNumber',
+            'company.FirmType',
+            'businesscategory.CategoryName',
+            'businesscategory.BusinessCategoryID',
+        )->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
+            ->leftJoin('businesscategory', 'businesscategory.BusinessCategoryID', '=', 'company.BusinnessCatID')
+            ->where('users.UserType', '4')->whereNotNull('users.CompanyID')->orderBy('users.id', 'desc')->get();
         return view('admin.cas.index', compact('users'));
     }
 

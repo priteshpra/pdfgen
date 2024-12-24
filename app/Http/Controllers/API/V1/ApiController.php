@@ -129,7 +129,7 @@ class ApiController extends Controller
             }
 
             if ($chkUser) {
-                if ($chkUser->IsApproved == 0) {
+                if ($chkUser['IsApproved'] == '0') {
                     $result['status'] = false;
                     $result['message'] = "Your account under verification, please contact to your administrator.";
                     $result['data'] = (object) [];
@@ -1301,7 +1301,7 @@ class ApiController extends Controller
             $pageCount = $fpdi->setSourceFile($localPath);
             // Provide download link
             $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
-            $documentLink = asset("storage/{$pdfPath}");
+            $documentLink = $downloadUrl; //asset("storage/{$pdfPath}");
 
             $documents = new Scandocument();
             $documents->Title = $request->title;
@@ -1560,8 +1560,8 @@ class ApiController extends Controller
             $pageCount = $fpdi->setSourceFile($localPath);
 
             // Provide download link
-            $documentLink = asset("storage/{$pdfPath}");
             $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
+            $documentLink = $downloadUrl; //asset("storage/{$pdfPath}");
 
             $documents = new OtherDocument();
             $documents->Title = $Title;
