@@ -27,6 +27,7 @@ use App\Models\User;
 use App\Models\UserDevices;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class CasController extends Controller
 {
@@ -53,6 +54,7 @@ class CasController extends Controller
             'users.Email',
             'users.UserType',
             'users.Status',
+            'users.IsApproved',
             'company.ClientCode',
             'company.FirmName',
             'company.CountryID',
@@ -65,6 +67,7 @@ class CasController extends Controller
             'company.FirmType',
             'businesscategory.CategoryName',
             'businesscategory.BusinessCategoryID',
+            DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address'),
         )->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
             ->leftJoin('businesscategory', 'businesscategory.BusinessCategoryID', '=', 'company.BusinnessCatID')
             ->where('users.UserType', '4')->whereNotNull('users.CompanyID')->orderBy('users.id', 'desc')->get();

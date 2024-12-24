@@ -66,8 +66,9 @@
                                 <div class="form-group">
                                     <h5>Name <span class="text-danger">*</span></h5>
                                     <div class="controls">
-                                        <input maxlength="50" type="text" value="{{ $user->name }}" name="name"
-                                            id="name" class="form-control" required
+                                        <input maxlength="50" type="text"
+                                            value="{{ $user->FirstName }} {{ $user->LastName }}" name="name" id="name"
+                                            class="form-control" required
                                             data-validation-required-message="This field is required" placeholder="Name"
                                             maxlength="10" tabindex="2">
                                         @error('name')

@@ -100,6 +100,7 @@ class ApiController extends Controller
                 'users.CompanyID',
                 'users.Email',
                 'users.UserType',
+                'users.IsApproved',
                 'company.ClientCode',
                 'company.FirmName',
                 'company.CountryID',
@@ -129,7 +130,7 @@ class ApiController extends Controller
             }
 
             if ($chkUser) {
-                if ($chkUser['IsApproved'] == '0') {
+                if ($chkUser['IsApproved'] == '0' && $chkUser['UserType'] != '2') {
                     $result['status'] = false;
                     $result['message'] = "Your account under verification, please contact to your administrator.";
                     $result['data'] = (object) [];

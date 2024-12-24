@@ -147,7 +147,7 @@ $(function () {
     });
 
     $('#bussinessTable').DataTable({
-        order: [[9, 'desc']],
+        order: [[3, 'desc']],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -259,7 +259,7 @@ $(function () {
     });
 
     $('#employeeTable').DataTable({
-        order: [[9, 'desc']],
+        order: [[6, 'desc']],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -297,7 +297,7 @@ $(function () {
     });
 
     $('#clientTable').DataTable({
-        order: [[9, 'desc']],
+        // order: [[9, 'desc']],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [

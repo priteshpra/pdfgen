@@ -405,7 +405,7 @@
                                                                         <td>
                                                                             @if ($scanDocuments->DocumentURL !='')
                                                                             <a
-                                                                                href="{{route('download.file', ['user_id' => $scanDocuments->id, 'filename' => $scanDocuments->DocumentURL])}}"><button
+                                                                                href="{{route('download.file', ['user_id' => $scanDocuments->UserID, 'filename' => $scanDocuments->DocumentURL])}}"><button
                                                                                     type="button"
                                                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                                                         class="fa fa-file-pdf-o"
@@ -518,7 +518,7 @@
                                                                         <td>
                                                                             @if ($otherDocument->DocumentURL !='')
                                                                             <a
-                                                                                href="{{route('download.file', ['user_id' => $otherDocument->id, 'filename' => $otherDocument->DocumentURL])}}"><button
+                                                                                href="{{route('download.file', ['user_id' => $otherDocument->UserID, 'filename' => $otherDocument->DocumentURL])}}"><button
                                                                                     type="button"
                                                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                                                         class="fa fa-file-pdf-o"
