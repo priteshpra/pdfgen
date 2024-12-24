@@ -73,6 +73,7 @@ class FcmNotificationService
                             ],
                             "type" => "new_message",
                             "userInfo" => $newArrDataIos,
+                            "customData" => $newArrData,
                         ]
                     ],
                     'android' => [

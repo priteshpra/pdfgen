@@ -1319,7 +1319,7 @@ class ApiController extends Controller
             $this->addNotificationData($notifiArray);
 
             // Notification firebase
-            $newData  = json_encode(array('documentLink' => $documentLink));
+            $newData  = json_encode(array('documentLink' => ''));
             $body = array('receiver_id' => $user_id, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
             $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
             // $notifData = json_decode($sendNotification->getContent(), true);
@@ -1579,7 +1579,7 @@ class ApiController extends Controller
             $this->addNotificationData($notifiArray);
 
             // Notification firebase
-            $newData  = json_encode(array('documentLink' => $documentLink));
+            $newData  = json_encode(array('documentLink' => ''));
             $body = array('receiver_id' => $user_id, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
             $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
             // $notifData = json_decode($sendNotification->getContent(), true);
