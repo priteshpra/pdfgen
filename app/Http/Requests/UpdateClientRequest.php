@@ -36,6 +36,7 @@ class UpdateClientRequest extends FormRequest
             'PANNumber' => 'required|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
             'FirmType' => 'required',
             'FirmName' => 'required',
+            'BusinnessCatID' => 'required',
         ];
     }
 }

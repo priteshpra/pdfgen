@@ -185,15 +185,13 @@
                         </li>
                     </ul>
                 </li>
-                <li class="">
+                <!-- <li class="">
                     <a href="{{ URL('/admin/upload-images') }}">
                         <i span class="icon-Layout-grid"><span class="path1"></span><span class="path2"></span></i>
                         <span>PDF Generate</span>
-                        <!-- <span class="pull-right-container">
-                                <i class="fa fa-angle-right pull-right"></i>
-                            </span> -->
+                        
                     </a>
-                </li>
+                </li> -->
             </ul>
 
         </div>

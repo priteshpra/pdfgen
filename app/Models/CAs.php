@@ -33,6 +33,7 @@ class CAs extends Authenticatable
         'PANNumber',
         'FirmType',
         'FirmName',
+        'BusinnessCatID',
     ];
 
     /**

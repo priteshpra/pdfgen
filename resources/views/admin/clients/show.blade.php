@@ -369,8 +369,8 @@
                                                                         <th>Employee Name</th>
                                                                         <th>Page Count</th>
                                                                         <th>Remarks</th>
-                                                                        <th>Status</th>
-                                                                        <th>Actions</th>
+                                                                        <!-- <th>Status</th>
+                                                                        <th>Actions</th> -->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -388,7 +388,7 @@
                                                                             }}</td>
                                                                         <td>{{ $scanDocuments->ImageCount }}</td>
                                                                         <td>{{ $scanDocuments->Remarks }}</td>
-                                                                        <td>
+                                                                        <!-- <td>
                                                                             <div
                                                                                 class="col-xl-2 col-6 text-center align-self-center mb-20">
                                                                                 <button
@@ -414,7 +414,7 @@
                                                                             @else
                                                                             -
                                                                             @endif
-                                                                        </td>
+                                                                        </td> -->
                                                                     </tr>
                                                                     @empty
                                                                     <tr>
@@ -486,8 +486,8 @@
                                                                         <th>Upload Date</th>
                                                                         <th>Employee Name</th>
                                                                         <th>Remarks</th>
-                                                                        <th>Status</th>
-                                                                        <th>Actions</th>
+                                                                        <!-- <th>Status</th>
+                                                                        <th>Actions</th> -->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -501,7 +501,7 @@
                                                                             isset($employeesNameDatas[$otherDocument->UserID])?$employeesNameDatas[$otherDocument->UserID]:'-'
                                                                             }}</td>
                                                                         <td>{{ $otherDocument->Remarks }}</td>
-                                                                        <td>
+                                                                        <!-- <td>
                                                                             <div
                                                                                 class="col-xl-2 col-6 text-center align-self-center mb-20">
                                                                                 <button
@@ -527,7 +527,7 @@
                                                                             @else
                                                                             -
                                                                             @endif
-                                                                        </td>
+                                                                        </td> -->
                                                                     </tr>
                                                                     @empty
                                                                     <tr>
@@ -567,8 +567,8 @@
                                                                     <tr>
                                                                         <th>Title</th>
                                                                         <th>Notifications Date</th>
-                                                                        <th>Status</th>
-                                                                        <th>Actions</th>
+                                                                        <!-- <th>Status</th> -->
+                                                                        <!-- <th>Actions</th> -->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -578,7 +578,7 @@
                                                                         <td>{{ date('d/m/Y',
                                                                             strtotime($notificationList->created_at))
                                                                             }}</td>
-                                                                        <td>
+                                                                        <!-- <td>
                                                                             <div
                                                                                 class="col-xl-2 col-6 text-center align-self-center mb-20">
                                                                                 <button
@@ -598,7 +598,7 @@
                                                                                 class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                                                     class="fa fa-file-pdf-o"
                                                                                     aria-hidden="true"></i></button>
-                                                                        </td>
+                                                                        </td> -->
                                                                     </tr>
                                                                     @empty
                                                                     <tr>

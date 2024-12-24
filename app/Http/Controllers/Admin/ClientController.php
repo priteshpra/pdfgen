@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserPhotoRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\BussinessCategory;
 use App\Models\CAs;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -69,7 +70,8 @@ class ClientController extends Controller
         $country = Country::all();
         $city = City::all();
         $state = State::all();
-        return view('admin.clients.index', compact('users', 'country', 'city', 'state'));
+        $bussiness = BussinessCategory::all();
+        return view('admin.clients.index', compact('users', 'country', 'city', 'state', 'bussiness'));
     }
 
     /**
@@ -84,7 +86,8 @@ class ClientController extends Controller
         $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('City', 'ASC')->get();
         $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('State', 'ASC')->get();
         $roles = Role::pluck('title', 'id');
-        return view('admin.clients.create', compact('roles', 'city', 'state', 'country'));
+        $bussiness = BussinessCategory::all();
+        return view('admin.clients.create', compact('roles', 'city', 'state', 'country', 'bussiness'));
     }
 
     /**
@@ -155,7 +158,8 @@ class ClientController extends Controller
         $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('City', 'ASC')->get();
         $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('State', 'ASC')->get();
         $roles = Role::pluck('title', 'id');
-        return view('admin.clients.edit', compact('user', 'roles', 'country', 'state', 'city'));
+        $bussiness = BussinessCategory::all();
+        return view('admin.clients.edit', compact('user', 'roles', 'country', 'state', 'city', 'bussiness'));
     }
 
 

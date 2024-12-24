@@ -28,5 +28,6 @@ class OtherDocument extends Authenticatable
         'UserID',
         'Remarks',
         'DocumentURL',
+        'CreatedBy',
     ];
 }

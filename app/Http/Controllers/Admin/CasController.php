@@ -14,6 +14,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateUserPhotoRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\BussinessCategory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\City;
@@ -86,7 +87,8 @@ class CasController extends Controller
         $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('City', 'ASC')->get();
         $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('State', 'ASC')->get();
         $roles = Role::pluck('title', 'id');
-        return view('admin.cas.create', compact('roles', 'city', 'state', 'country'));
+        $bussiness = BussinessCategory::all();
+        return view('admin.cas.create', compact('roles', 'city', 'state', 'country', 'bussiness'));
     }
 
     /**
@@ -156,7 +158,8 @@ class CasController extends Controller
         $city = City::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('City', 'ASC')->get();
         $state = State::orderByRaw("CASE WHEN IsOpen = 'Yes' THEN 1 ELSE 2 END")->orderBy('State', 'ASC')->get();
         $roles = Role::pluck('title', 'id');
-        return view('admin.cas.edit', compact('user', 'roles', 'city', 'state', 'country'));
+        $bussiness = BussinessCategory::all();
+        return view('admin.cas.edit', compact('user', 'roles', 'city', 'state', 'country', 'bussiness'));
     }
 
 

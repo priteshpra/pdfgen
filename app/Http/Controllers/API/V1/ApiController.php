@@ -1313,6 +1313,7 @@ class ApiController extends Controller
             $documents->ImageCount = $imageCount;
             $documents->PageCount = $pageCount;
             $documents->DocumentURL = basename($pdfPath);
+            $documents->CreatedBy = $user_id;
             $documents->save();
 
             //add the notification table
@@ -1573,6 +1574,7 @@ class ApiController extends Controller
             $documents->PageCount = $pageCount;
             $documents->Remarks = $Remarks;
             $documents->DocumentURL = basename($pdfPath);
+            $documents->CreatedBy = $user_id;
             $documents->save();
 
             //add the notification table

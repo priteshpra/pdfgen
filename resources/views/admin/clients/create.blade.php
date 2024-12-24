@@ -352,6 +352,30 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="BusinnessCatID" class="required col-md-4 col-form-label text-md-right">{{ __('Business Category')
+                            }}</label>
+
+                    <select id="BusinnessCatID" type="text" class="form-control @error('BusinnessCatID') is-invalid @enderror"
+                        name="BusinnessCatID" required autocomplete="BusinnessCatID" autofocus>
+                        <option value="" selected hidden>Please Select</option>
+
+                        @foreach ($bussiness as $id => $bussiness)
+                        <option value="{{$bussiness->BusinessCategoryID}}" {{ (old('BusinnessCatID', '' )==$bussiness->BusinessCategoryID ) ? 'selected' : '' }}>{{$bussiness->CategoryName}}
+                        </option>
+                        @endforeach
+                    </select>
+
+                    @error('BusinnessCatID')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+            </div>
+        </div>
         <div class="box-footer">
             <button type="submit" id="submitButton" class="btn btn-primary" tabindex="5">
                 <i class="ti-save-alt"></i> SUBMIT

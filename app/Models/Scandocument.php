@@ -28,5 +28,6 @@ class Scandocument extends Authenticatable
         'Remarks',
         'PageCount',
         'DocumentURL',
+        'CreatedBy',
     ];
 }

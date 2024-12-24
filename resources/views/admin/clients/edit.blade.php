@@ -265,7 +265,7 @@
                             <input name="FirmType" type="radio" id="radio_1" value="Proprietary" {{
                                 (old('FirmType',$user->FirmType
                             ?? "") == 'Proprietary' ) ? 'checked=""' : '' }}
-                            tabindex="14">
+                                tabindex="14">
                             <label for="radio_1">Proprietary</label>
                             <div class="help-block"></div>
                         </fieldset>
@@ -278,7 +278,7 @@
                             <input name="FirmType" type="radio" id="radio_3" value="LLP" {{
                                 (old('FirmType',$user->FirmType ?? "") ==
                             'LLP' ) ? 'checked=""' : '' }}
-                            tabindex="16">
+                                tabindex="16">
                             <label for="radio_3">LLP</label>
                         </fieldset>
                     </div>
@@ -316,6 +316,31 @@
                             value="{{ $user->ClientCode }}" required autocomplete="ClientCode">
 
                         @error('ClientCode')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="BusinnessCatID" class="required col-md-4 col-form-label text-md-right">{{ __('Business Category')
+                            }}</label>
+
+                        <select id="BusinnessCatID" type="text" class="form-control @error('BusinnessCatID') is-invalid @enderror"
+                            name="BusinnessCatID" required autocomplete="BusinnessCatID" autofocus>
+                            <option value="" selected hidden>Please Select</option>
+
+                            @foreach ($bussiness as $id => $bussiness)
+                            <option value="{{$bussiness->BusinessCategoryID}}" {{ (old('BusinnessCatID',$user->BusinnessCatID ?? "") == $bussiness->BusinessCategoryID ) ? 'selected' : ''
+                            }}>{{$bussiness->CategoryName}}
+                            </option>
+                            @endforeach
+                        </select>
+
+                        @error('BusinnessCatID')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

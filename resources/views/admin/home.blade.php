@@ -50,242 +50,6 @@
 
         </div> --}}
 
-        {{-- <div class="col-xl-3 col-12">
-
-            <div class="box">
-
-                <div class="box-header">
-
-                    <h4 class="box-title">Top Agent's</h4>
-
-                </div>
-
-                <div class="box-body">
-
-                    <div class="d-flex align-items-center justify-content-between pb-0 pe-20">
-
-                        <h5 class="my-0 text-light"><i class="fa fa-user me-50 w-20"></i>Name</h5>
-
-                        <p class="mb-0 text-light">Sale</p>
-
-                    </div>
-
-                    <div class="pat-div">
-
-                        <div class="d-flex align-items-center justify-content-between my-15 pe-20">
-
-                            <h5 class="my-0"><i class="me-50 w-20 fa fa-user"></i>Mansur</h5>
-
-                            <p class="mb-0">74</p>
-
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between my-15 pe-20">
-
-                            <h5 class="my-0"><i class="me-50 w-20 fa fa-user"></i>Octavia</h5>
-
-                            <p class="mb-0">32</p>
-
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between my-15 pe-20">
-
-                            <h5 class="my-0"><i class="me-50 w-20 fa fa-user"></i>Elvina</h5>
-
-                            <p class="mb-0">15</p>
-
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between my-15 pe-20">
-
-                            <h5 class="my-0"><i class="me-50 w-20 fa fa-user"></i>Marni</h5>
-
-                            <p class="mb-0">35</p>
-
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between my-15 pe-20">
-
-                            <h5 class="my-0"><i class="me-50 w-20 fa fa-user"></i>Lrvina</h5>
-
-                            <p class="mb-0">158</p>
-
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between my-15 pe-20">
-
-                            <h5 class="my-0"><i class="me-50 w-20 fa fa-user"></i>Jonathan</h5>
-
-                            <p class="mb-0">85</p>
-
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between my-15 pe-20">
-
-                            <h5 class="my-0"><i class="me-50 w-20 fa fa-user"></i>Marwar</h5>
-
-                            <p class="mb-0">45</p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div> --}}
-
-
-
-        {{-- <div class="col-lg-4 col-12">
-
-            <div class="box pull-up">
-
-                <ul class="box-controls pull-right">
-
-                    <li class="dropdown">
-
-                        <a data-bs-toggle="dropdown" href="#" class="p-10"><i class="ti-more-alt"></i></a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-
-                            <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-
-                            <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-
-                            <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-
-                        </div>
-
-                    </li>
-
-                </ul>
-
-                <div class="box-body pb-30 pt-0 ">
-
-                    <div class="d-flex justify-content-between align-items-center ">
-
-                        <div><i class="fa fa-money text-success fs-50"></i></div>
-
-                        <div>
-
-                            <h2 class="fw-500 mb-0">$6,458.00</h2>
-
-                            <p class=" mb-0"><small>Total Income</small></p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="box pull-up">
-
-                <ul class="box-controls pull-right">
-
-                    <li class="dropdown">
-
-                        <a data-bs-toggle="dropdown" href="#" class="p-10"><i class="ti-more-alt"></i></a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-
-                            <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-
-                            <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-
-                            <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-
-                        </div>
-
-                    </li>
-
-                </ul>
-
-                <div class="box-body pb-30 pt-0">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div><i class="fa fa-money text-primary fs-50"></i></div>
-
-                        <div>
-
-                            <h2 class="fw-500 mb-0">$4,329.00</h2>
-
-                            <p class=" mb-0"><small>Spending Income</small></p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div> --}}
-
-
-
-        {{-- <div class="col-lg-4 col-12">
-
-            <div class="box overflow-hidden">
-
-                <div class="box-header">
-
-                    <h4 class="box-title">Total Revenue</h4>
-
-                </div>
-
-                <div class="box-body p-0">
-
-                    <div class="px-30 py-20">
-
-                        <h4 class="mb-0">$346,042k </h4>
-
-                        <p class="mb-0"><small>Got From 1456 customers</small></p>
-
-                    </div>
-
-                    <div id="spark3"></div>
-
-                </div>
-
-            </div>
-
-        </div> --}}
-
-
-
-        {{-- <div class="col-lg-4 col-12">
-
-            <div class="box">
-
-                <div class="box-header">
-
-                    <h4 class="box-title">History</h4>
-
-                </div>
-
-                <div class="box-body">
-
-                    <div id="revenue_history"></div>
-
-                </div>
-
-            </div>
-
-        </div> --}}
-
 
 
         <div class="col-xl-3 col-md-6 col-12">
@@ -317,26 +81,27 @@
                 </ul>
 
                 <div class="box-body pt-0 ">
+                    <a href="{{ route('admin.client.index') }}">
+                        <div class="d-flex align-items-center justify-content-between ">
 
-                    <div class="d-flex align-items-center justify-content-between ">
+                            <div>
 
-                        <div>
 
-                            <a href="{{ route('admin.client.index') }}">
                                 <h3 class="text-dark mb-0 fw-500">{{ $clients }}</h3>
-                            </a>
 
-                            <p class="text-mute mb-0">Total Clients</p>
+
+                                <p class="text-mute mb-0">Total Clients</p>
+
+                            </div>
+
+                            <div class="icon bg-primary-light h-60 w-60 rounded-circle">
+
+                                <i class="text-primary mr-0 fs-20 fa fa-area-chart"></i>
+
+                            </div>
 
                         </div>
-
-                        <div class="icon bg-primary-light h-60 w-60 rounded-circle">
-
-                            <i class="text-primary mr-0 fs-20 fa fa-area-chart"></i>
-
-                        </div>
-
-                    </div>
+                    </a>
 
                 </div>
 
@@ -373,24 +138,25 @@
                 </ul>
 
                 <div class="box-body pt-0">
+                    <a href="{{ route('admin.cas.index') }}">
+                        <div class="d-flex align-items-center justify-content-between">
 
-                    <div class="d-flex align-items-center justify-content-between">
+                            <div>
 
-                        <div>
-                            <a href="{{ route('admin.cas.index') }}">
                                 <h3 class="text-dark mb-0 fw-500">{{ $cas }}</h3>
-                            </a>
-                            <p class="text-mute mb-0">Total CAs</p>
+
+                                <p class="text-mute mb-0">Total CAs</p>
+
+                            </div>
+
+                            <div class="icon bg-info-light h-60 w-60 rounded-circle">
+
+                                <i class="text-info mr-0 fs-20 fa fa-user"></i>
+
+                            </div>
 
                         </div>
-
-                        <div class="icon bg-info-light h-60 w-60 rounded-circle">
-
-                            <i class="text-info mr-0 fs-20 fa fa-user"></i>
-
-                        </div>
-
-                    </div>
+                    </a>
 
                 </div>
 
@@ -427,24 +193,25 @@
                 </ul>
 
                 <div class="box-body pt-0">
+                    <a href="{{ route('admin.users.index') }}">
+                        <div class="d-flex align-items-center justify-content-between">
 
-                    <div class="d-flex align-items-center justify-content-between">
+                            <div>
 
-                        <div>
-                            <a href="{{ route('admin.users.index') }}">
                                 <h3 class="text-dark mb-0 fw-500">{{ $employee }}</h3>
-                            </a>
-                            <p class="text-mute mb-0">Total Employee</p>
+
+                                <p class="text-mute mb-0">Total Employee</p>
+
+                            </div>
+
+                            <div class="icon bg-warning-light h-60 w-60 rounded-circle">
+
+                                <i class="text-warning mr-0 fs-20 fa fa-money"></i>
+
+                            </div>
 
                         </div>
-
-                        <div class="icon bg-warning-light h-60 w-60 rounded-circle">
-
-                            <i class="text-warning mr-0 fs-20 fa fa-money"></i>
-
-                        </div>
-
-                    </div>
+                    </a>
 
                 </div>
 
@@ -507,13 +274,12 @@
         </div>
 
     </div>
-
-
+    <!-- Document List -->
     <div class="row">
         <div class="col-xxl-12 col-12">
             <div class="box">
                 <div class="box-header d-flex justify-content-between align-items-center">
-                    <h4 class="box-title">Client List</h4>
+                    <h4 class="box-title">Documents List</h4>
                 </div>
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-12">
@@ -522,32 +288,33 @@
                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                 <thead class="bg-primary">
                                     <tr class="">
-                                        <th>Name</th>
-                                        <th>MobileNo</th>
                                         <th>Company Name</th>
-                                        <th>User Type</th>
-                                        <th>Email</th>
-                                        <th>date</th>
+                                        <th>Uploaded By</th>
+                                        <th>Uploaded Date</th>
+                                        <th>Title</th>
+                                        <th>Batch No</th>
                                         <th>Image Count</th>
+                                        <th>Remarks</th>
                                         <th>File Download</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($clientLists as $user)
+                                    @forelse ($documentLists as $user)
                                     <tr>
-                                        <td>{{$user->FirstName}} {{ $user->LastName}}</td>
-                                        <td>{{$user->MobileNo}}</td>
-                                        <td><a href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a>
+                                        <td>{{$user->FirmName}}</td>
+                                        <td>{{$user->FirstName}}</td>
+                                        <td>{{ date('d/m/Y',
+                                            strtotime($user->created_at)) }}</a>
                                         </td>
-                                        <td>{{$user->UserType}}</td>
-                                        <td>{{$user->Email}}</td>
-                                        <td>{{$user->created_at}}</td>
+                                        <td>{{$user->Title}}</td>
+                                        <td>{{$user->BatchNo}}</td>
                                         <td>{{$user->ImageCount}}</td>
+                                        <td>{{$user->Remarks}}</td>
 
                                         <td>
                                             @if ($user->DocumentURL !='')
                                             <a
-                                                href="{{ route('download.file', ['user_id' => $user->id, 'filename' => $user->DocumentURL]) }}"><button
+                                                href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}"><button
                                                     type="button"
                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                         class="fa fa-file-pdf-o" aria-hidden="true"></i></button></a>
@@ -559,7 +326,155 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="100%" class="text-center text-muted py-3">No Users Found
+                                        <td colspan="100%" class="text-center text-muted py-3">No Data Found
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- End Document List -->
+
+    <!-- Other Document -->
+    <div class="row">
+        <div class="col-xxl-12 col-12">
+            <div class="box">
+                <div class="box-header d-flex justify-content-between align-items-center">
+                    <h4 class="box-title">Documents List</h4>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        <div class="table-responsive">
+                            <table id="clientTables"
+                                class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                <thead class="bg-primary">
+                                    <tr class="">
+                                        <th>Company Name</th>
+                                        <th>Uploaded By</th>
+                                        <th>Uploaded Date</th>
+                                        <th>Title</th>
+                                        <th>Batch No</th>
+                                        <th>Image Count</th>
+                                        <th>Remarks</th>
+                                        <th>File Download</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($otherDocumentLists as $user)
+                                    <tr>
+                                        <td>{{$user->FirmName}}</td>
+                                        <td>{{$user->FirstName}}</td>
+                                        <td>{{ date('d/m/Y',
+                                            strtotime($user->created_at)) }}</a>
+                                        </td>
+                                        <td>{{$user->Title}}</td>
+                                        <td>{{$user->BatchNo}}</td>
+                                        <td>{{$user->ImageCount}}</td>
+                                        <td>{{$user->Remarks}}</td>
+
+                                        <td>
+                                            @if ($user->DocumentURL !='')
+                                            <a
+                                                href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}"><button
+                                                    type="button"
+                                                    class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                        class="fa fa-file-pdf-o" aria-hidden="true"></i></button></a>
+                                            @else
+                                            -
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="100%" class="text-center text-muted py-3">No Data Found
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- End Other Document -->
+
+    <div class="row">
+        <div class="col-xxl-12 col-12">
+            <div class="box">
+                <div class="box-header d-flex justify-content-between align-items-center">
+                    <h4 class="box-title">Client List</h4>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        <div id="alert-container"></div>
+                        <div class="table-responsive">
+                            <table id="clientTables"
+                                class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                <thead class="bg-primary">
+                                    <tr class="">
+                                        <th>Client Name</th>
+                                        <th>Firm Name</th>
+                                        <th>Client Code</th>
+                                        <th>Business Category</th>
+                                        <th>Email</th>
+                                        <th>MobileNo</th>
+                                        <th>Address</th>
+                                        <th>Aadhar Number</th>
+                                        <th>GST Number</th>
+                                        <th>PAN Number</th>
+                                        <th>Firm Type</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($clientLists as $user)
+                                    <tr>
+                                        <td>{{$user->FirstName}} {{ $user->LastName}}</td>
+                                        <td><a href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a></td>
+                                        <td>{{$user->ClientCode}}
+                                        </td>
+                                        <td>{{$user->CategoryName}}</td>
+                                        <td>{{$user->Email}}</td>
+                                        <td>{{$user->MobileNo}}</td>
+                                        <td>{{$user->Address}}</td>
+                                        <td>{{$user->AadharNumber}}</td>
+                                        <td>{{$user->GSTNumber}}</td>
+                                        <td>{{$user->PANNumber}}</td>
+                                        <td>{{$user->FirmType}}</td>
+                                        <td>
+                                            <div class="col-xl-2 col-6 text-center align-self-center mb-20">
+                                                <button id="toggleApproveChang_{{$user->id}}"
+                                                    onclick="toggleApproveStatus({{$user->id}},{{ ($user->IsApproved == 0) ? '1' : '0' }})"
+                                                    type="button"
+                                                    class="btn btn-sm btn-toggle toggleApproveChang {{($user->IsApproved == 1) ? 'btn-success active' : 'btn-error'}}"
+                                                    data-bs-toggle="button" aria-pressed="true" autocomplete="off">
+                                                    <div class="handle"></div>
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="100%" class="text-center text-muted py-3">No Data Found
                                         </td>
                                     </tr>
                                     @endforelse
@@ -585,50 +500,61 @@
                 </div>
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        <div id="alert-containercas"></div>
                         <div class="table-responsive">
                             <table id="casTables"
                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                 <thead class="bg-primary">
                                     <tr class="">
-                                        <th>Name</th>
-                                        <th>MobileNo</th>
-                                        <th>Company Name</th>
-                                        <th>User Type</th>
+                                        <th>Client Name</th>
+                                        <th>Firm Name</th>
+                                        <th>Client Code</th>
+                                        <th>Business Category</th>
                                         <th>Email</th>
-                                        <th>date</th>
-                                        <th>Image Count</th>
-                                        <th>File Download</th>
+                                        <th>MobileNo</th>
+                                        <th>Address</th>
+                                        <th>Aadhar Number</th>
+                                        <th>GST Number</th>
+                                        <th>PAN Number</th>
+                                        <th>Firm Type</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
-                                @forelse ($casList as $user)
-                                <tr>
-                                    <td>{{$user->FirstName}} {{ $user->LastName}}</td>
-                                    <td>{{$user->MobileNo}}</td>
-                                    <td><a href="{{ route('admin.cas.show',$user->id) }}">{{$user->FirmName}}</a>
-                                    </td>
-                                    <td>{{$user->UserType}}</td>
-                                    <td>{{$user->Email}}</td>
-                                    <td>{{$user->created_at}}</td>
-                                    <td>{{$user->ImageCount}}</td>
-                                    <td>
-                                        @if ($user->DocumentURL !='')
-                                        <a
-                                            href="{{route('download.file', ['user_id' => $user->id, 'filename' => $user->DocumentURL])}}"><button
-                                                type="button"
-                                                class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                    class="fa fa-file-pdf-o" aria-hidden="true"></i></button></a>
-                                        @else
-                                        -
-                                        @endif
-                                    </td>
+                                <tbody>
+                                    @forelse ($casList as $user)
+                                    <tr>
+                                        <td>{{$user->FirstName}} {{ $user->LastName}}</td>
+                                        <td><a href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a></td>
+                                        <td>{{$user->ClientCode}}
+                                        </td>
+                                        <td>{{$user->CategoryName}}</td>
+                                        <td>{{$user->Email}}</td>
+                                        <td>{{$user->MobileNo}}</td>
+                                        <td>{{$user->Address}}</td>
+                                        <td>{{$user->AadharNumber}}</td>
+                                        <td>{{$user->GSTNumber}}</td>
+                                        <td>{{$user->PANNumber}}</td>
+                                        <td>{{$user->FirmType}}</td>
+                                        <td>
+                                            <div class="col-xl-2 col-6 text-center align-self-center mb-20">
+                                                <button id="toggleApproveChangcas_{{$user->id}}"
+                                                    onclick="toggleApproveStatuscas({{$user->id}},{{ ($user->IsApproved == 0) ? '1' : '0' }})"
+                                                    type="button"
+                                                    class="btn btn-sm btn-toggle toggleApproveChang {{($user->IsApproved == 1) ? 'btn-success active' : 'btn-error'}}"
+                                                    data-bs-toggle="button" aria-pressed="true" autocomplete="off">
+                                                    <div class="handle"></div>
+                                                </button>
+                                            </div>
+                                        </td>
 
-
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="100%" class="text-center text-muted py-3">No Users Found</td>
-                                </tr>
-                                @endforelse
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="100%" class="text-center text-muted py-3">No Data Found
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -640,5 +566,103 @@
 </section>
 
 <!-- /.content -->
+<script type="text/javascript">
+    function toggleApproveStatus(ID, status) {
+        if (status == 1) {
+            statuss = 0;
+            console.log('off');
 
+            $('#toggleApproveChang_' + ID).addClass('btn-success');
+            $('#toggleApproveChang_' + ID).removeClass('btn-error');
+        } else {
+            statuss = 1;
+            $('#toggleApproveChang_' + ID).removeClass('btn-success');
+            $('#toggleApproveChang_' + ID).addClass('btn-error');
+
+        }
+        $("#toggleApproveChang_" + ID).attr("onclick", "toggleApproveStatus(" + ID + ", " + statuss + ")");
+
+        $('#loader').show();
+        $('#loader').css('opacity', 1);
+        $.ajax({
+            url: "{{ route('admin.clientapprovetoggle.status') }}", // URL to your route
+            type: "POST",
+            data: {
+                id: ID, // Pass the user ID
+                Status: status, // Pass the user ID
+                _token: '{{ csrf_token() }}' // CSRF token for Laravel
+            },
+            success: function(response) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $("#alert-container").show();
+                $('#alert-container').html(`
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${response.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `);
+            },
+            error: function(xhr) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $('#alert-container').html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${xhr.responseJSON.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `);
+            }
+        });
+    }
+
+    function toggleApproveStatuscas(ID, status) {
+        if (status == 1) {
+            statuss = 0;
+            console.log('off');
+
+            $('#toggleApproveChangcas_' + ID).addClass('btn-success');
+            $('#toggleApproveChangcas_' + ID).removeClass('btn-error');
+        } else {
+            statuss = 1;
+            $('#toggleApproveChangcas_' + ID).removeClass('btn-success');
+            $('#toggleApproveChangcas_' + ID).addClass('btn-error');
+
+        }
+        $("#toggleApproveChangcas_" + ID).attr("onclick", "toggleApproveStatuscas(" + ID + ", " + statuss + ")");
+
+        $('#loader').show();
+        $('#loader').css('opacity', 1);
+        $.ajax({
+            url: "{{ route('admin.clientapprovetoggle.status') }}", // URL to your route
+            type: "POST",
+            data: {
+                id: ID, // Pass the user ID
+                Status: status, // Pass the user ID
+                _token: '{{ csrf_token() }}' // CSRF token for Laravel
+            },
+            success: function(response) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $("#alert-containercas").show();
+                $('#alert-containercas').html(`
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${response.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `);
+            },
+            error: function(xhr) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $('#alert-containercas').html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${xhr.responseJSON.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `);
+            }
+        });
+    }
+</script>
 @endsection

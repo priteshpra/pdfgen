@@ -62,6 +62,7 @@
                                         <th>GST Number</th>
                                         <th>PAN Number</th>
                                         <th>Firm Type</th>
+                                        <th>Business Category</th>
                                         <th>Status</th>
                                         <th>Is Approved</th>
                                         <th>
@@ -83,6 +84,7 @@
                                     <td>{{$user->GSTNumber}}</td>
                                     <td>{{$user->PANNumber}}</td>
                                     <td>{{$user->FirmType}}</td>
+                                    <td>{{$user->CategotyName}}</td>
                                     <td>
                                         <div class="col-xl-2 col-6 text-center align-self-center mb-20">
                                             <button id="toggleChang_{{$user->id}}"

@@ -36,6 +36,7 @@ class StoreCAsRequest extends FormRequest
             'GSTNumber' => 'required|alpha_num|size:15',
             'PANNumber' => 'required|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
             'FirmType' => 'required',
+            'BusinnessCatID' => 'required',
         ];
     }
 }
