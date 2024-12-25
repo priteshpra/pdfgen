@@ -19,134 +19,140 @@
                 @endcan
             </div>
             {{-- <div style="float: left"> <a href="{{ route('admin.company.create') }}" title="Create Company"
-            class="waves-effect waves-circle btn btn-circle btn-success btn-lg mb-5"><i class="fa fa-plus"
-                aria-hidden="true"></i></a>
-        </div> --}}
+                    class="waves-effect waves-circle btn btn-circle btn-success btn-lg mb-5"><i class="fa fa-plus"
+                        aria-hidden="true"></i></a>
+            </div> --}}
+        </div>
+
     </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div id="alert-container"></div>
+                        @if(Session::has('status-success'))
+                        <div class="alert alert-success">
+                            {{Session::get('status-success')}}
+                        </div>
+                        @endif
 
-</div>
-<section class="content">
-    <div class="row">
-        <div class="col-12">
-            <div class="box">
-                <div class="box-body">
-                    <div id="alert-container"></div>
-                    @if(Session::has('status-success'))
-                    <div class="alert alert-success">
-                        {{Session::get('status-success')}}
-                    </div>
-                    @endif
+                        @if(Session::has('status-info'))
+                        <div class="alert alert-info">
+                            {{Session::get('status-info')}}
+                        </div>
+                        @endif
 
-                    @if(Session::has('status-info'))
-                    <div class="alert alert-info">
-                        {{Session::get('status-info')}}
-                    </div>
-                    @endif
+                        @if(Session::has('status-warning'))
+                        <div class="alert alert-warning">
+                            {{Session::get('status-warning')}}
+                        </div>
+                        @endif
 
-                    @if(Session::has('status-warning'))
-                    <div class="alert alert-warning">
-                        {{Session::get('status-warning')}}
-                    </div>
-                    @endif
+                        @if(Session::has('status-danger'))
+                        <div class="alert alert-danger">
+                            {{Session::get('status-danger')}}
+                        </div>
+                        @endif
+                        <div class="table-responsive">
 
-                    @if(Session::has('status-danger'))
-                    <div class="alert alert-danger">
-                        {{Session::get('status-danger')}}
-                    </div>
-                    @endif
-                    <div class="table-responsive">
-
-                        <table id="clientTable"
-                            class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
-                            <thead class="bg-primary">
-                                <tr class="">
-                                    <th>Client Name</th>
-                                    <th>Firm Name</th>
-                                    <th>MobileNo</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
-                                    <th>Aadhar Number</th>
-                                    <th>GST Number</th>
-                                    <th>PAN Number</th>
-                                    <th>Firm Type</th>
-                                    <th>Business Category</th>
-                                    <th>Status</th>
-                                    <th>Is Approved</th>
-                                    <th>
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($users as $user)
-                                <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); 
+                            <table id="clientTable"
+                                class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                <thead class="bg-primary">
+                                    <tr class="">
+                                        <th>Client Name</th>
+                                        <th>Firm Name</th>
+                                        <th>MobileNo</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Aadhar Number</th>
+                                        <th>GST Number</th>
+                                        <th>PAN Number</th>
+                                        <th>Firm Type</th>
+                                        <th>Business Category</th>
+                                        <th>Device Type</th>
+                                        <th>Device Version</th>
+                                        <th>OS Version</th>
+                                        <th>Status</th>
+                                        <th>Is Approved</th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($users as $user)
+                                    <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count();
                                 ?>
-                                <tr>
-                                    <td>{{$user->FirstName}}</td>
-                                    <td><a href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a>
-                                    </td>
-                                    <td>{{$user->MobileNo}}</td>
-                                    <td>{{$user->Email}}</td>
-                                    <td>{{$user->Address}}</td>
-                                    <td>{{$user->AadharNumber}}</td>
-                                    <td>{{$user->GSTNumber}}</td>
-                                    <td>{{$user->PANNumber}}</td>
-                                    <td>{{$user->FirmType}}</td>
-                                    <td>{{$user->CategoryName}}</td>
-                                    <td>
-                                        <div class="col-xl-2 col-6 text-center align-self-center mb-20">
-                                            <button id="toggleChang_{{$user->id}}"
-                                                onclick="toggleStatus({{$user->id}},{{ ($user->Status == 1) ? '0' : '1' }})"
-                                                type="button"
-                                                class="btn btn-sm btn-toggle toggleChang {{($user->Status == 1) ? 'btn-success active' : 'btn-error'}}"
-                                                data-bs-toggle="button" aria-pressed="true" autocomplete="off">
-                                                <div class="handle"></div>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="col-xl-2 col-6 text-center align-self-center mb-20">
-                                            <button id="toggleApproveChang_{{$user->id}}"
-                                                onclick="toggleApproveStatus({{$user->id}},{{ ($user->IsApproved == 0) ? '1' : '0' }})"
-                                                type="button"
-                                                class="btn btn-sm btn-toggle toggleApproveChang {{($user->IsApproved == 1) ? 'btn-success active' : 'btn-error'}}"
-                                                data-bs-toggle="button" aria-pressed="true" autocomplete="off">
-                                                <div class="handle"></div>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <!-- @can('user_show')
+                                    <tr>
+                                        <td>{{$user->FirstName}}</td>
+                                        <td><a href="{{ route('admin.client.show',$user->id) }}">{{$user->FirmName}}</a>
+                                        </td>
+                                        <td>{{$user->MobileNo}}</td>
+                                        <td>{{$user->Email}}</td>
+                                        <td>{{$user->Address}}</td>
+                                        <td>{{$user->AadharNumber}}</td>
+                                        <td>{{$user->GSTNumber}}</td>
+                                        <td>{{$user->PANNumber}}</td>
+                                        <td>{{$user->FirmType}}</td>
+                                        <td>{{$user->CategoryName}}</td>
+                                        <td>{{$user->DeviceType}}</td>
+                                        <td>{{$user->APPVersion}}</td>
+                                        <td>{{$user->OSVersion}}</td>
+                                        <td>
+                                            <div class="col-xl-2 col-6 text-center align-self-center mb-20">
+                                                <button id="toggleChang_{{$user->id}}"
+                                                    onclick="toggleStatus({{$user->id}},{{ ($user->Status == 1) ? '0' : '1' }})"
+                                                    type="button"
+                                                    class="btn btn-sm btn-toggle toggleChang {{($user->Status == 1) ? 'btn-success active' : 'btn-error'}}"
+                                                    data-bs-toggle="button" aria-pressed="true" autocomplete="off">
+                                                    <div class="handle"></div>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-xl-2 col-6 text-center align-self-center mb-20">
+                                                <button id="toggleApproveChang_{{$user->id}}"
+                                                    onclick="toggleApproveStatus({{$user->id}},{{ ($user->IsApproved == 0) ? '1' : '0' }})"
+                                                    type="button"
+                                                    class="btn btn-sm btn-toggle toggleApproveChang {{($user->IsApproved == 1) ? 'btn-success active' : 'btn-error'}}"
+                                                    data-bs-toggle="button" aria-pressed="true" autocomplete="off">
+                                                    <div class="handle"></div>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <!-- @can('user_show')
                                                     <a href="{{ route('admin.client.show', $user->id) }}" class="btn btn-sm btn-success">Show</a>
                                                     @endcan -->
-                                        @can('user_edit')
-                                        <a href="{{ route('admin.client.edit', $user->id) }}"
-                                            class="btn btn-sm btn-warning">Edit</a>
-                                        @endcan
-                                        <!-- @can('user_delete')
+                                            @can('user_edit')
+                                            <a href="{{ route('admin.client.edit', $user->id) }}"
+                                                class="btn btn-sm btn-warning">Edit</a>
+                                            @endcan
+                                            <!-- @can('user_delete')
                                                 <form action="{{ route('admin.client.destroy', $user->id) }}" class="d-inline-block" method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger">Delete</button>
                                                 </form>
                                                 @endcan -->
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="100%" class="text-center text-muted py-3">No Users Found
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="100%" class="text-center text-muted py-3">No Users Found
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 </div>
 <script>
     function toggleStatus(ID, status) {

@@ -64,14 +64,13 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <h5>Name <span class="text-danger">*</span></h5>
+                                    <h5>First Name <span class="text-danger">*</span></h5>
                                     <div class="controls">
-                                        <input maxlength="50" type="text"
-                                            value="{{ $user->FirstName }} {{ $user->LastName }}" name="name" id="name"
-                                            class="form-control" required
-                                            data-validation-required-message="This field is required" placeholder="Name"
-                                            maxlength="10" tabindex="2">
-                                        @error('name')
+                                        <input maxlength="50" type="text" value="{{ $user->FirstName }}"
+                                            name="FirstName" id="FirstName" class="form-control" required
+                                            data-validation-required-message="This field is required"
+                                            placeholder="First Name" maxlength="10" tabindex="2">
+                                        @error('FirstName')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -83,10 +82,26 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <h5>Last Name <span class="text-danger">*</span></h5>
+                                    <div class="controls">
+                                        <input maxlength="50" type="text" value="{{ $user->LastName }}" name="LastName"
+                                            id="LastName" class="form-control" required
+                                            data-validation-required-message="This field is required"
+                                            placeholder="Last Name" maxlength="10" tabindex="2">
+                                        @error('LastName')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <h5>Phone <span class="text-danger">*</span></h5>
                                     <div class="controls">
-                                        <input maxlength="15" type="text" value="{{ $user->mobile_no }}"
-                                            name="mobile_no" id="mobile_no" class="form-control" required
+                                        <input maxlength="15" type="text" value="{{ $user->MobileNo }}" name="mobile_no"
+                                            id="mobile_no" class="form-control" required
                                             data-validation-required-message="This field is required"
                                             placeholder="Mobile Number" maxlength="50" tabindex="3">
                                         @error('mobile_no')

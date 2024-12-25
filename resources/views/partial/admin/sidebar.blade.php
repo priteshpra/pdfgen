@@ -165,22 +165,19 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class=" @if(request()->is('admin/reportclientwise') || request()->is('admin/reportclientwise/*')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark" href="{{ route('admin.reportclientwise.index') }}">
+                        <li
+                            class=" @if(request()->is('admin/reportclientwise/index') || request()->is('admin/reportclientwise/index')) active @endif">
+                            <a class="sidebar-link waves-effect waves-dark"
+                                href="{{ route('admin.reportclientwise.index') }}">
                                 <i class="icon-Commit" aria-hidden="true"></i>Client
-                                Wise Data
-                                <!-- <span class="pull-right-container">
-                                    <i class="fa fa-angle-right pull-right"></i>
-                                </span> -->
+                                Wise Report
                             </a>
                         </li>
-                        <li class=" @if(request()->is('admin/reportclientwise/monthly') || request()->is('admin/reportclientwise/monthly/')) active @endif">
-                            <a class="sidebar-link waves-effect waves-dark" href="{{ route('admin.reportclientwise.monthly') }}">
-                                <i class="icon-Commit" aria-hidden="true"></i>Monthly
-                                PDFs
-                                <!-- <span class="pull-right-container">
-                                    <i class="fa fa-angle-right pull-right"></i>
-                                </span> -->
+                        <li
+                            class=" @if(request()->is('admin/reportclientwiseother/index') || request()->is('admin/reportclientwiseother/*')) active @endif">
+                            <a class="sidebar-link waves-effect waves-dark"
+                                href="{{ route('admin.reportclientwiseother.index') }}">
+                                <i class="icon-Commit" aria-hidden="true"></i>Other Documents Report
                             </a>
                         </li>
                     </ul>
@@ -189,7 +186,7 @@
                     <a href="{{ URL('/admin/upload-images') }}">
                         <i span class="icon-Layout-grid"><span class="path1"></span><span class="path2"></span></i>
                         <span>PDF Generate</span>
-                        
+
                     </a>
                 </li> -->
             </ul>

@@ -63,6 +63,9 @@
                                         <th>PAN Number</th>
                                         <th>Firm Type</th>
                                         <th>Business Category</th>
+                                        <th>Device Type</th>
+                                        <th>Device Version</th>
+                                        <th>OS Version</th>
                                         <th>Status</th>
                                         <th>Is Approved</th>
                                         <th>
@@ -71,7 +74,7 @@
                                     </tr>
                                 </thead>
                                 @forelse ($users as $user)
-                                <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count(); 
+                                <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count();
                                 ?>
                                 <tr>
                                     <td>{{$user->FirstName}} {{$user->LastName}}</td>
@@ -85,6 +88,9 @@
                                     <td>{{$user->PANNumber}}</td>
                                     <td>{{$user->FirmType}}</td>
                                     <td>{{$user->CategotyName}}</td>
+                                    <td>{{$user->DeviceType}}</td>
+                                    <td>{{$user->APPVersion}}</td>
+                                    <td>{{$user->OSVersion}}</td>
                                     <td>
                                         <div class="col-xl-2 col-6 text-center align-self-center mb-20">
                                             <button id="toggleChang_{{$user->id}}"

@@ -334,6 +334,46 @@ $(function () {
         ]
     });
 
+    $('#clientTableReport').DataTable({
+        order: [[2, 'desc']],
+        paging: false,
+        info: false,
+        // pageLength: 25,
+        dom: 'Bfrtip',
+        // buttons: [
+        // 	'copy', 'csv', 'excel', 'pdf', 'print'
+        // ],
+        buttons: [
+            {
+                extend: 'copy',
+                text: 'copy',
+                title: 'Client_Data_' + currentDate // Set dynamic title for Copy
+            },
+            {
+                extend: 'csvHtml5',
+                text: 'csv',
+                title: 'Client_Data_' + currentDate // Set dynamic title for CSV
+            },
+            {
+                extend: 'excelHtml5',
+                text: 'excel',
+                title: 'Client_Data_' + currentDate // Set dynamic title for Excel
+            },
+            {
+                extend: 'pdfHtml5',
+                text: 'pdf',
+                title: 'Client_Data_' + currentDate, // Set dynamic title for PDF
+                orientation: 'portrait',
+                pageSize: 'A4'
+            },
+            {
+                extend: 'print',
+                text: 'print',
+                title: 'Client_Data_' + currentDate // Set dynamic title for Print
+            }
+        ]
+    });
+
     $('#casTable').DataTable({
         order: [[9, 'desc']],
         pageLength: 25,

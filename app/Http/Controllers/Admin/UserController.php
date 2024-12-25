@@ -14,6 +14,7 @@ use App\Http\Requests\UpdateUserPhotoRequest;
 use App\Models\UserDevices;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -27,7 +28,23 @@ class UserController extends Controller
         abort_if(Gate::denies('users_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         // $users = User::with('role')->where('UserType', '2')->paginate(25)->appends($request->query());
-        $users = User::with('role')->where('UserType', '2')->orderBy('id', 'desc')->get();
+        $users = User::select(
+            'id',
+            'FirstName',
+            'FirstName',
+            'LastName',
+            'MobileNo',
+            'RegistrationType',
+            'CompanyID',
+            'Email',
+            'UserType',
+            'Status',
+            'IsApproved',
+            'Address',
+            DB::raw('(SELECT device_type FROM user_devices WHERE user_devices.user_id = id ORDER BY user_devices.created_at DESC LIMIT 1) AS DeviceType'),
+            DB::raw('(SELECT os_version FROM user_devices WHERE user_devices.user_id = id ORDER BY user_devices.created_at DESC LIMIT 1) AS OSVersion'),
+            DB::raw('(SELECT app_version FROM user_devices WHERE user_devices.user_id = id ORDER BY user_devices.created_at DESC LIMIT 1) AS OSVersion'),
+        )->with('role')->where('UserType', '2')->orderBy('id', 'desc')->get();
         return view('admin.users.index', compact('users'));
     }
 

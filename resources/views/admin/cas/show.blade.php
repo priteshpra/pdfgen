@@ -31,26 +31,26 @@
                                         class="hidden-xs-down">Profile</span></a> </li>
 
                             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#profile2"
-                                    role="tab"><span class="hidden-sm-up"><i class="ion-person"></i></span> <span
+                                    role="tab"><span class="hidden-sm-up"><i class="ion-code-working"></i></span> <span
                                         class="hidden-xs-down">Change Password</span></a> </li>
 
                             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#employee"
-                                    role="tab"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span
-                                        class="hidden-xs-down">Employees</span></a> </li>
+                                    role="tab"><span class="hidden-sm-up"><i class="ion-person-stalker"></i></span>
+                                    <span class="hidden-xs-down">Employees</span></a> </li>
 
                             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#scanneddocuments"
-                                    role="tab"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span
+                                    role="tab"><span class="hidden-sm-up"><i class="ion-document-text"></i></span> <span
                                         class="hidden-xs-down">Scanned Documents</span></a> </li>
 
                             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#otherdocuments"
-                                    role="tab"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span
+                                    role="tab"><span class="hidden-sm-up"><i class="ion-document"></i></span> <span
                                         class="hidden-xs-down">Other Documents</span></a> </li>
 
                             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#notifications"
-                                    role="tab"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span
+                                    role="tab"><span class="hidden-sm-up"><i class="ion-email-unread"></i></span> <span
                                         class="hidden-xs-down">Notifications</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#devices"
-                                    role="tab"><span class="hidden-sm-up"><i class="ion-home"></i></span> <span
+                                    role="tab"><span class="hidden-sm-up"><i class="ion-iphone"></i></span> <span
                                         class="hidden-xs-down">Devices</span></a>
                             </li>
                         </ul>
@@ -369,8 +369,8 @@
                                                                         <th>Employee Name</th>
                                                                         <th>Page Count</th>
                                                                         <th>Remarks</th>
-                                                                        <!-- <th>Status</th>
-                                                                        <th>Actions</th> -->
+                                                                        <!-- <th>Status</th> -->
+                                                                        <th>Download</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -401,11 +401,10 @@
                                                                                     <div class="handle"></div>
                                                                                 </button>
                                                                             </div>
-                                                                        </td>
+                                                                        </td> -->
                                                                         <td>
                                                                             @if ($scanDocuments->DocumentURL !='')
-                                                                            <a
-                                                                                href="{{route('download.file', ['user_id' => $scanDocuments->UserID, 'filename' => $scanDocuments->DocumentURL])}}"><button
+                                                                            <a href="{{$scanDocuments->DocumentURL}}"><button
                                                                                     type="button"
                                                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                                                         class="fa fa-file-pdf-o"
@@ -413,7 +412,7 @@
                                                                             @else
                                                                             -
                                                                             @endif
-                                                                        </td> -->
+                                                                        </td>
                                                                     </tr>
                                                                     @empty
                                                                     <tr>
@@ -485,8 +484,8 @@
                                                                         <th>Upload Date</th>
                                                                         <th>Employee Name</th>
                                                                         <th>Remarks</th>
-                                                                        <!-- <th>Status</th>
-                                                                        <th>Actions</th> -->
+                                                                        <!-- <th>Status</th> -->
+                                                                        <th>Download</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -514,11 +513,11 @@
                                                                                     <div class="handle"></div>
                                                                                 </button>
                                                                             </div>
-                                                                        </td>
+                                                                        </td> -->
                                                                         <td>
                                                                             @if ($otherDocument->DocumentURL !='')
                                                                             <a
-                                                                                href="{{route('download.file', ['user_id' => $otherDocument->UserID, 'filename' => $otherDocument->DocumentURL])}}"><button
+                                                                                href="{{ $$otherDocument->DocumentURL }}"><button
                                                                                     type="button"
                                                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                                                         class="fa fa-file-pdf-o"
@@ -526,7 +525,7 @@
                                                                             @else
                                                                             -
                                                                             @endif
-                                                                        </td> -->
+                                                                        </td>
                                                                     </tr>
                                                                     @empty
                                                                     <tr>
@@ -637,7 +636,8 @@
                                                                         <th>Device Type</th>
                                                                         <th>Device Model Name</th>
                                                                         <th>Device Version</th>
-                                                                        <th>Login Date</th>
+                                                                        <th>OS Version</th>
+                                                                        <th>Login Date Time</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -645,8 +645,9 @@
                                                                     <tr>
                                                                         <td>{{ $deviceList->device_type }}</td>
                                                                         <td>{{ $deviceList->device_model_name }}</td>
+                                                                        <td>{{ $deviceList->app_version }}</td>
                                                                         <td>{{ $deviceList->os_version }}</td>
-                                                                        <td>{{ date('d/m/Y',
+                                                                        <td>{{ date('d/m/Y h:i:s',
                                                                             strtotime($deviceList->created_at))
                                                                             }}</td>
 

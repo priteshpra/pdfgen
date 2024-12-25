@@ -58,6 +58,9 @@
                                         <th>MobileNo</th>
                                         <th>Address</th>
                                         <th>Registration Type</th>
+                                        <th>Device Type</th>
+                                        <th>Device Version</th>
+                                        <th>OS Version</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -74,6 +77,9 @@
                                         <td>{{$user->MobileNo}}</td>
                                         <td>{{$user->Address}}</td>
                                         <td>{{$user->RegistrationType}}</td>
+                                        <td>{{$user->DeviceType}}</td>
+                                        <td>{{$user->APPVersion}}</td>
+                                        <td>{{$user->OSVersion}}</td>
                                         <td>
                                             <div class="col-xl-2 col-6 text-center align-self-center mb-20">
                                                 <button id="toggleChang_{{$user->id}}"
@@ -144,6 +150,7 @@
                 },
                 success: function(response) {
                     $('#loader').hide();
+                    $('#alert-container').show();
                     $('#loader').css('opacity',0);
                     $('#alert-container').html(`
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -154,6 +161,7 @@
                 },
                 error: function(xhr) {
                     $('#loader').hide();
+                    $('#alert-container').show();
                     $('#loader').css('opacity',0);
                     $('#alert-container').html(`
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">

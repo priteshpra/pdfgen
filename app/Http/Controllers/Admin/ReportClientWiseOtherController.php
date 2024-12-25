@@ -27,7 +27,7 @@ use App\Models\UserDevices;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class ReportClientWiseController extends Controller
+class ReportClientWiseOtherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,9 +41,9 @@ class ReportClientWiseController extends Controller
         $users = User::select(
             'users.*',
             'company.*',
-            DB::raw('(SELECT COUNT(scanned_documents.ScanneddocumentID)
-                    FROM scanned_documents
-                    WHERE scanned_documents.CompanyID = users.CompanyID) as document_count')
+            DB::raw('(SELECT COUNT(otherdocuments.OtherdocumentsID)
+                    FROM otherdocuments
+                    WHERE otherdocuments.CompanyID = users.CompanyID) as document_count')
         )
             ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
             ->with('role')
@@ -66,7 +66,7 @@ class ReportClientWiseController extends Controller
         $country = Country::all();
         $city = City::all();
         $state = State::all();
-        return view('admin.reportclients.index', compact('users', 'country', 'city', 'state', 'clients', 'selectedClientId'));
+        return view('admin.reportclients.otherdoc', compact('users', 'country', 'city', 'state', 'clients', 'selectedClientId'));
     }
 
     public function filter(Request $request)
@@ -86,18 +86,18 @@ class ReportClientWiseController extends Controller
         return User::select(
             'users.*',
             'company.FirmName',
-            'scanned_documents.Title',
-            'scanned_documents.created_at',
-            'scanned_documents.BatchNo',
-            'scanned_documents.Remarks',
-            DB::raw('(SELECT SUM(scanned_documents.ImageCount)
-              FROM scanned_documents
-              WHERE scanned_documents.CompanyID = users.CompanyID) as total_image_count')
+            'otherdocuments.Title',
+            'otherdocuments.created_at',
+            'otherdocuments.BatchNo',
+            'otherdocuments.Remarks',
+            DB::raw('(SELECT SUM(otherdocuments.ImageCount)
+              FROM otherdocuments
+              WHERE otherdocuments.CompanyID = users.CompanyID) as total_image_count')
         )
             ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
-            ->leftJoin('scanned_documents', 'users.CompanyID', '=', 'scanned_documents.CompanyID')
-            ->where('scanned_documents.CompanyID', $CompanyID)
-            ->where('scanned_documents.UserID', $client_user_id)
+            ->leftJoin('otherdocuments', 'users.CompanyID', '=', 'otherdocuments.CompanyID')
+            ->where('otherdocuments.CompanyID', $CompanyID)
+            ->where('otherdocuments.UserID', $client_user_id)
             ->whereBetween('users.created_at', [$fromDate, $toDate])
             ->orderBy('users.id', 'desc')->get();
         // dd(DB::getQueryLog());
@@ -113,9 +113,9 @@ class ReportClientWiseController extends Controller
         $users = User::select(
             'users.*',
             'company.*',
-            DB::raw('(SELECT COUNT(scanned_documents.ScanneddocumentID)
-                    FROM scanned_documents
-                    WHERE scanned_documents.CompanyID = users.CompanyID) as document_count')
+            DB::raw('(SELECT COUNT(otherdocuments.OtherdocumentsID)
+                    FROM otherdocuments
+                    WHERE otherdocuments.CompanyID = users.CompanyID) as document_count')
         )
             ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')->with('role')->where('users.UserType', '3')->whereNotNull('users.CompanyID')->whereBetween('users.created_at', [$currentDate, $monthEndDate])->orderBy('users.id', 'desc')->get();
         $country = Country::all();

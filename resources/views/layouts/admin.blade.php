@@ -122,7 +122,8 @@
                         ->get();
                         @endphp
                         <li class="dropdown notifications-menu">
-                            <a href="#" class="waves-effect waves-light dropdown-toggle" data-bs-toggle="dropdown" title="Notifications">
+                            <a href="#" class="waves-effect waves-light dropdown-toggle" data-bs-toggle="dropdown"
+                                title="Notifications">
                                 <i class="icon-Notifications"><span class="path1"></span><span class="path2"></span></i>
                             </a>
                             <ul class="dropdown-menu animated bounceIn">
@@ -142,11 +143,11 @@
                                     <ul class="menu sm-scrol">
                                         <?php if ($notiLists) {
                                             foreach ($notiLists as $key => $value) { ?>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-users text-info"></i> {{$value->Description}}
-                                                    </a>
-                                                </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-users text-info"></i> {{$value->Description}}
+                                            </a>
+                                        </li>
                                         <?php }
                                         } ?>
                                     </ul>
@@ -177,8 +178,7 @@
 
                                     <a class="dropdown-item"
                                         href="{{ route('admin.profile.edit', Auth()->user()->id) }}"><i
-                                            class="ti-user text-muted me-2"></i> {{
-                                        Auth()->user()->FirstName }}</a>
+                                            class="ti-user text-muted me-2"></i> Profile</a>
                                     @can('roles_access')
                                     <a class="dropdown-item" href="{{ route('admin.roles.index') }}"><i
                                             class="ti-wallet text-muted me-2"></i> Roles</a>

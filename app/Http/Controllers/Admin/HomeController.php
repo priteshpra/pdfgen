@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\OtherDocument;
 use App\Models\Scandocument;
 use App\Models\User;
+use App\Models\UserDevices;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -33,7 +35,7 @@ class HomeController extends Controller
         $cas = User::where(['users.Status' => '1', 'UserType' => '4'])->count();
         $documents = Scandocument::where(['Status' => '1'])->count();
         $employeeLists = User::with('role')->where('UserType', '2')->orderBy('id', 'desc')->limit('5')->get();
-        DB::enableQueryLog();
+
         $clientLists = User::select(
             'users.id',
             'users.FirstName',
@@ -43,6 +45,7 @@ class HomeController extends Controller
             'users.Email',
             'company.ClientCode',
             'company.Address',
+            'users.id AS UserID',
             'company.FirmName',
             'company.AadharNumber',
             'company.GSTNumber',
@@ -56,7 +59,7 @@ class HomeController extends Controller
             ->whereNotNull('users.CompanyID')
             ->whereDate('users.created_at', Carbon::now()->toDateString())
             ->orderBy('users.id', 'desc')->get();
-        // dd(DB::getQueryLog());
+
         $casList = User::select(
             'users.id',
             'users.FirstName',
@@ -69,6 +72,7 @@ class HomeController extends Controller
             'company.FirmName',
             'company.AadharNumber',
             'company.GSTNumber',
+            'users.id AS UserID',
             'company.PANNumber',
             'company.FirmType',
             'users.IsApproved',
@@ -80,41 +84,94 @@ class HomeController extends Controller
             ->orderBy('users.id', 'desc')
             ->whereDate('users.created_at', Carbon::now()->toDateString())
             ->get();
-
+        // DB::enableQueryLog();
         $documentLists = Scandocument::select(
             'users.FirstName',
             'users.FirstName',
             'users.LastName',
             'company.FirmName',
-            'scanned_documents.CountryID',
+            'scanned_documents.CompanyID',
             'scanned_documents.Title',
             'scanned_documents.BatchNo',
+            'users.id AS UserID',
             'scanned_documents.ImageCount',
             'scanned_documents.Remarks',
             'scanned_documents.DocumentURL',
             'scanned_documents.CreatedDate',
-        )
-            ->leftJoin('company', 'scanned_documents.CompanyID', '=', 'company.CompanyID')
-            ->leftJoin('users', 'users.id', '=', 'scanned_documents.CreatedBy')
-            ->where(['scanned_documents.Status' => '1'])->orderBy('scanned_documents.id', 'DESC')->limit(20);
-
+        )->leftJoin('company', 'scanned_documents.CompanyID', '=', 'company.CompanyID')
+            ->leftJoin('users', 'users.id', '=', 'scanned_documents.UserID')
+            ->where('scanned_documents.Status', '1')
+            ->orderBy('scanned_documents.ScanneddocumentID', 'DESC')
+            ->limit(20)->get();
+        // dd(DB::getQueryLog());
         $otherDocumentLists = OtherDocument::select(
             'users.FirstName',
             'users.FirstName',
             'users.LastName',
             'company.FirmName',
-            'otherdocuments.CountryID',
+            'otherdocuments.CompanyID',
             'otherdocuments.Title',
             'otherdocuments.BatchNo',
+            'users.id AS UserID',
             'otherdocuments.ImageCount',
             'otherdocuments.Remarks',
             'otherdocuments.DocumentURL',
             'otherdocuments.CreatedDate',
         )
             ->leftJoin('company', 'otherdocuments.CompanyID', '=', 'company.CompanyID')
-            ->leftJoin('users', 'users.id', '=', 'otherdocuments.CreatedBy')
-            ->where(['otherdocuments.Status' => '1'])->orderBy('otherdocuments.id', 'DESC')->limit(20);
+            ->leftJoin('users', 'users.id', '=', 'otherdocuments.UserID')
+            ->where(['otherdocuments.Status' => '1'])->orderBy('otherdocuments.OtherdocumentsID', 'DESC')->limit(20)->get();
 
-        return view('admin.home', compact('employee', 'clients', 'cas', 'documents', 'employeeLists', 'clientLists', 'casList', 'documentLists', 'otherDocumentLists'));
+        $androidCount = UserDevices::where('device_type', 'Android')->groupBy('user_id')->count();
+        $iosCount = UserDevices::where('device_type', 'iOS')->groupBy('user_id')->count();
+
+        $startDate = Carbon::now()->startOfMonth()->toDateString();
+        $endDate = Carbon::now()->toDateString();
+
+        $data = Scandocument::whereBetween('created_at', [$startDate, $endDate])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+        $labels = $data->pluck('date')->toArray();
+        $counts = $data->pluck('count')->toArray();
+        // dd($labels);
+        return view('admin.home', compact('employee', 'clients', 'cas', 'documents', 'employeeLists', 'clientLists', 'casList', 'documentLists', 'otherDocumentLists', 'androidCount', 'iosCount', 'labels', 'counts'));
+    }
+
+    public function fetchChartData(Request $request)
+    {
+        // Default to the current month's data
+        $startDate = $request->input('start_date') ?? Carbon::now()->startOfMonth()->toDateString();
+        $endDate = $request->input('end_date') ?? Carbon::now()->toDateString();
+        DB::enableQueryLog();
+        // Fetch data grouped by day
+        $data = Scandocument::whereBetween('created_at', [$startDate, $endDate])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+        // dd(DB::getQueryLog());
+        return response()->json([
+            'labels' => $data->pluck('date'),
+            'counts' => $data->pluck('count'),
+        ]);
+    }
+
+    public function getDocumentUploadData(Request $request)
+    {
+        $startDate = Carbon::parse($request->start_date ?? Carbon::now()->startOfMonth());
+        $endDate = Carbon::now(); // Today
+        DB::enableQueryLog();
+        // Query the document upload counts by client and day
+        $data = DB::table('scanned_documents')
+            ->select(DB::raw('DATE(scanned_documents.created_at) as date'), 'scanned_documents.CompanyID', 'company.FirmName', DB::raw('count(*) as upload_count'))
+            ->leftJoin('company', 'scanned_documents.CompanyID', '=', 'company.CompanyID')
+            ->whereBetween('scanned_documents.created_at', [$startDate, $endDate])
+            ->groupBy(DB::raw('DATE(scanned_documents.created_at)'), 'scanned_documents.CompanyID', 'company.FirmName')
+            ->orderBy('date')
+            ->get();
+        // dd(DB::getQueryLog());
+        return response()->json($data);
     }
 }

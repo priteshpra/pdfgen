@@ -18,6 +18,8 @@ use App\Http\Controllers\Admin\ScandocumentController;
 use App\Http\Controllers\Admin\OtherdocumentController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ConfigurationController;
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\ReportClientWiseOtherController;
 use App\Models\Company;
 use App\Models\User;
 
@@ -69,6 +71,8 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::resource('/otherdocument', 'OtherdocumentController');
     Route::resource('/profile', 'ProfileController');
     Route::resource('/configuration', 'ConfigurationController');
+    Route::resource('/reports', 'ReportClientWiseController');
+    Route::resource('/otherreports', 'ReportClientWiseOtherController');
 
     Route::get('/generate-pdf', [App\Http\Controllers\Admin\PDFController::class, 'generatePDF']);
     Route::get('/reports/monthly', [ReportClientWiseController::class, 'monthly'])->name('reportclientwise.monthly');
@@ -93,9 +97,6 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::post('/otherdoc-toggle-status', [CasController::class, 'otherDocToggleStatus'])->name('otherdoctoggle.status');
     Route::post('/scandoc-toggle-status', [CasController::class, 'scanDocToggleStatus'])->name('scandoctoggle.status');
 
-    // Route::get('/admin/company/create/{userId}', [CompanyController::class, 'create'])->name('admin.company.create');
-
-    // Route::post('/search', 'CityController');
 
     Route::get('download/{user_id}/{filename}', function ($user_id, $filename) {
         $UserData = User::find($user_id)->CompanyID;
@@ -108,5 +109,13 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
         return response()->download($path);
     })->name('download.file');
 
-    // Route::get('pdf/{user_id}/{filename}', [PDFController::class, 'downloadFile'])->name('pdf.file');
+    Route::get('/documents/chart-data', [HomeController::class, 'fetchChartData'])->name('documents.chart-data');
+    Route::get('/documents/line-chart-data', [HomeController::class, 'getDocumentUploadData'])->name('documents.line-chart-data');
+
+
+    Route::get('admin/reports', [ReportClientWiseController::class, 'index'])->name('reportclientwise.index');
+    Route::get('admin/reports/filter', [ReportClientWiseController::class, 'filter'])->name('reportclientwise.filter');
+
+    Route::get('admin/otherreports', [ReportClientWiseOtherController::class, 'index'])->name('reportclientwiseother.index');
+    Route::get('admin/otherreports/filter', [ReportClientWiseOtherController::class, 'filter'])->name('reportclientwiseother.filter');
 });

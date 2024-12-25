@@ -34,14 +34,16 @@ class ProfileController extends Controller
     {
         // Validate the input
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'FirstName' => 'required|string|max:255',
+            'LastName' => 'required|string|max:255',
             'mobile_no' => 'required|numeric|digits:10',
         ]);
 
         // Update the authenticated user's profile
         $user = User::findOrFail($id);
-        $user->mobile_no = $request->mobile_no;
-        $user->name = $request->name;
+        $user->MobileNo = $request->mobile_no;
+        $user->FirstName = $request->FirstName;
+        $user->LastName = $request->LastName;
         $user->save();
 
         // Return response

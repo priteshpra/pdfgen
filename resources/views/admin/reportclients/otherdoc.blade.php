@@ -6,8 +6,8 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <a href="{{ route('admin.reportclientwise.index') }}">
-                    <h3 class="page-title">REPORTS CLIENTS</h3>
+                <a href="{{ route('admin.reportclientwiseother.index') }}">
+                    <h3 class="page-title">OTHER DOCUMENTS REPORTS FOR CLIENTS WISE</h3>
                 </a>
             </div>
             <div class="pull-right">
@@ -121,7 +121,7 @@
             let toDate = $('#to_date').val();
 
             $.ajax({
-                url: "{{ route('admin.reportclientwise.filter') }}",
+                url: "{{ route('admin.reportclientwiseother.filter') }}",
                 method: "GET",
                 data: {
                     CompanyID: clientId,

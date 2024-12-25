@@ -69,6 +69,9 @@ class CasController extends Controller
             'businesscategory.CategoryName',
             'businesscategory.BusinessCategoryID',
             DB::raw('CASE WHEN users.UserType IN (3, 4) THEN company.Address ELSE users.Address END AS Address'),
+            DB::raw('(SELECT device_type FROM user_devices WHERE user_devices.user_id = users.id ORDER BY user_devices.created_at DESC LIMIT 1) AS DeviceType'),
+            DB::raw('(SELECT os_version FROM user_devices WHERE user_devices.user_id = users.id ORDER BY user_devices.created_at DESC LIMIT 1) AS OSVersion'),
+            DB::raw('(SELECT app_version FROM user_devices WHERE user_devices.user_id = users.id ORDER BY user_devices.created_at DESC LIMIT 1) AS OSVersion'),
         )->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
             ->leftJoin('businesscategory', 'businesscategory.BusinessCategoryID', '=', 'company.BusinnessCatID')
             ->where('users.UserType', '4')->whereNotNull('users.CompanyID')->orderBy('users.id', 'desc')->get();
