@@ -46,11 +46,12 @@ class ReportClientWiseOtherController extends Controller
                     WHERE otherdocuments.CompanyID = users.CompanyID) as document_count')
         )
             ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
-            ->with('role')
-            ->where('users.UserType', '3')
+            // ->with('role')
+            // ->where('users.UserType', '3')
             ->whereNotNull('users.CompanyID')
             ->whereDate('users.created_at', '=', $currentDate)
             ->orderBy('users.id', 'desc')->get();
+
         $clients = Company::select(
             'users.FirstName',
             'users.LastName',
@@ -59,6 +60,7 @@ class ReportClientWiseOtherController extends Controller
             'users.id',
         )
             ->leftJoin('users', 'users.CompanyID', '=', 'company.CompanyID')->get();  // Get all clients
+
         $selectedClientId = $clients->first()->CompanyID;
         $selectedUserId = $clients->first()->id;
 
@@ -82,9 +84,12 @@ class ReportClientWiseOtherController extends Controller
 
     private function getUsers($CompanyID, $client_user_id, $fromDate, $toDate)
     {
+        $fromDate = Carbon::createFromFormat('Y-m-d', $fromDate)->startOfDay(); // Start of the day
+        $toDate = Carbon::createFromFormat('Y-m-d', $toDate)->endOfDay();
         DB::enableQueryLog();
         return User::select(
-            'users.*',
+            'users.FirstName',
+            'users.LastName',
             'company.FirmName',
             'otherdocuments.Title',
             'otherdocuments.created_at',
@@ -98,8 +103,8 @@ class ReportClientWiseOtherController extends Controller
             ->leftJoin('otherdocuments', 'users.CompanyID', '=', 'otherdocuments.CompanyID')
             ->where('otherdocuments.CompanyID', $CompanyID)
             ->where('otherdocuments.UserID', $client_user_id)
-            ->whereBetween('users.created_at', [$fromDate, $toDate])
-            ->orderBy('users.id', 'desc')->get();
+            ->whereBetween('otherdocuments.created_at', [$fromDate, $toDate])
+            ->orderBy('otherdocuments.OtherdocumentsID', 'desc')->get();
         // dd(DB::getQueryLog());
     }
 

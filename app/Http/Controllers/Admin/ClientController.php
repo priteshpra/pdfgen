@@ -142,8 +142,8 @@ class ClientController extends Controller
         $employees = User::where('CompanyID', $user->CompanyID)->where('UserType', '3')->get()->toArray();
         $employeesNameDatas = array_column($employees, 'FirstName', 'id');
         $notificationList =
-            Notification::where('UserID', $id)->get();
-        $deviceList = UserDevices::where('user_id', $id)->get();
+            Notification::where('UserID', $id)->orderBy('NotificationID', 'DESC')->get();
+        $deviceList = UserDevices::where('user_id', $id)->orderBy('id', 'DESC')->get();
 
         return view('admin.clients.show', compact('user', 'city', 'state', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id', 'deviceList', 'employeesNameDatas'));
     }

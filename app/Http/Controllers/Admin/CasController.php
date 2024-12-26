@@ -141,9 +141,9 @@ class CasController extends Controller
         $otherDocuments = OtherDocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->get();
         $employees = User::where('CompanyID', $user->CompanyID)->where('UserType', '4')->get()->toArray();
         $employeesNameDatas = array_column($employees, 'FirstName', 'id');
-        $notificationList = Notification::where('UserID', $id)->get();
+        $notificationList = Notification::where('UserID', $id)->orderBy('NotificationID', 'DESC')->get();
         // dd($scanDocuments);
-        $deviceList = UserDevices::where('user_id', $id)->get();
+        $deviceList = UserDevices::where('user_id', $id)->orderBy('id', 'DESC')->get();
         return view('admin.cas.show', compact('user', 'city', 'state', 'country', 'employee', 'scanDocuments', 'employeesNameData', 'otherDocuments', 'notificationList', 'id', 'deviceList', 'employeesNameDatas'));
     }
 

@@ -365,7 +365,7 @@
                                                                     <tr>
                                                                         <th>Title</th>
                                                                         <th>Batch No.</th>
-                                                                        <th>Upload Date</th>
+                                                                        <th>Upload Date Time</th>
                                                                         <th>Employee Name</th>
                                                                         <th>Page Count</th>
                                                                         <th>Remarks</th>
@@ -379,7 +379,7 @@
                                                                     <tr>
                                                                         <td>{{ $scanDocuments->Title }}</td>
                                                                         <td>{{ $scanDocuments->BatchNo }}</td>
-                                                                        <td>{{ date('d/m/Y',
+                                                                        <td>{{ date('d/m/Y h:i:s A',
                                                                             strtotime($scanDocuments->created_at))
                                                                             }}</td>
                                                                         <td>{{
@@ -387,7 +387,9 @@
                                                                             : '-'
                                                                             }}</td>
                                                                         <td>{{ $scanDocuments->ImageCount }}</td>
-                                                                        <td>{{ $scanDocuments->Remarks }}</td>
+                                                                        <td>
+                                                                            <div class="word-wrap">{{ $scanDocuments->Remarks }}</div>
+                                                                        </td>
                                                                         <!-- <td>
                                                                             <div
                                                                                 class="col-xl-2 col-6 text-center align-self-center mb-20">
@@ -483,7 +485,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Title</th>
-                                                                        <th>Upload Date</th>
+                                                                        <th>Upload Date Time</th>
                                                                         <th>Employee Name</th>
                                                                         <th>Remarks</th>
                                                                         <!-- <th>Status</th>-->
@@ -494,13 +496,15 @@
                                                                     @forelse ($otherDocuments as $otherDocument)
                                                                     <tr>
                                                                         <td>{{ $otherDocument->Title }}</td>
-                                                                        <td>{{ date('d/m/Y',
+                                                                        <td>{{ date('d/m/Y h:i:s A',
                                                                             strtotime($otherDocument->created_at))
                                                                             }}</td>
                                                                         <td>{{
                                                                             isset($employeesNameDatas[$otherDocument->UserID])?$employeesNameDatas[$otherDocument->UserID]:'-'
                                                                             }}</td>
-                                                                        <td>{{ $otherDocument->Remarks }}</td>
+                                                                        <td>
+                                                                            <div class="word-wrap">{{ $otherDocument->Remarks }}</div>
+                                                                        </td>
                                                                         <!-- <td>
                                                                             <div
                                                                                 class="col-xl-2 col-6 text-center align-self-center mb-20">
@@ -565,7 +569,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Title</th>
-                                                                        <th>Notifications Date</th>
+                                                                        <th>Notifications Date Time</th>
                                                                         <!-- <th>Status</th> -->
                                                                         {{-- <th>Download</th> --}}
                                                                     </tr>
@@ -574,7 +578,7 @@
                                                                     @forelse ($notificationList as $notificationList)
                                                                     <tr>
                                                                         <td>{{ $notificationList->Description }}</td>
-                                                                        <td>{{ date('d/m/Y',
+                                                                        <td>{{ date('d/m/Y h:i:s A',
                                                                             strtotime($notificationList->created_at))
                                                                             }}</td>
                                                                         <!-- <td>
@@ -649,7 +653,7 @@
                                                                         <td>{{ $deviceList->device_model_name }}</td>
                                                                         <td>{{ $deviceList->app_version }}</td>
                                                                         <td>{{ $deviceList->os_version }}</td>
-                                                                        <td>{{ date('d/m/Y h:i:s',
+                                                                        <td>{{ date('d/m/Y h:i:s A',
                                                                             strtotime($deviceList->created_at))
                                                                             }}</td>
 

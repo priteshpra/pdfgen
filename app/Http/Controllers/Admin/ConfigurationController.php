@@ -35,8 +35,8 @@ class ConfigurationController extends Controller
     {
         // Validate the input
         $validated = $request->validate([
-            'IosAppVersion' => 'required|string|max:255',
-            'AndroidAppVersion' => 'required|string|max:255',
+            'IosAppVersion' => 'required|string|max:10',
+            'AndroidAppVersion' => 'required|string|max:10',
             'SupportEmail' => 'required|email',
         ]);
 

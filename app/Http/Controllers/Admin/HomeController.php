@@ -135,7 +135,11 @@ class HomeController extends Controller
             ->get();
         $labels = $data->pluck('date')->toArray();
         $counts = $data->pluck('count')->toArray();
-        // dd($labels);
+        if (empty($labels)) {
+            $labels = ['No Data'];
+            $counts = [0];
+        }
+        // dd(json_encode($labels));
         return view('admin.home', compact('employee', 'clients', 'cas', 'documents', 'employeeLists', 'clientLists', 'casList', 'documentLists', 'otherDocumentLists', 'androidCount', 'iosCount', 'labels', 'counts'));
     }
 

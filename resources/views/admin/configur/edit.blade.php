@@ -105,7 +105,7 @@
                                         <input type="text" id="AndroidAppVersion" value="{{ $conf->AndroidAppVersion }}"
                                             name="AndroidAppVersion" class="form-control" required
                                             data-validation-required-message="This field is required"
-                                            placeholder="Android App Version" maxlength="3" tabindex="4">
+                                            placeholder="Android App Version" maxlength="5" tabindex="4">
                                         @error('AndroidAppVersion')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -123,7 +123,7 @@
                                         <input type="text" value="{{ $conf->IosAppVersion }}" name="IosAppVersion"
                                             class="form-control" required
                                             data-validation-required-message="This field is required"
-                                            placeholder="iOS App Version" maxlength="3" tabindex="5">
+                                            placeholder="iOS App Version" maxlength="5" tabindex="5">
                                         @error('IosAppVersion')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

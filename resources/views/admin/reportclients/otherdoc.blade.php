@@ -51,7 +51,7 @@
                                     <tr class="">
                                         <th>Client Name</th>
                                         <th>Uploaded By</th>
-                                        <th>Uploaded Date</th>
+                                        <th>Uploaded Date Time</th>
                                         <th>Title</th>
                                         <th>Batch No</th>
                                         <th>Image Count</th>
@@ -76,7 +76,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Get the current date
         const today = new Date();
 
@@ -85,8 +85,8 @@
 
         // Get the first day of the current month
         const firstDay = new Date(today.getFullYear(), today.getMonth(), 2)
-        .toISOString()
-        .split('T')[0];
+            .toISOString()
+            .split('T')[0];
 
         // Set default values for the input fields
         document.getElementById('from_date').value = endDate;

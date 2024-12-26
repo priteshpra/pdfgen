@@ -290,7 +290,7 @@
                                     <tr class="">
                                         <th>Company Name</th>
                                         <th>Uploaded By</th>
-                                        <th>Uploaded Date</th>
+                                        <th>Uploaded Date Time</th>
                                         <th>Title</th>
                                         <th>Batch No</th>
                                         <th>Image Count</th>
@@ -303,13 +303,15 @@
                                     <tr>
                                         <td>{{$user->FirmName}}</td>
                                         <td>{{$user->FirstName}}</td>
-                                        <td>{{ date('d/m/Y',
+                                        <td>{{ date('d/m/Y h:i:s A',
                                             strtotime($user->created_at)) }}</a>
                                         </td>
                                         <td>{{$user->Title}}</td>
                                         <td>{{$user->BatchNo}}</td>
                                         <td>{{$user->ImageCount}}</td>
-                                        <td>{{$user->Remarks}}</td>
+                                        <td>
+                                            <div class="word-wrap">{{$user->Remarks}}</div>
+                                        </td>
 
                                         <td>
                                             @if ($user->DocumentURL !='')
@@ -361,7 +363,7 @@
                                     <tr class="">
                                         <th>Company Name</th>
                                         <th>Uploaded By</th>
-                                        <th>Uploaded Date</th>
+                                        <th>Uploaded Date Time</th>
                                         <th>Title</th>
                                         <th>Batch No</th>
                                         <th>Image Count</th>
@@ -374,13 +376,15 @@
                                     <tr>
                                         <td>{{$user->FirmName}}</td>
                                         <td>{{$user->FirstName}}</td>
-                                        <td>{{ date('d/m/Y',
+                                        <td>{{ date('d/m/Y h:i:s A',
                                             strtotime($user->created_at)) }}</a>
                                         </td>
                                         <td>{{$user->Title}}</td>
                                         <td>{{$user->BatchNo}}</td>
                                         <td>{{$user->ImageCount}}</td>
-                                        <td>{{$user->Remarks}}</td>
+                                        <td>
+                                            <div class="word-wrap">{{$user->Remarks}}</div>
+                                        </td>
 
                                         <td>
                                             @if ($user->DocumentURL !='')
@@ -566,7 +570,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xxl-5 col-12">
+        <div class="col-xxl-12 col-12">
             <div class="box">
                 <div class="box-header d-flex justify-content-between">
                     {{-- <h4 class="box-title">Active Users</h4> --}}
@@ -606,7 +610,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xxl-5 col-12">
+        <div class="col-xxl-12 col-12">
             <div class="box">
                 <div class="box-body">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-12 mt-0 mt-xs-10">
@@ -635,7 +639,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Get the current date
         const today = new Date();
 
@@ -644,8 +648,8 @@
 
         // Get the first day of the current month
         const firstDay = new Date(today.getFullYear(), today.getMonth(), 2)
-        .toISOString()
-        .split('T')[0];
+            .toISOString()
+            .split('T')[0];
 
         // Set default values for the input fields
         document.getElementById('start_date').value = firstDay;
@@ -674,8 +678,8 @@
 
         // Initialize the date pickers
         const startDatePickers = flatpickr('#start_dates', {
-        dateFormat: 'Y-m-d',
-        onChange: function(selectedDates, dateStr, instance) {
+            dateFormat: 'Y-m-d',
+            onChange: function(selectedDates, dateStr, instance) {
                 const startDates = selectedDates[0]; // The selected start date
                 const endDatePickers = flatpickr('#end_date'); // Get the end date picker instance
 
@@ -693,13 +697,13 @@
 
     // Initialize the chart
     const ctx3 = document.getElementById('documentChart').getContext('2d');
-        let documentChart = new Chart(ctx3, {
+    let documentChart = new Chart(ctx3, {
         type: 'bar',
         data: {
-            labels: {!! json_encode($labels) !!}, // Initially empty
+            labels: <?php echo json_encode($labels); ?>, // Initially empty
             datasets: [{
                 label: 'Documents Uploaded',
-                data: {!! json_encode($counts) !!}, // Counts
+                data: <?php echo json_encode($counts); ?>, // Counts
                 backgroundColor: '#42A5F5',
                 borderColor: '#1E88E5',
                 borderWidth: 1
@@ -764,97 +768,101 @@
             labels: ['Android', 'iOS'],
             datasets: [{
                 label: 'User Devices',
-                data: [{{ $androidCount }}, {{ $iosCount }}],
+                data: [
+                    <?php echo $androidCount ?>,
+                    <?php echo $iosCount ?>
+                ],
                 backgroundColor: ['#4CAF50', '#2196F3'],
                 hoverOffset: 4
             }]
         }
     });
-
-
 </script>
 <script>
     // Start line chart bar code
     $(document).ready(function() {
-    // Function to fetch data and update the chart
-    function fetchData(startDate, endDate) {
-        $.ajax({
-            url: 'admin/documents/line-chart-data',
-            method: 'GET',
-            data: { start_date: startDate, end_date: endDate },
-            success: function(response) {
-                updateChart(response);
-            }
-        });
-    }
-
-    // Initialize the chart
-    let chartInstance = new Chart($('#uploadChart'), {
-        type: 'line',
-        data: {
-            labels: [], // Dates
-            datasets: [] // Upload counts per client
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date'
-                    }
+        // Function to fetch data and update the chart
+        function fetchData(startDate, endDate) {
+            $.ajax({
+                url: 'admin/documents/line-chart-data',
+                method: 'GET',
+                data: {
+                    start_date: startDate,
+                    end_date: endDate
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Document Upload Count'
+                success: function(response) {
+                    updateChart(response);
+                }
+            });
+        }
+
+        // Initialize the chart
+        let chartInstance = new Chart($('#uploadChart'), {
+            type: 'line',
+            data: {
+                labels: [], // Dates
+                datasets: [] // Upload counts per client
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Document Upload Count'
+                        }
                     }
                 }
             }
-        }
-    });
-
-    // Update chart data
-    function updateChart(data) {
-        const labels = [];
-        const datasets = [];
-        const clients = [...new Set(data.map(item => item.FirmName))]; // Get unique clients
-
-        clients.forEach(client => {
-            const clientData = data.filter(item => item.FirmName === client);
-            const clientUploads = clientData.map(item => item.upload_count);
-            const dates = clientData.map(item => item.date);
-
-            datasets.push({
-                label: `Client ${client}`,
-                data: clientUploads,
-                fill: false,
-                borderColor: '#'+(Math.random()*0xFFFFFF<<0).toString(16), // Random color
-                tension: 0.1
-            });
-
-            if (labels.length === 0) {
-                labels.push(...dates);
-            }
         });
 
-        chartInstance.data.labels = labels;
-        chartInstance.data.datasets = datasets;
-        chartInstance.update();
-    }
+        // Update chart data
+        function updateChart(data) {
+            const labels = [];
+            const datasets = [];
+            const clients = [...new Set(data.map(item => item.FirmName))]; // Get unique clients
 
-    // Handle filter change (This Month, Last Month, Custom Range)
-    $('#applyFilter').click(function(e) {
-        e.preventDefault();
-        const startDates = $('#start_dates').val();
-        const endDates = $('#end_dates').val();
-        // Format the dates in YYYY-MM-DD format for the backend
-        fetchData(startDates, endDates);
+            clients.forEach(client => {
+                const clientData = data.filter(item => item.FirmName === client);
+                const clientUploads = clientData.map(item => item.upload_count);
+                const dates = clientData.map(item => item.date);
+
+                datasets.push({
+                    label: `Client ${client}`,
+                    data: clientUploads,
+                    fill: false,
+                    borderColor: '#' + (Math.random() * 0xFFFFFF << 0).toString(16), // Random color
+                    tension: 0.1
+                });
+
+                if (labels.length === 0) {
+                    labels.push(...dates);
+                }
+            });
+
+            chartInstance.data.labels = labels;
+            chartInstance.data.datasets = datasets;
+            chartInstance.update();
+        }
+
+        // Handle filter change (This Month, Last Month, Custom Range)
+        $('#applyFilter').click(function(e) {
+            e.preventDefault();
+            const startDates = $('#start_dates').val();
+            const endDates = $('#end_dates').val();
+            // Format the dates in YYYY-MM-DD format for the backend
+            fetchData(startDates, endDates);
+        });
+
+        // Initial data fetch for this month
+        fetchData(new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0], new Date().toISOString().split('T')[0]);
     });
-
-    // Initial data fetch for this month
-    fetchData(new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0], new Date().toISOString().split('T')[0]);
-});
 </script>
 <!-- /.content -->
 <script type="text/javascript">

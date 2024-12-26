@@ -74015,11 +74015,25 @@ i.fa.fa-plus {
     margin-top: 12%;
 } */
 
-.theme-primary .btn-error:hover, .theme-primary .btn-error, .theme-primary .btn-error:focus, .theme-primary .btn-error {
-    background-color: #df4755 !important;
-    border-color: #df4755 !important;
-    color: #ffffff !important;
+.theme-primary .btn-error:hover,
+.theme-primary .btn-error,
+.theme-primary .btn-error:focus,
+.theme-primary .btn-error {
+  background-color: #df4755 !important;
+  border-color: #df4755 !important;
+  color: #ffffff !important;
 }
+
 .invalid-feedback {
-    display: inline !important;
+  display: inline !important;
+}
+
+.word-wrap {
+  word-wrap: break-word;
+  /* Deprecated, but still works in most browsers */
+  overflow-wrap: break-word;
+  /* Modern property for word wrapping */
+  white-space: normal;
+  /* Ensures text wraps to the next line */
+  max-width: 230px;
 }

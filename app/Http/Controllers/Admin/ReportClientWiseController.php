@@ -46,8 +46,8 @@ class ReportClientWiseController extends Controller
                     WHERE scanned_documents.CompanyID = users.CompanyID) as document_count')
         )
             ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
-            ->with('role')
-            ->where('users.UserType', '3')
+            // ->with('role')
+            // ->where('users.UserType', '3')
             ->whereNotNull('users.CompanyID')
             ->whereDate('users.created_at', '=', $currentDate)
             ->orderBy('users.id', 'desc')->get();
@@ -83,8 +83,11 @@ class ReportClientWiseController extends Controller
     private function getUsers($CompanyID, $client_user_id, $fromDate, $toDate)
     {
         DB::enableQueryLog();
+        $fromDate = Carbon::createFromFormat('Y-m-d', $fromDate)->startOfDay(); // Start of the day
+        $toDate = Carbon::createFromFormat('Y-m-d', $toDate)->endOfDay();
         return User::select(
-            'users.*',
+            'users.FirstName',
+            'users.LastName',
             'company.FirmName',
             'scanned_documents.Title',
             'scanned_documents.created_at',
@@ -98,8 +101,8 @@ class ReportClientWiseController extends Controller
             ->leftJoin('scanned_documents', 'users.CompanyID', '=', 'scanned_documents.CompanyID')
             ->where('scanned_documents.CompanyID', $CompanyID)
             ->where('scanned_documents.UserID', $client_user_id)
-            ->whereBetween('users.created_at', [$fromDate, $toDate])
-            ->orderBy('users.id', 'desc')->get();
+            ->whereBetween('scanned_documents.created_at', [$fromDate, $toDate])
+            ->orderBy('scanned_documents.ScanneddocumentID', 'desc')->get();
         // dd(DB::getQueryLog());
     }
 

@@ -1285,6 +1285,7 @@ class ApiController extends Controller
                 }
             }
             $CompanyData = Company::find($company_id);
+            $UsersData = User::where('CompanyID', $company_id)->first();
             $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
             // dd($pdfsPath);
             // Generate PDF
@@ -1317,7 +1318,9 @@ class ApiController extends Controller
             $documents->save();
 
             //add the notification table
-            $notifiArray = ['UserID' => $user_id, 'Description' => 'Uploaded the scanned document file.', 'TypeID' => 0];
+
+
+            $notifiArray = ['UserID' => $user_id, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName  . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s') . ' and approx ' . $imageCount . ' Images.', 'TypeID' => 0];
             $this->addNotificationData($notifiArray);
 
             // Notification firebase
@@ -1548,6 +1551,7 @@ class ApiController extends Controller
             $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
 
             $CompanyData = Company::find($company_id);
+            $UsersData = User::where('CompanyID', $company_id)->first();
             $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
             // Download the PDF
             $directory = 'public/' . $pdfsPath . '/' . $user_id;
@@ -1578,7 +1582,7 @@ class ApiController extends Controller
             $documents->save();
 
             //add the notification table
-            $notifiArray = ['UserID' => $user_id, 'Description' => 'Uploaded the other documents file.', 'TypeID' => 0];
+            $notifiArray = ['UserID' => $user_id, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s') . ' and approx ' . $imageCount . ' Images.', 'TypeID' => 0];
             $this->addNotificationData($notifiArray);
 
             // Notification firebase

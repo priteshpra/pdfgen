@@ -77,6 +77,7 @@ class OtherdocumentController extends Controller
         // dd($pdf);
         // Download the PDF
         $CompanyData = Company::find($request->CompanyID);
+        $UsersData = User::where('CompanyID', $request->CompanyID)->first();
         $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
         // return $pdf->download('images.pdf');
         $directory = 'public/' . $pdfsPath . '/' . $request->UserID;
@@ -107,6 +108,9 @@ class OtherdocumentController extends Controller
         }
         $admin->save();
 
+        $notifiArray = ['UserID' => $request->UserID, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName  . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s') . ' and approx ' . $imageCount . ' Images.', 'TypeID' => 0];
+        $this->addNotificationData($notifiArray);
+
         if ($request->lastSegment) {
             return redirect($request->lastSegment)->with(['status-success' => "New Document Added."]);
         } else {
@@ -128,5 +132,26 @@ class OtherdocumentController extends Controller
 
         $user->delete();
         return redirect()->back()->with(['status-success' => "User Deleted"]);
+    }
+
+    /**
+     * add notification Table.
+     */
+    public function addNotificationData($request)
+    {
+
+        try {
+            $notification = new Notification();
+            // add notification details
+            $notification->UserID = $request['UserID'];
+            $notification->Description = $request['Description'];
+            $notification->TypeID = $request['TypeID'];
+            $notification->save();
+
+            // Return a response
+            return response()->json(['status' => true, 'message' => 'CAS created successfully', 'data' => []], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
+        }
     }
 }
