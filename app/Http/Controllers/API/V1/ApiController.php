@@ -240,7 +240,16 @@ class ApiController extends Controller
             ];
 
             $data = $client->map(function ($user) {
-                return collect($user)->except(['password', 'role_id', 'email_verified_at'])->put('UserId', $user['id'])->toArray();
+                $userTypeMapping = [
+                    '4' => 'CAS',
+                    '3' => 'Client',
+                    '2' => 'Employee',
+                ];
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])->put('UserId', $user['id'])
+                    ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))
+                    ->put('CreatedDate', Carbon::parse($user['CreatedDate'])->format('d/m/Y h:i:s A'))
+                    ->put('UserType', $userTypeMapping[$user['UserType']] ?? $user['UserType'])
+                    ->toArray();
             })->toArray();
 
             $dataClients = [
@@ -282,7 +291,17 @@ class ApiController extends Controller
             ];
 
             $data = $cas->map(function ($user) {
-                return collect($user)->except(['password', 'role_id', 'email_verified_at'])->put('UserId', $user['id'])->toArray();
+                $userTypeMapping = [
+                    '4' => 'CAS',
+                    '3' => 'Client',
+                    '2' => 'Employee',
+                ];
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])
+                    ->put('UserId', $user['id'])
+                    ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))
+                    ->put('CreatedDate', Carbon::parse($user['CreatedDate'])->format('d/m/Y h:i:s A'))
+                    ->put('UserType', $userTypeMapping[$user['UserType']] ?? $user['UserType'])
+                    ->toArray();
             })->toArray();
 
             $dataCAS = [
@@ -323,7 +342,17 @@ class ApiController extends Controller
                 'total_pages' => $employee->lastPage(),
             ];
             $data = $employee->map(function ($user) {
-                return collect($user)->except(['password', 'role_id', 'email_verified_at'])->put('UserId', $user['id'])->toArray();
+                $userTypeMapping = [
+                    '4' => 'CAS',
+                    '3' => 'Client',
+                    '2' => 'Employee',
+                ];
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])
+                    ->put('UserId', $user['id'])
+                    ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))
+                    ->put('CreatedDate', Carbon::parse($user['CreatedDate'])->format('d/m/Y h:i:s A'))
+                    ->put('UserType', $userTypeMapping[$user['UserType']] ?? $user['UserType'])
+                    ->toArray();
             })->toArray();
 
             $dataEmployee = [
@@ -369,10 +398,19 @@ class ApiController extends Controller
                 ->where('UserType', '=', '2')
                 ->get();
 
-            $evnt = [];
-            foreach ($employees as $key => $value) {
-                $evnt[] = $value;
-            }
+            $evnt = $employees->map(function ($user) {
+                $userTypeMapping = [
+                    '4' => 'CAS',
+                    '3' => 'Client',
+                    '2' => 'Employee',
+                ];
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])
+                    ->put('UserId', $user['id'])
+                    ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))
+                    ->put('CreatedDate', Carbon::parse($user['CreatedDate'])->format('d/m/Y h:i:s A'))
+                    ->put('UserType', $userTypeMapping[$user['UserType']] ?? $user['UserType'])
+                    ->toArray();
+            })->toArray();
             return response()->json(['status' => true, 'message' => 'Get Employee details successfully', 'data' => $evnt], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
@@ -411,10 +449,18 @@ class ApiController extends Controller
                 ->where('users.UserType', '=', '4')
                 ->get();
 
-            $datas = [];
-            foreach ($cass as $key => $value) {
-                $datas[] = $value;
-            }
+            $datas = $cass->map(function ($user) {
+                $userTypeMapping = [
+                    '4' => 'CAS',
+                    '3' => 'Client',
+                ];
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])
+                    ->put('UserId', $user['id'])
+                    ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))
+                    ->put('CreatedDate', Carbon::parse($user['CreatedDate'])->format('d/m/Y h:i:s A'))
+                    ->put('UserType', $userTypeMapping[$user['UserType']] ?? $user['UserType'])
+                    ->toArray();
+            })->toArray();
             return response()->json(['status' => true, 'message' => 'Get CAS details successfully', 'data' => $datas], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
@@ -453,10 +499,18 @@ class ApiController extends Controller
                 ->where('users.UserType', '=', '3')
                 ->get();
 
-            $datas = [];
-            foreach ($clients as $key => $value) {
-                $datas[] = $value;
-            }
+            $datas = $clients->map(function ($user) {
+                $userTypeMapping = [
+                    '4' => 'CAS',
+                    '3' => 'Client',
+                ];
+                return collect($user)->except(['password', 'role_id', 'email_verified_at'])
+                    ->put('UserId', $user['id'])
+                    ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))
+                    ->put('CreatedDate', Carbon::parse($user['CreatedDate'])->format('d/m/Y h:i:s A'))
+                    ->put('UserType', $userTypeMapping[$user['UserType']] ?? $user['UserType'])
+                    ->toArray();
+            })->toArray();
             return response()->json(['status' => true, 'message' => 'Get Client details successfully', 'data' => $datas], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
@@ -825,15 +879,24 @@ class ApiController extends Controller
             $result = Scandocument::where('Status', 1)
                 ->where('UserID', $user_id)
                 ->where('CompanyID', $company_id)
+                ->where('UploadType', 'Image')
                 ->select(
                     DB::raw('SUM(ImageCount) as totalImageCount'),
                     DB::raw('count(CASE WHEN DATE(created_at) = CURDATE() THEN ImageCount ELSE 0 END) as todayImageCount')
                 )
                 ->first();
+            $pdfData = Scandocument::where('Status', 1)
+                ->where('UserID', $user_id)
+                ->where('CompanyID', $company_id)
+                ->select(
+                    DB::raw('COUNT(*) as totalDocumentCount'),
+                )
+                ->first();
             $totalImageCount = $result->totalImageCount;
             $todayImageCount = (string)$result->todayImageCount;
+            $totalDocumentCount = (string)$pdfData->totalDocumentCount;
 
-            return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => $totalImageCount, 'todayDocumentCount' => $todayImageCount]], 200);
+            return response()->json(['status' => true, 'message' => 'Get Dashboard data successfully', 'data' => ['DocumentCount' => $totalImageCount, 'todayDocumentCount' => $todayImageCount, 'totalDocumentCount' => $totalDocumentCount]], 200);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => 'Something went wrong. Please try after some time.', 'data' => []], 200);
         }
@@ -1246,23 +1309,31 @@ class ApiController extends Controller
 
     public function documentUpload(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'images' => 'required|array',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
+        $rules = [
             'user_id' => 'required',
             'company_id' => 'required',
             'remarks' => 'required',
             'batch_no' => 'required',
             'title' => 'required',
-        ]);
+        ];
 
-        if ($validator->fails()) {
-            $result['status'] = false;
-            $result['message'] = $validator->errors()->first();
-            $result['data'] = (object) [];
-            return response()->json($result, 200);
-        }
         try {
+            if ($request->upload_type == 'Image') {
+                // Apply image validation rules only if uploadType is 'image'
+                $rules['images'] = 'required|array';
+                $rules['images.*'] = 'required|image|mimes:jpeg,png,jpg,svg|max:5048';
+            } elseif ($request->upload_type == 'Document') {
+                // If uploadType is 'pdf', no image validation is required
+                $rules['pdf'] = 'required|mimes:pdf|max:5048';
+            }
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                $result['status'] = false;
+                $result['message'] = $validator->errors()->first();
+                $result['data'] = (object) [];
+                return response()->json($result, 200);
+            }
             $user_id = $request->user_id;
             $company_id = isset($request->company_id) ? $request->company_id : 0;
             $page_number = $request->page;
@@ -1270,6 +1341,8 @@ class ApiController extends Controller
             $token = $request->header('token');
             $base_url = $this->base_url;
             $checkToken = $this->tokenVerify($token);
+
+            $upload_type = isset($request->upload_type) ? $request->upload_type : 'Image';
             // Decode the JSON response
             $userData = json_decode($checkToken->getContent(), true);
             if ($userData['status'] == false) {
@@ -1277,54 +1350,78 @@ class ApiController extends Controller
             }
 
             $imagePaths = [];
-            if ($request->hasFile('images')) {
-                $imageCount = count($request->file('images'));
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store('images', 'public');
-                    $imagePaths[] = $path;
+            $pdfPath = null;
+            if ($upload_type == 'Image') {
+                if ($request->hasFile('images')) {
+                    $imageCount = count($request->file('images'));
+                    foreach ($request->file('images') as $image) {
+                        $path = $image->store('images', 'public');
+                        $imagePaths[] = $path;
+                    }
                 }
-            }
-            $CompanyData = Company::find($company_id);
-            $UsersData = User::where('CompanyID', $company_id)->first();
-            $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
-            // dd($pdfsPath);
-            // Generate PDF
-            $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
-            // Download the PDF
-            $directory = 'public/' . $pdfsPath . '/' . $user_id;
-            if (!Storage::exists($directory)) {
-                Storage::makeDirectory($directory);
-            }
-            $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
-            Storage::disk('public')->put($pdfPath, $pdf->output());
+                $CompanyData = Company::find($company_id);
+                $UsersData = User::where('CompanyID', $company_id)->first();
+                $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
+                // dd($pdfsPath);
+                // Generate PDF
+                $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
+                // Download the PDF
+                $directory = 'public/' . $pdfsPath . '/' . $user_id;
+                if (!Storage::exists($directory)) {
+                    Storage::makeDirectory($directory);
+                }
+                $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
+                Storage::disk('public')->put($pdfPath, $pdf->output());
 
-            $localPath = storage_path("app/public/{$pdfPath}");
-            $fpdi = new Fpdi();
-            $pageCount = $fpdi->setSourceFile($localPath);
-            // Provide download link
-            $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
-            $documentLink = $downloadUrl; //asset("storage/{$pdfPath}");
+                $localPath = storage_path("app/public/{$pdfPath}");
+                $fpdi = new Fpdi();
+                $pageCount = $fpdi->setSourceFile($localPath);
+                // Provide download link
+                $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
+                $documentLink = $downloadUrl; //asset("storage/{$pdfPath}");
+            } else {
+                // Handling PDF upload
+                $pdfFile = $request->file('pdf');
+                $CompanyData = Company::find($company_id);
+                $UsersData = User::where('CompanyID', $company_id)->first();
+                $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
 
+                $directory = 'public/' . $pdfsPath . '/' . $user_id;
+                if (!Storage::exists($directory)) {
+                    Storage::makeDirectory($directory);
+                }
+
+                $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
+                $pdfFile->storeAs('public/' . $pdfsPath . '/' . $user_id, $pdfFile->getClientOriginalName());
+
+                // Set the document URL
+                $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
+                $documentLink = $downloadUrl;
+            }
             $documents = new Scandocument();
             $documents->Title = $request->title;
             $documents->BatchNo = isset($request->batch_no) ? $request->batch_no : date('dmYHis') . '_' . $user_id;
             $documents->CompanyID = $company_id;
             $documents->UserID = $user_id;
+            $documents->UploadType = $upload_type;
             $documents->Remarks = $Remarks;
-            $documents->ImageCount = $imageCount;
-            $documents->PageCount = $pageCount;
+            $documents->ImageCount = isset($imageCount) ? $imageCount : 0;
+            $documents->PageCount = isset($pageCount) ? $pageCount : 0;
             $documents->DocumentURL = basename($pdfPath);
             $documents->CreatedBy = $user_id;
             $documents->save();
 
             //add the notification table
 
-
-            $notifiArray = ['UserID' => $user_id, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName  . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s') . ' and approx ' . $imageCount . ' Images.', 'TypeID' => 0];
+            if ($upload_type == 'Image') {
+                $notifiArray = ['UserID' => $user_id, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName  . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s') . ' and approx ' . $imageCount . ' Images.', 'TypeID' => 0];
+            } else {
+                $notifiArray = ['UserID' => $user_id, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName  . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s'), 'TypeID' => 0];
+            }
             $this->addNotificationData($notifiArray);
 
             // Notification firebase
-            $newData  = json_encode(array('documentLink' => ''));
+            $newData  = json_encode(array('documentLink' => $documentLink));
             $body = array('receiver_id' => $user_id, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
             $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
             // $notifData = json_decode($sendNotification->getContent(), true);
@@ -1428,6 +1525,7 @@ class ApiController extends Controller
                 $originalDocumentURL = $documet->DocumentURL;
                 $documet->DocumentURL = $documet->documentname ?? route('download.file', ['user_id' => $user_id, 'filename' => $originalDocumentURL]);
                 $documet->documentname = $originalDocumentURL;
+                $documet->CreatedDate = Carbon::parse($documet->CreatedDate)->format('d/m/Y h:i:s A');
                 return $documet;
             });
             $pagination = [
@@ -1490,6 +1588,12 @@ class ApiController extends Controller
                 'current_page' => $employee->currentPage(),
                 'total_pages' => $employee->lastPage(),
             ];
+            $employee = $employee->map(function ($user) {
+                return collect($user)
+                    ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))
+                    ->put('CreatedDate', Carbon::parse($user['CreatedDate'])->format('d/m/Y h:i:s A'))
+                    ->toArray();
+            })->toArray();
 
             $dataEmployee = [
                 'pagination' => $pagination,
@@ -1507,16 +1611,23 @@ class ApiController extends Controller
      */
     public function otherDocumentUpload(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'images' => 'required|array',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,svg|max:5048',
+        $rules = [
             'user_id' => 'required',
             'company_id' => 'required',
             'remarks' => 'required',
             'batch_no' => 'required',
             'title' => 'required',
-        ]);
+        ];
 
+        if ($request->upload_type == 'Image') {
+            // Apply image validation rules only if uploadType is 'image'
+            $rules['images'] = 'required|array';
+            $rules['images.*'] = 'required|image|mimes:jpeg,png,jpg,svg|max:5048';
+        } elseif ($request->upload_type == 'Document') {
+            // If uploadType is 'pdf', no image validation is required
+            $rules['pdf'] = 'required|mimes:pdf|max:5048';
+        }
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $result['status'] = false;
             $result['message'] = $validator->errors()->first();
@@ -1537,56 +1648,81 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-
+            $upload_type = isset($request->upload_type) ? $request->upload_type : 'Image';
             $imagePaths = [];
-            if ($request->hasFile('images')) {
-                $imageCount = count($request->file('images'));
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store('images', 'public');
-                    $imagePaths[] = $path;
+            $pdfPath = null;
+            if ($upload_type == 'Image') {
+                if ($request->hasFile('images')) {
+                    $imageCount = count($request->file('images'));
+                    foreach ($request->file('images') as $image) {
+                        $path = $image->store('images', 'public');
+                        $imagePaths[] = $path;
+                    }
                 }
+
+                // Generate PDF
+                $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
+
+                $CompanyData = Company::find($company_id);
+                $UsersData = User::where('CompanyID', $company_id)->first();
+                $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
+                // Download the PDF
+                $directory = 'public/' . $pdfsPath . '/' . $user_id;
+                if (!Storage::exists($directory)) {
+                    Storage::makeDirectory($directory);
+                }
+                $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
+                Storage::disk('public')->put($pdfPath, $pdf->output());
+
+                $localPath = storage_path("app/public/{$pdfPath}");
+                $fpdi = new Fpdi();
+                $pageCount = $fpdi->setSourceFile($localPath);
+
+                // Provide download link
+                $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
+                $documentLink = $downloadUrl; //asset("storage/{$pdfPath}");
+            } else {
+                // Handling PDF upload
+                $pdfFile = $request->file('pdf');
+                $CompanyData = Company::find($company_id);
+                $UsersData = User::where('CompanyID', $company_id)->first();
+                $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
+
+                $directory = 'public/' . $pdfsPath . '/' . $user_id;
+                if (!Storage::exists($directory)) {
+                    Storage::makeDirectory($directory);
+                }
+
+                $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
+                $pdfFile->storeAs('public/' . $pdfsPath . '/' . $user_id, $pdfFile->getClientOriginalName());
+
+                // Set the document URL
+                $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
+                $documentLink = $downloadUrl;
             }
-
-            // Generate PDF
-            $pdf = PDF::loadView('pdf.images', compact('imagePaths'));
-
-            $CompanyData = Company::find($company_id);
-            $UsersData = User::where('CompanyID', $company_id)->first();
-            $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
-            // Download the PDF
-            $directory = 'public/' . $pdfsPath . '/' . $user_id;
-            if (!Storage::exists($directory)) {
-                Storage::makeDirectory($directory);
-            }
-            $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
-            Storage::disk('public')->put($pdfPath, $pdf->output());
-
-            $localPath = storage_path("app/public/{$pdfPath}");
-            $fpdi = new Fpdi();
-            $pageCount = $fpdi->setSourceFile($localPath);
-
-            // Provide download link
-            $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
-            $documentLink = $downloadUrl; //asset("storage/{$pdfPath}");
-
             $documents = new OtherDocument();
             $documents->Title = $Title;
             $documents->CompanyID = $company_id;
             $documents->BatchNo = isset($request->batch_no) ? $request->batch_no : date('dmYHis') . '_' . $user_id;
             $documents->UserID = $user_id;
-            $documents->ImageCount = $imageCount;
-            $documents->PageCount = $pageCount;
+            $documents->UploadType = $upload_type;
+            $documents->ImageCount = isset($imageCount) ? $imageCount : 0;
+            $documents->PageCount = isset($pageCount) ? $pageCount : 0;
             $documents->Remarks = $Remarks;
             $documents->DocumentURL = basename($pdfPath);
             $documents->CreatedBy = $user_id;
             $documents->save();
 
             //add the notification table
-            $notifiArray = ['UserID' => $user_id, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s') . ' and approx ' . $imageCount . ' Images.', 'TypeID' => 0];
+            if ($upload_type == 'Image') {
+                $notifiArray = ['UserID' => $user_id, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName  . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s') . ' and approx ' . $imageCount . ' Images.', 'TypeID' => 0];
+            } else {
+                $notifiArray = ['UserID' => $user_id, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName  . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s'), 'TypeID' => 0];
+            }
             $this->addNotificationData($notifiArray);
 
             // Notification firebase
-            $newData  = json_encode(array('documentLink' => ''));
+            $newData  = json_encode(array('documentLink' => $documentLink));
             $body = array('receiver_id' => $user_id, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
             $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
             // $notifData = json_decode($sendNotification->getContent(), true);
@@ -1634,6 +1770,7 @@ class ApiController extends Controller
                 $originalDocumentURL = $documet->DocumentURL;
                 $documet->DocumentURL = $documet->documentname ?? route('download.file', ['user_id' => $user_id, 'filename' => $originalDocumentURL]);
                 $documet->documentname = $originalDocumentURL;
+                $documet->CreatedDate = Carbon::parse($documet->CreatedDate)->format('d/m/Y h:i:s A');
                 return $documet;
             });
 
@@ -1678,10 +1815,16 @@ class ApiController extends Controller
             $page_number = $request->page;
             $token = $request->header('token');
 
-            $page = Notification::select('*')->where('UserID', $user_id)->get();
+            $notification = Notification::select('*')->where('UserID', $user_id)->get();
+            $notificationData = $notification->map(function ($user) {
+                return collect($user)
+                    ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))
+                    ->put('CreatedDate', Carbon::parse($user['CreatedDate'])->format('d/m/Y h:i:s A'))
+                    ->toArray();
+            })->toArray();
 
             $datapages = [
-                'data' => $page,
+                'data' => $notificationData,
             ];
 
             return response()->json(['status' => true, 'message' => 'Get Notification list successfully', 'data' => $datapages], 200);

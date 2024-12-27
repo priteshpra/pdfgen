@@ -387,7 +387,8 @@
                                                                             }}</td>
                                                                         <td>{{ $scanDocuments->ImageCount }}</td>
                                                                         <td>
-                                                                            <div class="word-wrap">{{ $scanDocuments->Remarks }}</div>
+                                                                            <div class="word-wrap">{{
+                                                                                $scanDocuments->Remarks }}</div>
                                                                         </td>
                                                                         <!-- <td>
                                                                             <div
@@ -522,8 +523,7 @@
                                                                         </td> -->
                                                                         <td>
                                                                             @if ($otherDocument->DocumentURL !='')
-                                                                            <a
-                                                                                href="{{ $$otherDocument->DocumentURL }}"><button
+                                                                            <a href="{{ $otherDocument->DocumentURL }}"><button
                                                                                     type="button"
                                                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                                                         class="fa fa-file-pdf-o"
