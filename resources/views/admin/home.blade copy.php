@@ -316,8 +316,8 @@
                                         <td>
                                             @if ($user->DocumentURL !='')
 
-                                            <a href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}"
-                                                class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                            <a
+                                                href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}" class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                     class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
                                             @else
                                             -
@@ -387,8 +387,8 @@
 
                                         <td>
                                             @if ($user->DocumentURL !='')
-                                            <a href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}"
-                                                class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                            <a
+                                                href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}" class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                     class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
                                             @else
                                             -
@@ -592,6 +592,8 @@
                                         <input type="text" id="end_date" name="end_date"
                                             class="datepicker form-control">
                                     </div>
+                                    {{-- <button type="submit" class="btn btn-primary ms-2"
+                                        style="margin-top: 6%;">Filter</button> --}}
                                     <a href="javascript:void(0);" style="margin-top: 9%;"
                                         class="btn btn-primary ms-2 btn-sm" id="filterButton">Filter</a>
                                 </form>
@@ -693,7 +695,7 @@
     // Initialize the chart
     const ctx3 = document.getElementById('documentChart').getContext('2d');
     let documentChart = new Chart(ctx3, {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: <?php echo json_encode($labels); ?>, // Initially empty
             datasets: [{
@@ -701,19 +703,11 @@
                 data: <?php echo json_encode($counts); ?>, // Counts
                 backgroundColor: '#42A5F5',
                 borderColor: '#1E88E5',
-                borderWidth: 1,
-                fill: false,
-                tension: 0.4,
+                borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
-            },
             scales: {
                 x: {
                     title: {
@@ -726,7 +720,7 @@
                         display: true,
                         text: 'Number of Documents',
                     },
-                    // beginAtZero: true
+                    beginAtZero: true
                 }
             }
         }
