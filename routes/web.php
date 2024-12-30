@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ConfigurationController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ReportClientWiseOtherController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Models\Company;
 use App\Models\User;
 
@@ -41,6 +42,10 @@ Route::get('/about', function () {
     return view('about');
 });
 
+Route::get('/logout', function () {
+    // Perform any logout-related actions, if necessary.
+    return redirect('/login'); // Redirect to the login page.
+})->name('logout');
 Auth::routes();
 
 
@@ -73,6 +78,7 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::resource('/configuration', 'ConfigurationController');
     Route::resource('/reports', 'ReportClientWiseController');
     Route::resource('/otherreports', 'ReportClientWiseOtherController');
+    Route::resource('/notification', 'NotificationController');
 
     Route::get('/generate-pdf', [App\Http\Controllers\Admin\PDFController::class, 'generatePDF']);
     Route::get('/reports/monthly', [ReportClientWiseController::class, 'monthly'])->name('reportclientwise.monthly');

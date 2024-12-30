@@ -37,10 +37,7 @@
                         <div class="form-group d-flex align-items-center">
                             <label for="client" class="me-3">Select Client</label>
                             <select id="client" class="form-control w-auto">
-                                <option value="0,0" {{ 0
-                                    == 0 ?
-                                    'selected' : ''
-                                    }}>ALL</option>
+                                <option value="0,0" {{ 0==0 ? 'selected' : '' }}>ALL</option>
                                 @foreach($clients as $client)
                                 <option value="{{ $client->CompanyID }},{{ $client->id }}" {{ $client->CompanyID
                                     == $selectedClientId ?
@@ -73,6 +70,7 @@
                                         <th>
                                             Remarks
                                         </th>
+                                        <th>Download</th>
                                     </tr>
                                 </thead>
                                 <tbody id="clientTableBody">

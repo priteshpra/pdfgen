@@ -153,7 +153,7 @@
                                     </ul>
                                 </li>
                                 <li class="footer">
-                                    <a href="#">View all</a>
+                                    <a href="{{ route('admin.notification.index') }}">View all</a>
                                 </li>
                             </ul>
 

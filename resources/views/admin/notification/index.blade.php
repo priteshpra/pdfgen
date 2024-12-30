@@ -1,72 +1,76 @@
 @extends('layouts.admin')
 
 @section('content')
-
 <div class="container-full">
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <a href="{{ route('admin.reportclientwise.index') }}">
-                    <h3 class="page-title">REPORT CLIENTS MONTHLY ({{ $currentDate }} - {{$monthEndDate}})</h3>
+                <a href="{{ route('admin.notification.index') }}">
+                    <h3 class="page-title">NOTIFICATIONS</h3>
                 </a>
             </div>
             <div class="pull-right">
-
             </div>
         </div>
-
     </div>
     <section class="content">
         <div class="row">
             <div class="col-12">
                 <div class="box">
                     <div class="box-body">
+                        <div id="alert-container"></div>
+                        @if(Session::has('status-success'))
+                        <div class="alert alert-success">
+                            {{Session::get('status-success')}}
+                        </div>
+                        @endif
 
+                        @if(Session::has('status-info'))
+                        <div class="alert alert-info">
+                            {{Session::get('status-info')}}
+                        </div>
+                        @endif
+
+                        @if(Session::has('status-warning'))
+                        <div class="alert alert-warning">
+                            {{Session::get('status-warning')}}
+                        </div>
+                        @endif
+
+                        @if(Session::has('status-danger'))
+                        <div class="alert alert-danger">
+                            {{Session::get('status-danger')}}
+                        </div>
+                        @endif
                         <div class="table-responsive">
-
-                            <table id="clientTable"
+                            <table id="cmsTable"
                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                 <thead class="bg-primary">
                                     <tr class="">
-                                        <th>Client Name</th>
-                                        <th>Firm Name</th>
-                                        <th>MobileNo</th>
-                                        <th>Email</th>
-                                        <th>Firm Type</th>
-                                        <th>Document Count</th>
-                                        <th>
-                                            Date
-                                        </th>
+                                        <!-- <th class="text-center">ID</th> -->
+                                        <th>Title</th>
+                                        <th>Notification Date Time</th>
+                                        {{-- <th style="width: 10%;">
+                                            Action
+                                        </th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($users as $user)
-                                    <?php //$isCompanyCreate = App\Models\Company::where('ClientID', $user->id)->count();
-                                    ?>
+                                    @forelse ($page as $user)
                                     <tr>
-                                        <td>{{$user->FirstName}}</td>
-                                        <td>{{$user->FirmName}}
-                                        </td>
-                                        <td>{{$user->MobileNo}}</td>
-                                        <td>{{$user->Email}}</td>
-                                        <td>{{$user->FirmType}}</td>
-                                        <td>
-                                            {{ $user->document_count }}
-                                        </td>
-                                        <td>
-                                            {{ date('Y-m-d h:i A', strtotime($user->created_at)) }}
-                                        </td>
+                                        <!-- <td class="text-center">{{$user->CMSID}}</td> -->
+                                        <td>{{$user->Description}}</td>
+                                        <td>{{date('m/d/Y h:i:s A', strtotime($user->CreatedDate))}}</td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="100%" class="text-center text-muted py-3">No Users Found
-                                        </td>
+                                        <td colspan="100%" class="text-center text-muted py-3">No Data Found</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
                             </table>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,10 +94,10 @@
         $('#loader').show();
         $('#loader').css('opacity', 1);
         $.ajax({
-            url: "{{ route('admin.clienttoggle.status') }}", // URL to your route
+            url: "{{ route('admin.cmstoggle.status') }}", // URL to your route
             type: "POST",
             data: {
-                id: ID, // Pass the user ID
+                CMSID: ID, // Pass the user ID
                 Status: status, // Pass the user ID
                 _token: '{{ csrf_token() }}' // CSRF token for Laravel
             },

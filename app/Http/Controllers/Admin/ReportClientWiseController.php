@@ -98,6 +98,8 @@ class ReportClientWiseController extends Controller
                 'scanned_documents.created_at',
                 'scanned_documents.BatchNo',
                 'scanned_documents.Remarks',
+                'scanned_documents.DocumentURL',
+                'scanned_documents.UserID',
                 DB::raw('(SELECT SUM(scanned_documents.ImageCount)
               FROM scanned_documents
               WHERE scanned_documents.CompanyID = users.CompanyID) as total_image_count')
@@ -117,6 +119,8 @@ class ReportClientWiseController extends Controller
                 'scanned_documents.created_at',
                 'scanned_documents.BatchNo',
                 'scanned_documents.Remarks',
+                'scanned_documents.DocumentURL',
+                'scanned_documents.UserID',
                 DB::raw('(SELECT SUM(scanned_documents.ImageCount)
               FROM scanned_documents
               WHERE scanned_documents.CompanyID = users.CompanyID) as total_image_count')

@@ -9,5 +9,8 @@
     <td>
         <div class="word-wrap">{{ $user->Remarks }}</div>
     </td>
+    <td><a href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}" class="
+            waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i class="fa fa-file-pdf-o"
+                aria-hidden="true"></i></a></td>
 </tr>
 @endforeach

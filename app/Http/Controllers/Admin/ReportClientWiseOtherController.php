@@ -99,6 +99,8 @@ class ReportClientWiseOtherController extends Controller
                 'otherdocuments.created_at',
                 'otherdocuments.BatchNo',
                 'otherdocuments.Remarks',
+                'otherdocuments.DocumentURL',
+                'otherdocuments.UserID',
                 DB::raw('(SELECT SUM(otherdocuments.ImageCount)
               FROM otherdocuments
               WHERE otherdocuments.CompanyID = users.CompanyID) as total_image_count')
@@ -116,6 +118,8 @@ class ReportClientWiseOtherController extends Controller
                 'otherdocuments.created_at',
                 'otherdocuments.BatchNo',
                 'otherdocuments.Remarks',
+                'otherdocuments.DocumentURL',
+                'otherdocuments.UserID',
                 DB::raw('(SELECT SUM(otherdocuments.ImageCount)
               FROM otherdocuments
               WHERE otherdocuments.CompanyID = users.CompanyID) as total_image_count')
