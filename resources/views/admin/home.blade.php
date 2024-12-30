@@ -304,7 +304,7 @@
                                         <td>{{$user->FirmName}}</td>
                                         <td>{{$user->FirstName}}</td>
                                         <td>{{ date('d/m/Y h:i:s A',
-                                            strtotime($user->created_at)) }}</a>
+                                            strtotime($user->CreatedDate)) }}</a>
                                         </td>
                                         <td>{{$user->Title}}</td>
                                         <td>{{$user->BatchNo}}</td>
@@ -315,11 +315,10 @@
 
                                         <td>
                                             @if ($user->DocumentURL !='')
+
                                             <a
-                                                href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}"><button
-                                                    type="button"
-                                                    class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                        class="fa fa-file-pdf-o" aria-hidden="true"></i></button></a>
+                                                href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}" class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                    class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
                                             @else
                                             -
                                             @endif
@@ -377,7 +376,7 @@
                                         <td>{{$user->FirmName}}</td>
                                         <td>{{$user->FirstName}}</td>
                                         <td>{{ date('d/m/Y h:i:s A',
-                                            strtotime($user->created_at)) }}</a>
+                                            strtotime($user->CreatedDate)) }}</a>
                                         </td>
                                         <td>{{$user->Title}}</td>
                                         <td>{{$user->BatchNo}}</td>
@@ -389,10 +388,8 @@
                                         <td>
                                             @if ($user->DocumentURL !='')
                                             <a
-                                                href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}"><button
-                                                    type="button"
-                                                    class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
-                                                        class="fa fa-file-pdf-o" aria-hidden="true"></i></button></a>
+                                                href="{{ route('download.file', ['user_id' => $user->UserID, 'filename' => $user->DocumentURL]) }}" class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
+                                                    class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
                                             @else
                                             -
                                             @endif
@@ -501,7 +498,7 @@
         <div class="col-xxl-12 col-12">
             <div class="box">
                 <div class="box-header d-flex justify-content-between align-items-center">
-                    <h4 class="box-title">CAs List</h4>
+                    <h4 class="box-title">CAS List</h4>
                 </div>
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-12">
@@ -578,12 +575,12 @@
                 <div class="box-body">
                     <div class="row text-center">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-                            <div style="width: 40%; margin: auto;">
+                            <div style="width: 30%; margin: auto;">
                                 <canvas id="deviceChart"></canvas>
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-12 mt-0 mt-xs-10">
-                            <div style="width: 60%; margin: auto;">
+                            <div style="width: 70%; margin: auto;">
                                 <form id="filterForm" class="d-flex align-items-center gap-2">
                                     <div class="form-group mb-0">
                                         <label for="start_date" class="form-label me-2">Start Date:</label>
@@ -775,6 +772,10 @@
                 backgroundColor: ['#4CAF50', '#2196F3'],
                 hoverOffset: 4
             }]
+        },
+        options: {
+            responsive: true, // Enable responsiveness
+            maintainAspectRatio: false // Disable aspect ratio to allow custom sizing
         }
     });
 </script>

@@ -137,8 +137,8 @@ class CasController extends Controller
         $employee = User::where('CompanyID', $user->CompanyID)->where('UserType', '2')->get()->toArray();
         $employeesNameData = array_column($employee, 'FirstName', 'id');
         $employeesId = array_column($employee, 'id');
-        $scanDocuments = Scandocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->get();
-        $otherDocuments = OtherDocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->get();
+        $scanDocuments = Scandocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->orderBy('ScanneddocumentID', 'DESC')->get();
+        $otherDocuments = OtherDocument::where('UserID', $id)->orWhere('CompanyID', $user->CompanyID)->orderBy('OtherdocumentsID', 'DESC')->get();
         $employees = User::where('CompanyID', $user->CompanyID)->where('UserType', '4')->get()->toArray();
         $employeesNameDatas = array_column($employees, 'FirstName', 'id');
         $notificationList = Notification::where('UserID', $id)->orderBy('NotificationID', 'DESC')->get();

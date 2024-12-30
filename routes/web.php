@@ -98,11 +98,12 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::post('/scandoc-toggle-status', [CasController::class, 'scanDocToggleStatus'])->name('scandoctoggle.status');
 
 
-    Route::get('download/{user_id}/{filename}', function ($user_id, $filename) {
+    Route::get('/download/{user_id}/{filename}', function ($user_id, $filename) {
         $UserData = User::find($user_id)->CompanyID;
         $CompanyData = Company::find($UserData);
         $pdfsPath = str_replace(' ', '_', $CompanyData->FirmName) . '_' . $CompanyData->ClientCode;
         $path = storage_path("app/public/{$pdfsPath}/{$user_id}/{$filename}");
+        // dd($path);
         if (!file_exists($path)) {
             abort(404, "File not found");
         }
@@ -113,9 +114,9 @@ Route::group(['prefix' => "admin", 'as' => 'admin.', 'namespace' => 'App\Http\Co
     Route::get('/documents/line-chart-data', [HomeController::class, 'getDocumentUploadData'])->name('documents.line-chart-data');
 
 
-    Route::get('admin/reports', [ReportClientWiseController::class, 'index'])->name('reportclientwise.index');
+    Route::get('/reports', [ReportClientWiseController::class, 'index'])->name('reportclientwise.index');
     Route::get('admin/reports/filter', [ReportClientWiseController::class, 'filter'])->name('reportclientwise.filter');
 
-    Route::get('admin/otherreports', [ReportClientWiseOtherController::class, 'index'])->name('reportclientwiseother.index');
+    Route::get('/otherreports', [ReportClientWiseOtherController::class, 'index'])->name('reportclientwiseother.index');
     Route::get('admin/otherreports/filter', [ReportClientWiseOtherController::class, 'filter'])->name('reportclientwiseother.filter');
 });

@@ -40,7 +40,7 @@ $users = DB::table('cms')->where('PageID',3)->first();
     <div>{!! $users->Content !!}</div>
     <div class="icon-container">
         <!-- Android Button -->
-        <button class="icon-button" onclick="window.location.href='/android-link';">
+        <button class="icon-button" onclick="window.location.href='{{ asset('admin_assets/PD_28-12-2024_07_01.apk') }}';">
             <i class="fab fa-android"></i>
         </button>
 

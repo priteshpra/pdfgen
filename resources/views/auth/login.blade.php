@@ -111,8 +111,7 @@
                                 <!-- /.col -->
                             </div>
                         </form>
-                        <a href="about"><button type="button"
-                                class="waves-effect waves-light btn btn-rounded btn-primary mb-5">About Us</button></a>
+                        <a style="float: right; " href="about"><b>About Us</b></a>
                     </div>
                 </div>
             </div>

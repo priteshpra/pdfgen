@@ -27,16 +27,22 @@ use PDF;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use setasign\Fpdi\Fpdi;
+use App\Services\FcmNotificationService;
 
 class OtherdocumentController extends Controller
 {
+    protected $fcmNotificationService;
+    public function __construct(FcmNotificationService $fcmNotificationService)
+    {
+        $this->fcmNotificationService = $fcmNotificationService;
+    }
 
     public function create(Request $request)
     {
         $userId = $request->query('userId');
         $company = User::where('id', $userId)->first();
         $CompanyID = $company->CompanyID;
-        $BatchNo = Company::where('COmpanyID', $CompanyID)->first()->BatchNo;
+        $BatchNo = Company::where('CompanyID', $CompanyID)->first()->BatchNo;
         $referer = $request->headers->get('referer');
         $lastSegment = $referer;
 
@@ -84,7 +90,8 @@ class OtherdocumentController extends Controller
         if (!Storage::exists($directory)) {
             Storage::makeDirectory($directory);
         }
-        $pdfPath = $pdfsPath . '/' . $request->UserID . '/' . date('dmYHis') . '_' . $request->BatchNo . '.pdf';
+        $dateBatch = date('dmYHis') . '_' . $request->BatchNo;
+        $pdfPath = $pdfsPath . '/' . $request->UserID . '/' . $dateBatch . '.pdf';
         Storage::disk('public')->put($pdfPath, $pdf->output());
 
         $localPath = storage_path("app/public/{$pdfPath}");
@@ -94,12 +101,12 @@ class OtherdocumentController extends Controller
         $downloadUrl = route('download.file', ['user_id' => $request->UserID, 'filename' => basename($pdfPath)]);
 
         $admin->Title = $request->Title;
-        $admin->BatchNo = date('dmYHis') . '_' . $request->UserID;
+        $admin->BatchNo = $dateBatch;
         $admin->CompanyID = $request->CompanyID;
         $admin->UserID = $request->UserID;
         $admin->PageCount = $pageCount;
         $admin->Remarks = $request->Remarks;
-        $admin->DocumentURL = $downloadUrl;
+        $admin->DocumentURL =  basename($pdfPath);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -110,6 +117,18 @@ class OtherdocumentController extends Controller
 
         $notifiArray = ['UserID' => $request->UserID, 'Description' => $UsersData->FirstName . ' ' . $UsersData->LastName  . ' has uploaded ' . basename($pdfPath) . ' document on ' . date('d/m/Y h:i:s') . ' and approx ' . $imageCount . ' Images.', 'TypeID' => 0];
         $this->addNotificationData($notifiArray);
+
+        // Notification firebase
+        $newData  = json_encode(array('documentLink' => $downloadUrl));
+        $body = array('receiver_id' => $request->UserID, 'title' => 'Your document has been uploaded successfully!', 'message' => 'Your document ' . basename($pdfPath) . ' uploaded successfully!', 'data' => $newData, 'content_available' => true);
+        $sendNotification = $this->fcmNotificationService->sendFcmNotification($body);
+        // $notifData = json_decode($sendNotification->getContent(), true);
+        // if (isset($notifData['status']) && $notifData['status'] == true) {
+        //     return $sendNotification->getContent();
+        // } else {
+        //     return $sendNotification->getContent();
+        // }
+        // End Notification firebase
 
         if ($request->lastSegment) {
             return redirect($request->lastSegment)->with(['status-success' => "New Document Added."]);

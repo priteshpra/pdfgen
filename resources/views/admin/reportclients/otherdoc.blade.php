@@ -26,6 +26,10 @@
                         <div class="form-group d-flex align-items-center">
                             <label for="client" class="me-3">Select Client</label>
                             <select id="client" class="form-control w-auto">
+                                <option value="0,0" {{ 0
+                                    == 0 ?
+                                    'selected' : ''
+                                    }}>ALL</option>
                                 @foreach($clients as $client)
                                 <option value="{{ $client->CompanyID }},{{ $client->id }}" {{ $client->CompanyID
                                     == $selectedClientId ?
@@ -113,6 +117,8 @@
     $(document).ready(function() {
         // Function to load users with the selected client and date range
         function loadUsers() {
+            $("#loader").show();
+            $('#loader').css('opacity', 1);
             let clientValue = $('#client').val();
             let values = clientValue.split(',');
             let clientId = values[0]; // "10"
@@ -130,7 +136,13 @@
                     to_date: toDate
                 },
                 success: function(response) {
+                    $("#loader").hide();
+                    $('#loader').css('opacity', 0);
                     $('#clientTableBody').html(response);
+                },
+                error: function(xhr, status, error) {
+                    $("#loader").hide(); // Hide loader on error
+                    $('#loader').css('opacity', 0);
                 }
             });
         }

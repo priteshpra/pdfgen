@@ -144,6 +144,12 @@ class ApiController extends Controller
 
                 $chkUser->user_id = $chkUser->id;
                 $chkUser->token = $token;
+
+                DB::table('user_devices')->where('user_id', $chkUser->id)->update([
+                    'device_token' => '',
+                    'status' => '0'
+                ]);
+
                 // add token devices login
                 $arr = [
                     'status' => 1,
@@ -229,7 +235,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $client = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Status', 1)->where('users.UserType', '3')->where('users.CompanyID', $company_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $client = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Status', 1)->where('users.UserType', '3')->where('users.CompanyID', $company_id)->orderBy('users.id', 'desc')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $client->total(),
@@ -280,7 +286,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $cas = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Status', 1)->where('users.CompanyID', $company_id)->where('users.UserType', '4')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $cas = User::leftJoin('company', 'company.CompanyID', '=', 'users.CompanyID')->where('users.Status', 1)->where('users.CompanyID', $company_id)->where('users.UserType', '4')->orderBy('users.id', 'desc')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $cas->total(),
@@ -332,7 +338,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $employee = User::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserType', '2')->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $employee = User::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserType', '2')->orderBy('id', 'desc')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $employee->total(),
@@ -872,17 +878,13 @@ class ApiController extends Controller
                 return $checkToken->getContent();
             }
 
-            // $totalImageCount = Scandocument::where('Status', 1)
-            //     ->where('UserID', $user_id)
-            //     ->where('CompanyID', $company_id)
-            //     ->sum('ImageCount');
             $result = Scandocument::where('Status', 1)
                 ->where('UserID', $user_id)
                 ->where('CompanyID', $company_id)
                 ->where('UploadType', 'Image')
                 ->select(
                     DB::raw('SUM(ImageCount) as totalImageCount'),
-                    DB::raw('count(CASE WHEN DATE(created_at) = CURDATE() THEN ImageCount ELSE 0 END) as todayImageCount')
+                    DB::raw('count(CASE WHEN DATE(created_at) = CURDATE() THEN ScanneddocumentID ELSE 0 END) as todayImageCount')
                 )
                 ->first();
             $pdfData = Scandocument::where('Status', 1)
@@ -892,7 +894,7 @@ class ApiController extends Controller
                     DB::raw('COUNT(*) as totalDocumentCount'),
                 )
                 ->first();
-            $totalImageCount = $result->totalImageCount;
+            $totalImageCount = (string)isset($result->totalImageCount) ? $result->totalImageCount : 0;
             $todayImageCount = (string)$result->todayImageCount;
             $totalDocumentCount = (string)$pdfData->totalDocumentCount;
 
@@ -1379,6 +1381,7 @@ class ApiController extends Controller
                 // Provide download link
                 $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
                 $documentLink = $downloadUrl; //asset("storage/{$pdfPath}");
+                $documentLinkFile = basename($pdfPath);
             } else {
                 // Handling PDF upload
                 $pdfFile = $request->file('pdf');
@@ -1392,11 +1395,12 @@ class ApiController extends Controller
                 }
 
                 $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
-                $pdfFile->storeAs('public/' . $pdfsPath . '/' . $user_id, $pdfFile->getClientOriginalName());
+                $pdfFile->storeAs('public/' . $pdfsPath . '/' . $user_id, basename($pdfPath));
 
                 // Set the document URL
                 $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
                 $documentLink = $downloadUrl;
+                $documentLinkFile = basename($pdfPath);
             }
             $documents = new Scandocument();
             $documents->Title = $request->title;
@@ -1407,7 +1411,7 @@ class ApiController extends Controller
             $documents->Remarks = $Remarks;
             $documents->ImageCount = isset($imageCount) ? $imageCount : 0;
             $documents->PageCount = isset($pageCount) ? $pageCount : 0;
-            $documents->DocumentURL = basename($pdfPath);
+            $documents->DocumentURL = $documentLinkFile;
             $documents->CreatedBy = $user_id;
             $documents->save();
 
@@ -1519,7 +1523,7 @@ class ApiController extends Controller
             if ($userData['status'] == false) {
                 return $checkToken->getContent();
             }
-            $documets = Scandocument::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserID', $user_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $documets = Scandocument::select('*')->where('Status', 1)->where('CompanyID', $company_id)->where('UserID', $user_id)->orderBy('ScanneddocumentID', 'desc')->paginate($this->per_page_show, ['*'], 'page', $page_number);
             // Update the documentname with the full URL
             $documets->getCollection()->transform(function ($documet) use ($user_id) {
                 $originalDocumentURL = $documet->DocumentURL;
@@ -1579,7 +1583,7 @@ class ApiController extends Controller
         $base_url = $this->base_url;
         try {
 
-            $employee = BussinessCategory::select('*')->where('Status', 1)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $employee = BussinessCategory::select('*')->where('Status', 1)->orderBy('BusinessCategoryID', 'desc')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $pagination = [
                 'total' => $employee->total(),
@@ -1681,6 +1685,7 @@ class ApiController extends Controller
                 // Provide download link
                 $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
                 $documentLink = $downloadUrl; //asset("storage/{$pdfPath}");
+                $documentLinkFile = basename($pdfPath);
             } else {
                 // Handling PDF upload
                 $pdfFile = $request->file('pdf');
@@ -1694,11 +1699,12 @@ class ApiController extends Controller
                 }
 
                 $pdfPath = $pdfsPath . '/' . $user_id . '/' . $request->batch_no . '.pdf';
-                $pdfFile->storeAs('public/' . $pdfsPath . '/' . $user_id, $pdfFile->getClientOriginalName());
+                $pdfFile->storeAs('public/' . $pdfsPath . '/' . $user_id, basename($pdfPath));
 
                 // Set the document URL
                 $downloadUrl = route('download.file', ['user_id' => $user_id, 'filename' => basename($pdfPath)]);
                 $documentLink = $downloadUrl;
+                $documentLinkFile = basename($pdfPath);
             }
             $documents = new OtherDocument();
             $documents->Title = $Title;
@@ -1709,7 +1715,7 @@ class ApiController extends Controller
             $documents->ImageCount = isset($imageCount) ? $imageCount : 0;
             $documents->PageCount = isset($pageCount) ? $pageCount : 0;
             $documents->Remarks = $Remarks;
-            $documents->DocumentURL = basename($pdfPath);
+            $documents->DocumentURL = $documentLinkFile;
             $documents->CreatedBy = $user_id;
             $documents->save();
 
@@ -1764,7 +1770,7 @@ class ApiController extends Controller
         $token = $request->header('token');
         $base_url = $this->base_url;
         try {
-            $documets = OtherDocument::select('*')->where('Status', 1)->where('UserID', $user_id)->where('CompanyID', $company_id)->paginate($this->per_page_show, ['*'], 'page', $page_number);
+            $documets = OtherDocument::select('*')->where('Status', 1)->where('UserID', $user_id)->where('CompanyID', $company_id)->orderBy('OtherdocumentsID', 'desc')->paginate($this->per_page_show, ['*'], 'page', $page_number);
 
             $documets->getCollection()->transform(function ($documet) use ($user_id) {
                 $originalDocumentURL = $documet->DocumentURL;
@@ -1815,7 +1821,7 @@ class ApiController extends Controller
             $page_number = $request->page;
             $token = $request->header('token');
 
-            $notification = Notification::select('*')->where('UserID', $user_id)->get();
+            $notification = Notification::select('*')->where('UserID', $user_id)->orderBy('NotificationID', 'desc')->get();
             $notificationData = $notification->map(function ($user) {
                 return collect($user)
                     ->put('created_at', Carbon::parse($user['created_at'])->format('d/m/Y h:i:s A'))

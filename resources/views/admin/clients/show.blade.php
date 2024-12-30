@@ -386,7 +386,7 @@
                                                                             isset($employeesNameDatas[$scanDocuments->UserID])?$employeesNameDatas[$scanDocuments->UserID]
                                                                             : '-'
                                                                             }}</td>
-                                                                        <td>{{ $scanDocuments->ImageCount }}</td>
+                                                                        <td>{{ $scanDocuments->PageCount }}</td>
                                                                         <td>
                                                                             <div class="word-wrap">{{ $scanDocuments->Remarks }}</div>
                                                                         </td>
@@ -408,7 +408,7 @@
                                                                         <td>
                                                                             @if ($scanDocuments->DocumentURL !='')
                                                                             <?php $URL = route('download.file', ['user_id' => $scanDocuments->UserID, 'filename' => $scanDocuments->DocumentURL]); ?>
-                                                                            <a href="{{$scanDocuments->DocumentURL}}"><button
+                                                                            <a href="{{$URL}}"><button
                                                                                     type="button"
                                                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                                                         class="fa fa-file-pdf-o"
@@ -522,7 +522,7 @@
                                                                         </td>-->
                                                                         <td>
                                                                             @if ($otherDocument->DocumentURL !='')
-                                                                            <a href="{{$otherDocument->DocumentURL}}"><button
+                                                                            <a href="{{ route('download.file', ['user_id' => $otherDocument->UserID, 'filename' => $otherDocument->DocumentURL])}}"><button
                                                                                     type="button"
                                                                                     class="waves-effect waves-circle btn btn-circle btn-primary btn-xs mb-5"><i
                                                                                         class="fa fa-file-pdf-o"

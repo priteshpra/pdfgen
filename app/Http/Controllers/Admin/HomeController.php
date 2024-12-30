@@ -84,7 +84,7 @@ class HomeController extends Controller
             ->orderBy('users.id', 'desc')
             ->whereDate('users.created_at', Carbon::now()->toDateString())
             ->get();
-        // DB::enableQueryLog();
+        DB::enableQueryLog();
         $documentLists = Scandocument::select(
             'users.FirstName',
             'users.FirstName',
@@ -93,7 +93,7 @@ class HomeController extends Controller
             'scanned_documents.CompanyID',
             'scanned_documents.Title',
             'scanned_documents.BatchNo',
-            'users.id AS UserID',
+            'scanned_documents.UserID',
             'scanned_documents.ImageCount',
             'scanned_documents.Remarks',
             'scanned_documents.DocumentURL',
@@ -112,7 +112,7 @@ class HomeController extends Controller
             'otherdocuments.CompanyID',
             'otherdocuments.Title',
             'otherdocuments.BatchNo',
-            'users.id AS UserID',
+            'otherdocuments.UserID',
             'otherdocuments.ImageCount',
             'otherdocuments.Remarks',
             'otherdocuments.DocumentURL',
@@ -122,8 +122,8 @@ class HomeController extends Controller
             ->leftJoin('users', 'users.id', '=', 'otherdocuments.UserID')
             ->where(['otherdocuments.Status' => '1'])->orderBy('otherdocuments.OtherdocumentsID', 'DESC')->limit(20)->get();
 
-        $androidCount = UserDevices::where('device_type', 'Android')->groupBy('user_id')->count();
-        $iosCount = UserDevices::where('device_type', 'iOS')->groupBy('user_id')->count();
+        $androidCount = UserDevices::where('device_type', 'Android')->distinct('user_id')->count('user_id');
+        $iosCount = UserDevices::where('device_type', 'iOS')->distinct('user_id')->count('user_id');
 
         $startDate = Carbon::now()->startOfMonth()->toDateString();
         $endDate = Carbon::now()->toDateString();

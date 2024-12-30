@@ -53,16 +53,19 @@ class ReportClientWiseOtherController extends Controller
             ->orderBy('users.id', 'desc')->get();
 
         $clients = Company::select(
-            'users.FirstName',
-            'users.LastName',
             'company.FirmName',
             'company.CompanyID',
-            'users.id',
+            DB::raw('MIN(users.FirstName) as FirstName'),
+            DB::raw('MIN(users.LastName) as LastName'),
+            DB::raw('MIN(users.id) as id'),
         )
-            ->leftJoin('users', 'users.CompanyID', '=', 'company.CompanyID')->get();  // Get all clients
+            ->distinct()
+            ->join('users', 'users.CompanyID', '=', 'company.CompanyID')
+            ->groupBy('company.CompanyID', 'company.FirmName')
+            ->orderBy('company.FirmName', 'ASC')->get();  // Get all clients
 
-        $selectedClientId = $clients->first()->CompanyID;
-        $selectedUserId = $clients->first()->id;
+        $selectedClientId = 0; //$clients->first()->CompanyID;
+        $selectedUserId = 0; //$clients->first()->id;
 
         $users = $this->getUsers($selectedClientId, $selectedUserId, date('Y-m-d'), date('Y-m-d'));
         $country = Country::all();
@@ -87,24 +90,46 @@ class ReportClientWiseOtherController extends Controller
         $fromDate = Carbon::createFromFormat('Y-m-d', $fromDate)->startOfDay(); // Start of the day
         $toDate = Carbon::createFromFormat('Y-m-d', $toDate)->endOfDay();
         DB::enableQueryLog();
-        return User::select(
-            'users.FirstName',
-            'users.LastName',
-            'company.FirmName',
-            'otherdocuments.Title',
-            'otherdocuments.created_at',
-            'otherdocuments.BatchNo',
-            'otherdocuments.Remarks',
-            DB::raw('(SELECT SUM(otherdocuments.ImageCount)
+        if ($CompanyID == 0) {
+            return User::select(
+                'users.FirstName',
+                'users.LastName',
+                'company.FirmName',
+                'otherdocuments.Title',
+                'otherdocuments.created_at',
+                'otherdocuments.BatchNo',
+                'otherdocuments.Remarks',
+                DB::raw('(SELECT SUM(otherdocuments.ImageCount)
               FROM otherdocuments
               WHERE otherdocuments.CompanyID = users.CompanyID) as total_image_count')
-        )
-            ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
-            ->leftJoin('otherdocuments', 'users.CompanyID', '=', 'otherdocuments.CompanyID')
-            ->where('otherdocuments.CompanyID', $CompanyID)
-            ->where('otherdocuments.UserID', $client_user_id)
-            ->whereBetween('otherdocuments.created_at', [$fromDate, $toDate])
-            ->orderBy('otherdocuments.OtherdocumentsID', 'desc')->get();
+            )
+                ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
+                ->leftJoin('otherdocuments', 'users.CompanyID', '=', 'otherdocuments.CompanyID')
+                ->whereBetween('otherdocuments.created_at', [$fromDate, $toDate])
+                ->orderBy('otherdocuments.OtherdocumentsID', 'desc')->get();
+        } else {
+            return User::select(
+                'users.FirstName',
+                'users.LastName',
+                'company.FirmName',
+                'otherdocuments.Title',
+                'otherdocuments.created_at',
+                'otherdocuments.BatchNo',
+                'otherdocuments.Remarks',
+                DB::raw('(SELECT SUM(otherdocuments.ImageCount)
+              FROM otherdocuments
+              WHERE otherdocuments.CompanyID = users.CompanyID) as total_image_count')
+            )
+                ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
+                ->leftJoin('otherdocuments', 'users.CompanyID', '=', 'otherdocuments.CompanyID')
+                ->when($CompanyID !== 0, function ($query) use ($CompanyID) {
+                    return $query->where('otherdocuments.CompanyID', $CompanyID);
+                })
+                // ->where('otherdocuments.CompanyID', $CompanyID)
+                // ->where('otherdocuments.UserID', $client_user_id)
+                ->whereBetween('otherdocuments.created_at', [$fromDate, $toDate])
+                ->orderBy('otherdocuments.OtherdocumentsID', 'desc')->get();
+        }
         // dd(DB::getQueryLog());
     }
 

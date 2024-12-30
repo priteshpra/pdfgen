@@ -196,13 +196,12 @@
         if (status == 1) {
             statuss = 0;
             console.log('off');
-            $('#toggleApproveChang_' + ID).removeClass('btn-success');
-            $('#toggleApproveChang_' + ID).addClass('btn-error');
-        } else {
-            statuss = 1;
             $('#toggleApproveChang_' + ID).addClass('btn-success');
             $('#toggleApproveChang_' + ID).removeClass('btn-error');
-
+        } else {
+            statuss = 1;
+            $('#toggleApproveChang_' + ID).removeClass('btn-success');
+            $('#toggleApproveChang_' + ID).addClass('btn-error');
         }
         $("#toggleApproveChang_" + ID).attr("onclick", "toggleApproveStatus(" + ID + ", " + statuss + ")");
 

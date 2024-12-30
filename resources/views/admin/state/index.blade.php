@@ -53,11 +53,11 @@
                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                 <thead class="bg-primary">
                                     <tr class="">
-                                        <th class="text-center">ID</th>
+                                        <!-- <th class="text-center">ID</th> -->
                                         <th>State Name</th>
                                         <th>Country Name</th>
-                                        <th>Status</th>
-                                        <th>
+                                        <th style="width: 10%;">Status</th>
+                                        <th style="width: 10%;">
                                             Action
                                         </th>
                                     </tr>
@@ -65,7 +65,7 @@
                                 <tbody>
                                     @forelse ($users as $user)
                                     <tr>
-                                        <td class="text-center">{{$user->StateID}}</td>
+                                        <!-- <td class="text-center">{{$user->StateID}}</td> -->
                                         <td>{{$user->State}}</td>
                                         <td>{{$user->Country}}</td>
                                         <td>
@@ -114,50 +114,50 @@
 </div>
 </div>
 <script>
-    function toggleStatus(ID,  status) {
-            if(status == 1) {
-                statuss = 0;
-                console.log('off');
-                $('#toggleChang_'+ID).addClass('btn-success');
-                $('#toggleChang_'+ID).removeClass('btn-error');
-            } else {
-                statuss = 1;
-                $('#toggleChang_'+ID).removeClass('btn-success');
-                 $('#toggleChang_'+ID).addClass('btn-error');
-            }
-            $("#toggleChang_"+ID). attr("onclick","toggleStatus("+ID+", "+statuss+")");
+    function toggleStatus(ID, status) {
+        if (status == 1) {
+            statuss = 0;
+            console.log('off');
+            $('#toggleChang_' + ID).addClass('btn-success');
+            $('#toggleChang_' + ID).removeClass('btn-error');
+        } else {
+            statuss = 1;
+            $('#toggleChang_' + ID).removeClass('btn-success');
+            $('#toggleChang_' + ID).addClass('btn-error');
+        }
+        $("#toggleChang_" + ID).attr("onclick", "toggleStatus(" + ID + ", " + statuss + ")");
 
-            $('#loader').show();
-            $('#loader').css('opacity',1);
-            $.ajax({
-                url: "{{ route('admin.statetoggle.status') }}", // URL to your route
-                type: "POST",
-                data: {
-                    StateID: ID, // Pass the user ID
-                    Status: status, // Pass the user ID
-                    _token: '{{ csrf_token() }}' // CSRF token for Laravel
-                },
-                success: function(response) {
-                    $('#loader').hide();
-                    $('#loader').css('opacity',0);
-                    $('#alert-container').html(`
+        $('#loader').show();
+        $('#loader').css('opacity', 1);
+        $.ajax({
+            url: "{{ route('admin.statetoggle.status') }}", // URL to your route
+            type: "POST",
+            data: {
+                StateID: ID, // Pass the user ID
+                Status: status, // Pass the user ID
+                _token: '{{ csrf_token() }}' // CSRF token for Laravel
+            },
+            success: function(response) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $('#alert-container').html(`
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         ${response.message}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     `);
-                },
-                error: function(xhr) {
-                    $('#loader').hide();
-                    $('#loader').css('opacity',0);
-                    $('#alert-container').html(`
+            },
+            error: function(xhr) {
+                $('#loader').hide();
+                $('#loader').css('opacity', 0);
+                $('#alert-container').html(`
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         ${xhr.responseJSON.message}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     `);
-                }
-            });
-        }
+            }
+        });
+    }
 </script>
 @endsection

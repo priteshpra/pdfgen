@@ -166,7 +166,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li
-                            class=" @if(request()->is('admin/reportclientwise/index') || request()->is('admin/reportclientwise/index')) active @endif">
+                            class=" @if(request()->is('admin/reports') || request()->is('admin/reports/*')) active @endif">
                             <a class="sidebar-link waves-effect waves-dark"
                                 href="{{ route('admin.reportclientwise.index') }}">
                                 <i class="icon-Commit" aria-hidden="true"></i>Client
@@ -174,7 +174,7 @@
                             </a>
                         </li>
                         <li
-                            class=" @if(request()->is('admin/reportclientwiseother/index') || request()->is('admin/reportclientwiseother/*')) active @endif">
+                            class=" @if(request()->is('admin/otherreports') || request()->is('admin/otherreports/*')) active @endif">
                             <a class="sidebar-link waves-effect waves-dark"
                                 href="{{ route('admin.reportclientwiseother.index') }}">
                                 <i class="icon-Commit" aria-hidden="true"></i>Other Documents Report

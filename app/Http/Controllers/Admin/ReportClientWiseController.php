@@ -52,15 +52,18 @@ class ReportClientWiseController extends Controller
             ->whereDate('users.created_at', '=', $currentDate)
             ->orderBy('users.id', 'desc')->get();
         $clients = Company::select(
-            'users.FirstName',
-            'users.LastName',
             'company.FirmName',
             'company.CompanyID',
-            'users.id',
+            DB::raw('MIN(users.FirstName) as FirstName'),
+            DB::raw('MIN(users.LastName) as LastName'),
+            DB::raw('MIN(users.id) as id'),
         )
-            ->leftJoin('users', 'users.CompanyID', '=', 'company.CompanyID')->get();  // Get all clients
-        $selectedClientId = $clients->first()->CompanyID;
-        $selectedUserId = $clients->first()->id;
+            ->distinct()
+            ->join('users', 'users.CompanyID', '=', 'company.CompanyID')
+            ->groupBy('company.CompanyID', 'company.FirmName')
+            ->orderBy('company.FirmName', 'ASC')->get();
+        $selectedClientId = 0; //$clients->first()->CompanyID;
+        $selectedUserId = 0; //$clients->first()->id;
 
         $users = $this->getUsers($selectedClientId, $selectedUserId, date('Y-m-d'), date('Y-m-d'));
         $country = Country::all();
@@ -82,27 +85,52 @@ class ReportClientWiseController extends Controller
 
     private function getUsers($CompanyID, $client_user_id, $fromDate, $toDate)
     {
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         $fromDate = Carbon::createFromFormat('Y-m-d', $fromDate)->startOfDay(); // Start of the day
         $toDate = Carbon::createFromFormat('Y-m-d', $toDate)->endOfDay();
-        return User::select(
-            'users.FirstName',
-            'users.LastName',
-            'company.FirmName',
-            'scanned_documents.Title',
-            'scanned_documents.created_at',
-            'scanned_documents.BatchNo',
-            'scanned_documents.Remarks',
-            DB::raw('(SELECT SUM(scanned_documents.ImageCount)
+        // dd($fromDate, $toDate);
+        if ($CompanyID == 0) {
+            return User::select(
+                'users.FirstName',
+                'users.LastName',
+                'company.FirmName',
+                'scanned_documents.Title',
+                'scanned_documents.created_at',
+                'scanned_documents.BatchNo',
+                'scanned_documents.Remarks',
+                DB::raw('(SELECT SUM(scanned_documents.ImageCount)
               FROM scanned_documents
               WHERE scanned_documents.CompanyID = users.CompanyID) as total_image_count')
-        )
-            ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
-            ->leftJoin('scanned_documents', 'users.CompanyID', '=', 'scanned_documents.CompanyID')
-            ->where('scanned_documents.CompanyID', $CompanyID)
-            ->where('scanned_documents.UserID', $client_user_id)
-            ->whereBetween('scanned_documents.created_at', [$fromDate, $toDate])
-            ->orderBy('scanned_documents.ScanneddocumentID', 'desc')->get();
+            )
+                ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
+                ->leftJoin('scanned_documents', 'users.CompanyID', '=', 'scanned_documents.CompanyID')
+                // ->where('scanned_documents.CompanyID', $CompanyID)
+                // ->where('scanned_documents.UserID', $client_user_id)
+                ->whereBetween('scanned_documents.created_at', [$fromDate, $toDate])
+                ->orderBy('scanned_documents.ScanneddocumentID', 'desc')->get();
+        } else {
+            return User::select(
+                'users.FirstName',
+                'users.LastName',
+                'company.FirmName',
+                'scanned_documents.Title',
+                'scanned_documents.created_at',
+                'scanned_documents.BatchNo',
+                'scanned_documents.Remarks',
+                DB::raw('(SELECT SUM(scanned_documents.ImageCount)
+              FROM scanned_documents
+              WHERE scanned_documents.CompanyID = users.CompanyID) as total_image_count')
+            )
+                ->leftJoin('company', 'users.CompanyID', '=', 'company.CompanyID')
+                ->leftJoin('scanned_documents', 'users.CompanyID', '=', 'scanned_documents.CompanyID')
+                ->when($CompanyID !== 0, function ($query) use ($CompanyID) {
+                    return $query->where('scanned_documents.CompanyID', $CompanyID);
+                })
+                // ->where('scanned_documents.CompanyID', $CompanyID)
+                // ->where('scanned_documents.UserID', $client_user_id)
+                ->whereBetween('scanned_documents.created_at', [$fromDate, $toDate])
+                ->orderBy('scanned_documents.ScanneddocumentID', 'desc')->get();
+        }
         // dd(DB::getQueryLog());
     }
 

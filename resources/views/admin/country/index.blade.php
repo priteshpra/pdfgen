@@ -55,10 +55,10 @@
                                 class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                 <thead class="bg-primary">
                                     <tr class="">
-                                        <th class="text-center">ID</th>
+                                        <!-- <th class="text-center">ID</th> -->
                                         <th>Country Name</th>
-                                        <th>Status</th>
-                                        <th>
+                                        <th style="width: 10%;">Status</th>
+                                        <th style="width: 10%;">
                                             Action
                                         </th>
                                     </tr>
@@ -66,7 +66,7 @@
                                 <tbody>
                                     @forelse ($users as $user)
                                     <tr>
-                                        <td class="text-center">{{$user->CountryID}}</td>
+                                        <!-- <td class="text-center">{{$user->CountryID}}</td> -->
                                         <td>{{$user->Country}}</td>
                                         <td>
                                             <div class="col-xl-2 col-6 text-center align-self-center mb-20">

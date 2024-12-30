@@ -147,7 +147,7 @@ $(function () {
     });
 
     $('#bussinessTable').DataTable({
-        order: [[3, 'desc']],
+        order: [],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -259,7 +259,7 @@ $(function () {
     });
 
     $('#employeeTable').DataTable({
-        order: [[6, 'desc']],
+        order: [],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -297,7 +297,7 @@ $(function () {
     });
 
     $('#clientTable').DataTable({
-        // order: [[9, 'desc']],
+        order: [],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -335,7 +335,7 @@ $(function () {
     });
 
     $('#clientTableReport').DataTable({
-        order: [[2, 'desc']],
+        order: [],
         paging: false,
         info: false,
         // pageLength: 25,
@@ -375,7 +375,7 @@ $(function () {
     });
 
     $('#casTable').DataTable({
-        order: [[9, 'desc']],
+        order: [],
         pageLength: 25,
         dom: 'Bfrtip',
         // buttons: [
@@ -413,7 +413,7 @@ $(function () {
     });
 
     $('#example').DataTable({
-        order: [[9, 'desc']],
+        order: [],
         dom: 'Bfrtip',
 
         buttons: [
@@ -425,7 +425,7 @@ $(function () {
     });
 
     $('#scandoctableexample').DataTable({
-        order: [[7, 'desc']],
+        order: [],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -436,7 +436,7 @@ $(function () {
 
     });
     $('#scandoctableexample1').DataTable({
-        order: [[7, 'desc']],
+        order: [],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -448,7 +448,7 @@ $(function () {
     });
 
     $('#otherdoctableexample').DataTable({
-        order: [[7, 'desc']],
+        order: [],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -459,7 +459,7 @@ $(function () {
 
     });
     $('#otherdoctableexample1').DataTable({
-        order: [[7, 'desc']],
+        order: [],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -471,7 +471,7 @@ $(function () {
     });
 
     $('#notificationtableexample').DataTable({
-        order: [[7, 'desc']],
+        order: [],
         // dom: 'Bfrtip',
 
         // buttons: [
@@ -482,7 +482,7 @@ $(function () {
 
     });
     $('#notificationtableexample1').DataTable({
-        order: [[7, 'desc']],
+        order: [],
         // dom: 'Bfrtip',
 
         // buttons: [

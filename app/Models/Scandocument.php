@@ -29,5 +29,6 @@ class Scandocument extends Authenticatable
         'PageCount',
         'DocumentURL',
         'CreatedBy',
+        'UploadType',
     ];
 }
