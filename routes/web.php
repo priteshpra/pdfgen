@@ -38,6 +38,7 @@ use App\Models\User;
 Route::get('/', function () {
     return view('auth/login');
 });
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/about', function () {
     return view('about');
 });

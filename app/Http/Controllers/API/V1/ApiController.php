@@ -883,7 +883,8 @@ class ApiController extends Controller
                 ->where('CompanyID', $company_id)
                 ->where('UploadType', 'Image')
                 ->select(
-                    DB::raw('SUM(ImageCount) as totalImageCount'),
+                    // DB::raw('SUM(ImageCount) as totalImageCount'),
+                    DB::raw('count(CASE WHEN DATE(created_at) = CURDATE() THEN SUM(ImageCount) ELSE 0 END) as totalImageCount'),
                     DB::raw('count(CASE WHEN DATE(created_at) = CURDATE() THEN ScanneddocumentID ELSE 0 END) as todayImageCount')
                 )
                 ->first();
@@ -891,7 +892,8 @@ class ApiController extends Controller
                 ->where('UserID', $user_id)
                 ->where('CompanyID', $company_id)
                 ->select(
-                    DB::raw('COUNT(*) as totalDocumentCount'),
+                    // DB::raw('COUNT(*) as totalDocumentCount'),
+                    DB::raw('count(CASE WHEN DATE(created_at) = CURDATE() THEN ScanneddocumentID ELSE 0 END) as totalDocumentCount'),
                 )
                 ->first();
             $totalImageCount = (string)isset($result->totalImageCount) ? $result->totalImageCount : 0;
